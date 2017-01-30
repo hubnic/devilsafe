@@ -1,0 +1,104 @@
+body
+{
+	background: url("epargne2.png") no-repeat fixed center;
+}
+
+header img
+{
+	width:140px;
+	height:100px;
+	margin-left: 10%;
+}
+#menu
+{
+	display: flex; 
+	height: 40px;
+	width: 70%;
+	margin-left: 10%;
+	justify-content: space-between;
+	background-color: rgb(50, 50, 50);
+	font-size: 0.9em;
+	list-style: none;
+}
+
+#menu a{
+	text-decoration: none;
+}
+
+.accueil, .comptes, .epargne, .assurance
+{
+	margin: auto;
+	text-align: center;
+}
+
+#menu li a{
+	color: white;
+}
+
+
+#menu li a:hover
+{
+	font-weight: bold;
+}
+
+
+
+/** Mise en page des carrés*/
+section
+{
+    display: flex; 
+   	justify-content: space-around;
+    margin-top: 30px;
+    width: 75%;
+}
+
+article
+{
+    padding-right: 1%;
+    padding-left: 1%;
+    border: 2px grey solid;
+    text-align: center;
+    background-color: rgba(245,245,245,0.9);
+}
+
+aside
+{
+    position: relative;
+    padding-right: 5%;
+    padding-left: 5%;
+    text-align: center;
+    border: 2px grey solid;
+    background-color: rgba(245,245,245,0.9);
+}
+
+.titreconnexion
+{
+	display:block;
+	width:250px;
+	line-height:50px;
+	text-align:center;
+	vertical-align:middle;
+	background-color: rgb(103,113,121);
+	color:white;
+}
+
+.boutonconnexion {
+	width:120px;
+	height:30px;
+	background-color: rgb(103,113,121);
+	color:white;
+	float: right;
+	padding-right: 2px;
+}
+
+.boutonconnexion:hover {
+    cursor:pointer;
+	background-color: rgb(90,94,107);
+}
+
+input
+{
+	width: 200px;
+	height: 20px;
+	font-size:1em;
+}
