@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+	<meta charset="UTF-8">
+<title>Login Admin</title>
+<link rel="stylesheet" href="../lib/bootstrap-3.3.7/css/bootstrap.min.css" />
+<link rel="stylesheet" href="../lib/bootstrap-3.3.7/css/bootstrap.css">
+<script src="../lib/jquery/jquery-3.1.1.min.js"></script>
+<script src="../lib/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+	<nav class="navbar navbar-inverse">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a
+					class="navbar-brand"
+					href="#">Votre D-aministration</a>
+			</div>
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="./portail.html"><span
+						class="glyphicon glyphicon-log-out"></span> Deconnexion</a></li>
+			</ul>
+		</div>
+	</nav>
+
+	<div class="container">
+		<h3>Acc�der � mon compte d'administration</h3>
+		<br>
+		<hr>
+		<form method="post" id="login" action="#" role="form">
+			<div class="form-group row">
+				<label
+					for="idt"
+					class="col-sm-2 col-form-label">Identifiant</label>
+				<div class="col-sm-10">
+					<input
+						type="text"
+						class="form-control"
+						id="idt"
+						name="idt"
+						value="ADMINISTRATEUR"
+						placeholder="Saisir votre identifiant"
+						required>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label
+					for="secureKey"
+					class="col-sm-2 col-form-label">Cl� de s�curit�</label>
+				<div class="col-sm-10">
+					<input
+						type="password"
+						class="form-control"
+						id="secureKey"
+						name="secureKey"
+						placeholder="Saisir votre cl� de s�curit�"
+						value="1234567"
+						required>
+				</div>
+			</div>
+			<div class="form-group row">
+				<div class="offset-sm-2 col-sm-10">
+
+					<input
+						type="hidden"
+						name="${_csrf.parameterName}"
+						value="${_csrf.token}" />
+				</div>
+			</div>
+		</form>
+        <div class="form-group">
+			    <!--<a href="./admin_home.html"><button  class="btn btn-primary">Valider mon Identité</button></a>-->
+					<input type="button" value="Valider mon Identité" onclick="window.location.href='./admin_home.html'">
+        </div>
+		<!--<c:if test="${param.error != null}">
+			<div class="alert alert-danger">
+				<p>Probl�me d'authentification.</p>
+			</div>
+		</c:if>-->
+	</div>
+	<footer class="container-fluid text-center">
+		<p>Banque du demon</p>
+	</footer>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+	<meta charset="UTF-8">
+<title>Rembourser credit</title>
+<link rel="stylesheet" href="../lib/bootstrap-3.3.7/css/bootstrap.min.css" />
+<link rel="stylesheet" href="../lib/bootstrap-3.3.7/css/bootstrap.css">
+<script src="../lib/js/valideLogin.js"></script>
+<script src="../lib/jquery/jquery-3.1.1.min.js"></script>
+<script src="../lib/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+	<nav class="navbar navbar-inverse">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a
+					class="navbar-brand"
+					href="#">Votre Espace D</a>
+			</div>
+	        <ul class="nav navbar-nav">
+				<li class="active"><a href="client_apercu.html"><span class="glyphicon glyphicon-home"></span> Accueil</a></li>
+				<li><a href="./client_profil.html"><span class="glyphicon glyphicon-user"></span> Mon profil</a></li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="./portail.html"><span class="glyphicon glyphicon-log-out"></span> Deconnexion</a></li>
+			</ul>
+		</div>
+	</nav>
+	<div class="container-fluid">
+		<div class="row content">
+			<div class="col-sm-3 sidenav">
+				<h5>
+					Remboursement de credit <span class="glyphicon glyphicon-credit-card"></span>
+				</h5>
+				<br> <br>
+				<ul class="nav nav-pills nav-stacked">
+					<li><a href="./client_apercu.html">Mes comptes</a></li>
+					<li><a href="./client_transfertIn.html">Transfert d'argent vers un compte interne</a></li>
+					<li><a href="./client_transfertOut.html">Transfert d'argent vers un compte externe</a></li>
+					<li><a href="./client_credit.html">Rembourser ma carte de credit</a></li>
+				</ul>
+				<br>
+			</div>
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-8">
+						<hr>
+						<h3>
+							Voici le montant que vous devez rembourser <span
+								class="glyphicon glyphicon-usd"></span>
+						</h3>
+						<hr>
+						<div class="container-fluid">
+							<div class="row">
+								<div
+									class="col-sm-4"
+									style="background-color: red;">
+									<div class="form-group">
+										<label for="compteName">Compte :</label> <input
+											type="text"
+											class="form-control"
+											id="compteName"
+											value="Crédit"
+											name="idCompte"
+											readonly>
+									</div>
+									<div class="form-group">
+										<label for="idCompte">No Compte :</label> <input
+											type="text"
+											class="form-control"
+											id="idCompte"
+											value="6666-123"
+											name="idCompte"
+											readonly>
+									</div>
+									<div class="form-group">
+										<label for="montant1">Montant à rembourser ($) :</label> <input
+											type="number"
+											class="form-control"
+											id="montant1"
+											value="200"
+											name="montant"
+											readonly>
+									</div>
+								</div>
+								<div class="col-sm-8">
+									<form action="#">
+										<hr>
+										<h4>1. Veuillez choisir le compte emetteur pour le
+											remboursement</h4>
+										<hr>
+										<div class="form-group">
+											<label
+												for="compteOut">Emetteur</label> <select
+												class="form-control"
+												id="compteOut"
+												name="compteOut"
+												required>
+												<option value="">Choisir Compte</option>
+												<option>Compte 1</option>
+												<option>Compte 2</option>
+												<option>Compte 2</option>
+											</select>
+										</div>
+										<hr>
+										<h4>2. Inscrire le montant désiré</h4>
+										<div class="form-group">
+											<input
+												type="number"
+												class="form-control"
+												id="montant"
+												name="montant"
+                                                value="123"
+												placeholder="Indiquer le montant d�sir�"
+												required>
+										</div>
+										<h4>3. Veuillez valider le remboursement en inscrivant
+											votre mot de passe</h4>
+										<div class="form-group">
+											<label for="pwd">Password:</label> <input
+												type="password"
+												class="form-control"
+                                                value="123445"
+												id="pwd"
+												required>
+										</div>
+										<button
+											type="submit"
+											class="btn btn-primary">Effectuer le remboursement</button>
+										<input
+											type="hidden"
+											name="${_csrf.parameterName}"
+											value="${_csrf.token}" />
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer class="container-fluid">
+		<p>Banque 2</p>
+	</footer>
+</body>
+</html>

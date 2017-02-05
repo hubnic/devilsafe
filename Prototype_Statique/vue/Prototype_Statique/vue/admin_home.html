@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+	<meta charset="UTF-8">
+<title>ShowLog</title>
+<link rel="stylesheet" href="../lib/bootstrap-3.3.7/css/bootstrap.min.css" />
+<link rel="stylesheet" href="../lib/bootstrap-3.3.7/css/bootstrap.css">
+<script src="../lib/jquery/jquery-3.1.1.min.js"></script>
+<script src="../lib/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<nav class="navbar navbar-inverse">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a
+					class="navbar-brand"
+					href="#">Votre Espace D</a>
+			</div>
+		<ul class="nav navbar-nav">
+				<li class="active"><a href="./admin_home.html"><span class="glyphicon glyphicon-home"></span> Accueil</a></li>
+				<li><a href="admin_adminProfil.html"><span class="glyphicon glyphicon-user"></span> Mon profil</a></li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="./portail.html"><span class="glyphicon glyphicon-log-out"></span> Deconnexion</a></li>
+			</ul>
+		</div>
+	</nav>
+	<div class="container-fluid">
+		<div class="row content">
+			<div class="col-sm-3 sidenav">
+				<h4>
+					Administration <span class="glyphicon glyphicon-cog"></span>
+				</h4>
+				<br>
+				<hr>
+				<h5>
+					Gestion des clients<span class="glyphicon glyphicon-usd"></span>
+				</h5>
+				<ul class="nav nav-pills nav-stacked">
+					<li><a href="./admin_newClient.html">Nouveau client?</a></li>
+					<li><a href="./admin_showAllClient.html">G�rer un compte existant?</a></li>
+				</ul>
+				<br>
+				<hr>
+				<h5>
+					Gestion des administrateur<span class="glyphicon glyphicon-user"></span>
+				</h5>
+				<ul class="nav nav-pills nav-stacked">
+					<li><a href="./admin_addAdmin.html">Cr�er compte Administrateur</a></li>
+				</ul>
+				<br>
+				<hr>
+				<h5>
+					Analyse des logs<span class="glyphicon glyphicon-wrench"></span>
+				</h5>
+				<ul class="nav nav-pills nav-stacked">
+					<li><a href="./admin_log.html">Voir les Logs</a></li>
+				</ul>
+			</div>
+			<div class="col-sm-9">
+
+				<h4>
+					Espace d'administration
+				</h4>
+				<br>
+				<hr>
+				<br>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
