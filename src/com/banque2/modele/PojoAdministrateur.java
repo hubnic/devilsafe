@@ -16,6 +16,18 @@ public class PojoAdministrateur {
 			mdp = mdpR;
 		}
 
+		public int getKey() {
+			return key;
+		}
+
+		public void setKey(int key) {
+			this.key = key;
+		}
+
+		public PojoAdministrateur() {
+			// TODO Auto-generated constructor stub
+		}
+
 		public int getId() {
 			return id;
 		}

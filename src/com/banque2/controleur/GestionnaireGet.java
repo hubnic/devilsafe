@@ -14,18 +14,22 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.banque2.modele.PojoAdministrateur;
 import com.banque2.services.ServiceDaoAdministrateur;
+import com.banque2.services.ServiceAuthentification;
 
 @Controller
 public class GestionnaireGet {
 		@Autowired
 		private ServiceDaoAdministrateur serviceDaoAdministrateur;
-	
+		@Autowired
+		private ServiceAuthentification serviceSecurite;
+		
+		
 		private static final Logger log = Logger.getLogger(GestionnaireGet.class);
-
+		
 		@RequestMapping(value = {"/portail","/"}, method = RequestMethod.GET)
 		public String getloginPage() {
 			PojoAdministrateur administrateur = serviceDaoAdministrateur.getAdministrateur(1);
-			System.out.println("Administrateur recu : "+administrateur.toString());
+			//System.out.println("Administrateur recu : "+administrateur.toString());
 			return "portail";
 		}
 		

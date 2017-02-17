@@ -10,8 +10,9 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 
-import com.banque2.mappingModele.MapAdministrateur;
+import com.banque2.mappingModele.MappingAdminitrateur;
 import com.banque2.modele.PojoAdministrateur;
+import com.banque2.modele.PojoClient;
 
 
 
@@ -24,23 +25,73 @@ private JdbcTemplate jdbcTemplate;
 		jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
-	public void saveOrUpdate(PojoAdministrateur administrateur) {
+	public boolean createAdmin(PojoAdministrateur administrateur) {
+		String addAdministrateur = "INSERT INTO administrateurs (nom, prenom, mdp,secureKey) VALUES (?, ?, ?, ?)";
+
+		try{
+				jdbcTemplate.update(addAdministrateur, 
+						administrateur.getNom(), 
+						administrateur.getPrenom(),
+						administrateur.getMdp(), 
+						administrateur.getKey());
+				return true;	
+			}catch(Exception e){
+				e.printStackTrace();
+				return false;
+			}
 		
-			String sql = "SELECT * FROM ADMINISTRATEUR WHERE id= 1";
-			jdbcTemplate.execute(sql);
+	}
+	
+	public boolean createClient(PojoClient client) {
+		String addClient = "INSERT INTO clients (nom, prenom,courriel,dateNaissance,telephone,adresse,mdp) "
+				+ "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+		try{
+				jdbcTemplate.update(addClient, 
+						client.getNom(), 
+						client.getPrenom(),
+						client.getCourriel(),
+						client.getDateNaissance(), 
+						client.getTelephone(),
+						client.getAdresse(),
+						client.getMdp());
+				return true;	
+			}catch(Exception e){
+				e.printStackTrace();
+				return false;
+			}
+		
+	}
+	
+	public void update(PojoAdministrateur administrateur) {
+		
+		String sql = "";
+		jdbcTemplate.execute(sql);
+	}
+	
+	public void delete(PojoAdministrateur administrateur) {
+		
+		String sql = "";
+		jdbcTemplate.execute(sql);
 	}
 	
 	public PojoAdministrateur getAdministrateur(int adminId) {
 		String sql = "SELECT * FROM administrateur WHERE id=" + adminId;
 		
-		List<PojoAdministrateur> result = jdbcTemplate.query(sql,new MapAdministrateur());
-		
-		if(result.isEmpty()){
+		try{
+			List<PojoAdministrateur> result = jdbcTemplate.query(sql,new MappingAdminitrateur());
+			
+			if(result.isEmpty()){
+				return null;
+			}
+			else{
+				return result.get(0);
+			}	
+		}
+		catch(Exception e){
 			return null;
 		}
-		else{
-			return result.get(0);
-		}	
+		
 
 	}
 	

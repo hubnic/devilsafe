@@ -7,7 +7,7 @@
 	uri="http://java.sun.com/jsp/jstl/core"%>
 <html lang="fr">
 <head>
-<title>ShowLog</title>
+<title>Ajouter Client</title>
 <link
 	rel="stylesheet"
 	href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.min.css" />">
@@ -78,10 +78,20 @@
 				<br>
 				<hr>
 				<br>
+					<c:if test="${succes == true}">
+							<div class="alert alert-success">
+								<p>${description}</p>
+							</div>
+						</c:if>
+						<c:if test="${succes == false}">
+							<div class="alert alert-danger">
+								<p>${description}</p>
+							</div>
+						</c:if>
 				<form
 					method="post"
-					id="changePwd"
-					action="<c:url value="/addUser" />"
+					id="newClient"
+					action="<c:url value="/newClient" />"
 					role="form">
 					<div class="col-sm-5">
 							<div class="form-group row">
@@ -93,7 +103,9 @@
 										class="form-control"
 										type="text"
 										value="Dup"
-										id="nom">
+										id="nom"
+										name="nom"
+										required>
 								</div>
 							</div>
 							<div class="form-group row">
@@ -105,7 +117,9 @@
 										class="form-control"
 										type="text"
 										value="Jean"
-										id="prenom">
+										id="prenom"
+										name="prenom"
+										required>
 								</div>
 							</div>
 							<div class="form-group row">
@@ -117,19 +131,23 @@
 										class="form-control"
 										type="date"
 										value="01-08-89"
-										id="date">
+										id="date"
+										name="date"
+										required>
 								</div>
 							</div>
 							<div class="form-group row">
 								<label
-									for="tel"
+									for="telephone"
 									class="col-2 col-form-label">Telephone</label>
 								<div class="col-10">
 									<input
 										class="form-control"
 										type="tel"
 										value="512-234-4567"
-										id="tel">
+										id="telephone"
+										name="telephone"
+										required>
 								</div>
 							</div>
 							<div class="form-group row">
@@ -141,7 +159,9 @@
 										class="form-control"
 										type="text"
 										value="12 rue v Montreal"
-										id="adresse">
+										id="adresse"
+										name="adresse"
+										required>
 								</div>
 							</div>
 							<div class="form-group row">
@@ -153,24 +173,14 @@
 										class="form-control"
 										type="email"
 										value="jdup@j.com"
-										id="courriel">
+										id="courriel"
+										name="courriel"
+										required>
 								</div>
 							</div>
 						</div>
 						<div class="col-sm-1"></div>
 						<div class="col-sm-4">
-							<div class="form-group row">
-								<label
-									for="montant"
-									class="col-2 col-form-label">Montant de départ</label>
-								<div class="col-10">
-									<input
-										class="form-control"
-										type="text"
-										value="10"
-										id="montant">
-								</div>
-							</div>
 							<div class="form-group row">
 								<label
 									for="pass1"
@@ -181,7 +191,8 @@
 										type="password"
 										value="12345"
 										id="pass1"
-										name="pass1">
+										name="pass1"
+										required>
 								</div>
 							</div>
 							<div class="form-group row">
@@ -202,10 +213,14 @@
 							<div class="offset-sm-2 col-sm-10">
 								<button
 									type="submit"
-									class="btn btn-primary">Créer compte</button>
+									class="btn btn-primary">Créer compte client</button>
 							</div>
 						</div>
 						</div>
+						<input
+						type="hidden"
+						name="${_csrf.parameterName}"
+						value="${_csrf.token}" />
 				</form>
 			</div>
 		</div>

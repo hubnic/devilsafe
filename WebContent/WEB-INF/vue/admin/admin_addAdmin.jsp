@@ -7,7 +7,7 @@
 	uri="http://java.sun.com/jsp/jstl/core"%>
 <html lang="fr">
 <head>
-<title>ShowLog</title>
+<title>Ajouter Admin</title>
 <link
 	rel="stylesheet"
 	href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.min.css" />">
@@ -74,14 +74,24 @@
 				</ul>
 			</div>
 			<div class="col-sm-9">
-				<h4>Ajouter un client</h4>
+				<h4>Ajouter un compte administrateur</h4>
 				<br>
 				<hr>
 				<br>
+				<c:if test="${succes == true}">
+							<div class="alert alert-success">
+								<p>${description}</p>
+							</div>
+						</c:if>
+						<c:if test="${succes == false}">
+							<div class="alert alert-danger">
+								<p>${description}</p>
+							</div>
+						</c:if>
 				<form
 					method="post"
-					id="changePwd"
-					action="<c:url value="/addUser" />"
+					id="addAdmin"
+					action="<c:url value="/addAdmin" />"
 					role="form">
 					<div class="col-sm-5">
 						<div class="form-group row">
@@ -93,7 +103,9 @@
 									class="form-control"
 									type="text"
 									value="Dup"
-									id="nom">
+									id="nom"
+									name = "nom"
+									required>
 							</div>
 						</div>
 						<div class="form-group row">
@@ -105,7 +117,9 @@
 									class="form-control"
 									type="text"
 									value="Jean"
-									id="prenom">
+									id="prenom"
+									name ="prenom"
+									required>
 							</div>
 						</div>
 						<div class="form-group row">
@@ -135,7 +149,9 @@
 									type="password"
 									value="12345"
 									id="pass1"
-									name="pass1">
+									name="pass1"
+									required
+									>
 							</div>
 						</div>
 						<div class="form-group row">
@@ -148,17 +164,22 @@
 									type="password"
 									value="12345"
 									id="pass2"
-									name="pass2">
+									name="pass2"
+									required>
 							</div>
 						</div>
 						<div class="form-group row">
 							<div class="offset-sm-2 col-sm-10">
 								<button
 									type="submit"
-									class="btn btn-primary">Créer compte</button>
+									class="btn btn-primary">Créer compte Administrateur</button>
 							</div>
 						</div>
 					</div>
+					<input
+						type="hidden"
+						name="${_csrf.parameterName}"
+						value="${_csrf.token}" />
 				</form>
 			</div>
 		</div>

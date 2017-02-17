@@ -7,7 +7,7 @@
 	uri="http://java.sun.com/jsp/jstl/core"%>
 <html lang="fr">
 <head>
-<title>All Client</title>
+<title>Infos Client</title>
 <link
 	rel="stylesheet"
 	href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.min.css" />">
@@ -78,8 +78,8 @@
 					<div class="col-sm-9">
 						<div class="container">
 							<h3>
-								Voici les informations personnelles  <span
-									class="glyphicon glyphicon-user"></span>
+								Information personnelles de :  
+								<span class="glyphicon glyphicon-user"></span>
 							</h3>
 							<br>
 							<div class="row">
@@ -92,7 +92,7 @@
 											<input
 												class="form-control"
 												type="text"
-												value="${userName}"
+												value="${client}"
 												id="nom"
 												readonly>
 										</div>

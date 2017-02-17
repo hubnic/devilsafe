@@ -11,7 +11,7 @@ import com.banque2.modele.PojoAdministrateur;
  * Permet de transformet un resultat sql en objet modele administrateur
  *
  */
-public final class MapAdministrateur implements RowMapper<PojoAdministrateur> {
+public final class MappingAdminitrateur implements RowMapper<PojoAdministrateur> {
 
     public PojoAdministrateur mapRow(ResultSet resultSet, int element) throws SQLException {
         PojoAdministrateur administrateur = new PojoAdministrateur(
