@@ -174,6 +174,17 @@
 						<h3>
 							Voici les comptes <span class="glyphicon glyphicon-usd"></span>
 						</h3>
+							<c:if test="${supres == true}">
+							<div class="alert alert-success">
+								<p>${description}</p>
+							</div>
+						</c:if>
+						<c:if test="${supres == false}">
+							<div class="alert alert-danger">
+								<p>${description}</p>
+							</div>
+						</c:if>
+						<c:forEach items="${comptes}" var="comptes">
 						<div
 							class="panel-group"
 							id="accordion">
@@ -192,27 +203,32 @@
 										</thead>
 										<tbody>
 											<tr>
-												<td>${account}Debit</td>
-												<td>${accountId}123</td>
-												<td>${accountBalance}213$</td>
+												<td>${comptes.type}</td>
+												<td>${comptes.idCompte}</td>
+												<td>${comptes.solde}</td>
 												<td class="col-xs-2"><a
 													data-toggle="collapse"
 													data-parent="#accordion"
-													href="#collapse1"> <span
+													href="#${comptes.idCompte}"> <span
 														class="glyphicon glyphicon-eye-open"></span>
 												</a></td>
-												<td class="col-xs-2"><a
-													data-toggle="collapse"
-													data-parent="#accordion"
-													href="#collapse1"> <span
-														class="glyphicon glyphicon-trash"></span>
-												</a></td>
+												
+											<td class="col-xs-2">
+												<form method="post" id="delAccount" action="<c:url value="/delAccount" />"role="form">
+													<input type="hidden" class="form-control" id="idClient" name="idClient" value="${client.identifiant}" readonly>
+													<input type="hidden" class="form-control" id="idCompte" name="idCompte" value="${comptes.idCompte}" readonly>
+													<button type="submit"> 
+													<span class="glyphicon glyphicon-trash"></span>
+													</button>
+													<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+												</form>
+												</td>
 											</tr>
 										</tbody>
 									</table>
 								</div>
 								<div
-									id="collapse1"
+									id="${comptes.idCompte}"
 									class="panel-collapse collapse">
 									<div class="panel-body">
 										<h2>${account}</h2>
@@ -226,118 +242,52 @@
 												</tr>
 											</thead>
 											<tbody>
+											<c:forEach items="${comptes.transactions}" var="transactions">
 												<tr>
-													<td>11-01-2017</td>
-													<td>Bestbuy</td>
-													<td>300</td>
+													<td>${transactions.date}</td>
+													<td>${transactions.description}</td>
+													<td>${transactions.montant}</td>
 												</tr>
-												<tr>
-													<td>11-01-2017</td>
-													<td>Walmart</td>
-													<td>66</td>
-												</tr>
-												<tr>
-													<td>11-01-2017</td>
-													<td>Canadian tire</td>
-													<td>43</td>
-												</tr>
+											</c:forEach>
 											</tbody>
 										</table>
 									</div>
 								</div>
 							</div>
-							<hr>
+							</div>
 							<br>
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h4 class="panel-title"></h4>
-									<table class="table table-striped">
-										<thead>
-											<tr>
-												<th>Nom du compte</th>
-												<th>N° du compte</th>
-												<th>Solde</th>
-												<th>Voir</th>
-												<th>Clôturer</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td>${account}Debit</td>
-												<td>${accountId}123</td>
-												<td>${accountBalance}213$</td>
-												<td class="col-xs-2"><a
-													data-toggle="collapse"
-													data-parent="#accordion"
-													href="#collapse1"> <span
-														class="glyphicon glyphicon-eye-open"></span>
-												</a></td>
-												<td class="col-xs-2"><a
-													data-toggle="collapse"
-													data-parent="#accordion"
-													href="#collapse2"> <span
-														class="glyphicon glyphicon-trash"></span>
-												</a></td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-								<div
-									id="collapse2"
-									class="panel-collapse collapse">
-									<div class="panel-body">
-										<h2>${account}</h2>
-										<p>Voici le détails de votre compte :</p>
-										<table class="table table-striped">
-											<thead>
-												<tr>
-													<th>Date</th>
-													<th>Nom transaction</th>
-													<th>Montant $</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr>
-													<td>11-01-2017</td>
-													<td>Bestbuy</td>
-													<td>300</td>
-												</tr>
-												<tr>
-													<td>11-01-2017</td>
-													<td>Walmart</td>
-													<td>66</td>
-												</tr>
-												<tr>
-													<td>11-01-2017</td>
-													<td>Canadian tire</td>
-													<td>43</td>
-												</tr>
-											</tbody>
-										</table>
-									</div>
-								</div>
-							</div>
-							<hr>
-						</div>
+								</c:forEach>
 						<h3>
 							Ajouter un compte <span
 								class="glyphicon glyphicon-plus"></span>
 						</h3>
+						<c:if test="${succes == true}">
+							<div class="alert alert-success">
+								<p>${description}</p>
+							</div>
+						</c:if>
+						<c:if test="${succes == false}">
+							<div class="alert alert-danger">
+								<p>${description}</p>
+							</div>
+						</c:if>
 						<form
 							method="post"
-							id="formTransfertIn"
-							action="<c:url value="/transfertIn" />"
+							id="addAccountClient"
+							name ="addAccountClient"
+							action="<c:url value="/addAccountClient" />"
 							role="form">
 							<h3>1. Choisir le type de compte à ajouter</h3>
 							<hr>
 							<div class="form-group">
-								<label for="compteIn">Choisir le type de compte</label> <select
+								<label for="typeCompte">Choisir le type de compte</label> <select
 									class="form-control"
-									id="compteIn"
-									name="compteIn">
+									id="typeCompte"
+									name="typeCompte"
+									required>
 									<option>Choisir compte</option>
-									<option>Débit</option>
-									<option>Crédit</option>
+									<option>Debit</option>
+									<option>Credit</option>
 								</select>
 							</div>
 							<h3>2. Inscrire le montant de base</h3>
@@ -347,8 +297,13 @@
 									class="form-control"
 									id="montant"
 									name="montant"
-									placeholder="256">
+									placeholder="256"
+									required>
 							</div>
+							<input
+								type="hidden"
+								name="idClient"
+								value="${client.identifiant}" />
 							<button
 								type="submit"
 								class="btn btn-danger">Ajouter le compte</button>

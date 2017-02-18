@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.banque2.modele.PojoAdministrateur;
 import com.banque2.modele.PojoClient;
+import com.banque2.modele.PojoCompte;
 import com.banque2.services.ServiceDaoAdministrateur;
 import com.banque2.services.ServiceDaoClient;
 import com.banque2.services.ServiceAuthentification;
@@ -160,7 +161,6 @@ public class GestionnairePostAdmin {
 			return true;
 		}
 		
-		
 		//ADMINISTRATEUR
 		@RequestMapping(value = {"/showAccount"}, method = RequestMethod.POST)
 		public ModelAndView postShowAccount(	
@@ -168,15 +168,88 @@ public class GestionnairePostAdmin {
 			System.out.println(id);
 			ModelAndView vueModele;
 			vueModele = new ModelAndView();
-			vueModele.setViewName("/admin/admin_showAccount");
-			PojoClient client = serviceDaoAdministrateur.getClient(id);	
-			//serviceDaoAdministrateur.getAllComptesClient();	
-			vueModele.addObject("client",client);
-			vueModele.addObject("comptes");
+			vueModele.setViewName("/admin/admin_showAccount");			
+			vueModele.addObject("client",serviceDaoAdministrateur.getClient(id));
+			vueModele.addObject("comptes",serviceDaoAdministrateur.getAllComptesClient(id));
 			
 			return vueModele;
 		}
 		
+		
+				//ADMINISTRATEUR
+				@RequestMapping(value = {"/addAccountClient"}, method = RequestMethod.POST)
+				public ModelAndView postAddAccountClient(	
+						@RequestParam("idClient") int id,
+						@RequestParam("typeCompte") String typeCompte,
+						@RequestParam("montant") double montant
+						){
+					System.out.println("Post adddAccount : "+ id +" "+typeCompte +" "+montant);
+					
+					ModelAndView vueModele = new ModelAndView();
+					vueModele.setViewName("/admin/admin_showAccount");
+					
+					if(verifierSaisieCompte(id,typeCompte, montant)){
+						PojoCompte compte = new PojoCompte();
+						
+						compte.setIdClient(id);
+						compte.setType(typeCompte);
+						compte.setSolde(montant);
+						if(serviceDaoAdministrateur.createCompteClient(compte)){
+							vueModele.addObject("succes", true);
+							vueModele.addObject("description", "Le compte a ete ajouté au client : " +id);
+						}
+						else{
+							vueModele.addObject("succes", false);
+							vueModele.addObject("description", "Echec lors de l'exécution de la requête.");
+						}
+
+					}
+					else{
+						vueModele.addObject("succes", false);
+						vueModele.addObject("description", "Le compte n'a pu être ajouté au client : " +id);
+					}		
+					vueModele.addObject("client",serviceDaoAdministrateur.getClient(id));
+					vueModele.addObject("comptes",serviceDaoAdministrateur.getAllComptesClient(id));
+					
+					return vueModele;
+				}
+				
+				private boolean verifierSaisieCompte(int id, String typeCompte, double montant){
+					if(id > 0 && (typeCompte.equals("Credit") || typeCompte.equals("Debit")) && montant >0){
+						return true;
+					}
+					else {
+						return false;
+					}
+				}
+				
+				
+				//ADMINISTRATEUR
+				@RequestMapping(value = {"/delAccount"}, method = RequestMethod.POST)
+				public ModelAndView postdelAccount(	
+						@RequestParam("idClient") int id,
+						@RequestParam("idCompte") int idCompte){
+					
+					System.out.println("Post delAccount : "+ id +" "+idCompte);
+					
+					ModelAndView vueModele = new ModelAndView();
+					vueModele.setViewName("/admin/admin_showAccount");
+					
+					if(serviceDaoAdministrateur.deleteAccount(idCompte)){
+						
+							vueModele.addObject("supres", true);
+							vueModele.addObject("description", "Le compte ("+idCompte + ") a été supprimé avec succès.");
+					}
+					else{
+						vueModele.addObject("supres", false);
+						vueModele.addObject("description", "Le compte ("+idCompte + ") n'a pu être supprimé.");
+					}		
+					
+					vueModele.addObject("client",serviceDaoAdministrateur.getClient(id));
+					vueModele.addObject("comptes",serviceDaoAdministrateur.getAllComptesClient(id));
+					
+					return vueModele;
+				}
 		
 		
 		

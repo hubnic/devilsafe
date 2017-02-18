@@ -14,11 +14,10 @@ import com.banque2.modele.PojoAdministrateur;
 public final class MappingAdminitrateur implements RowMapper<PojoAdministrateur> {
 
     public PojoAdministrateur mapRow(ResultSet resultSet, int element) throws SQLException {
-        PojoAdministrateur administrateur = new PojoAdministrateur(
-        		resultSet.getInt("id"),
-        		resultSet.getString("nom"),
-        		resultSet.getString("prenom"),
-        		resultSet.getString("mdp"));
+        PojoAdministrateur administrateur = new PojoAdministrateur();
+        administrateur.setId(resultSet.getInt("id"));
+        administrateur.setNom(resultSet.getString("nom"));
+        administrateur.setPrenom(resultSet.getString("prenom"));
         return administrateur;
     }
 	

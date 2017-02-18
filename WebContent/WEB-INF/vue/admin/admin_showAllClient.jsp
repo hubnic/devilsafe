@@ -103,8 +103,7 @@
 												<td class="col-xs-2"><c:out value="${clients.identifiant}" /></td>
 												<td class="col-xs-5"><c:out value="${clients.nom} ${clients.prenom}" /></td>
 												<td class="col-xs-2">
-												<form method="post" id="id" action="<c:url value="/showAccount" />"
-							role="form">
+												<form method="post" id="id" action="<c:url value="/showAccount" />"role="form">
 													<input type="hidden" class="form-control" id="id" name="id" value="${clients.identifiant}" readonly>
 													<button type="submit"> 
 													<span class="glyphicon glyphicon-eye-open"></span>

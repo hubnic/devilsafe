@@ -1,13 +1,18 @@
 package com.banque2.services;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.sql.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import com.banque2.mappingModele.MappingAdminitrateur;
 import com.banque2.mappingModele.MappingClient;
+import com.banque2.mappingModele.MappingCompte;
+import com.banque2.mappingModele.MappingTransaction;
 import com.banque2.modele.PojoAdministrateur;
 import com.banque2.modele.PojoClient;
+import com.banque2.modele.PojoCompte;
+import com.banque2.modele.PojoTransaction;
 
 
 
@@ -57,6 +62,25 @@ private JdbcTemplate jdbcTemplate;
 			}
 		
 	}
+	public boolean createCompteClient(PojoCompte compte) {
+		
+		String addClient = "INSERT INTO compte (type, numCarte, solde, idClient) "
+				+ "VALUES (?, ?, ?, ?)";
+
+		try{
+				jdbcTemplate.update(addClient, 
+						compte.getType(),
+						1234567,
+						compte.getSolde(),
+						compte.getIdClient());
+				return true;	
+			}catch(Exception e){
+				e.printStackTrace();
+				return false;
+			}
+		
+	}
+	
 	
 	public PojoClient getClient(int id) {
 		String getClient = "SELECT * FROM clients WHERE identifiant=" + id;
@@ -77,8 +101,34 @@ private JdbcTemplate jdbcTemplate;
 		
 	}
 	
+	public boolean deleteAccount(int idCompte) {
+		String deleteAccount  = "DELETE FROM compte WHERE idCompte = ?";
+		if(deleteAllTransaction(idCompte)){
+			try{
+				jdbcTemplate.update(deleteAccount,idCompte);
+				return true;	
+			}catch(Exception e){
+				e.printStackTrace();
+				return false;
+			}
+		}else{
+			return false;
+		}
+	}
+	
+	public boolean deleteAllTransaction(int idCompte) {
+		String delTransaction  = "DELETE FROM transaction WHERE idCompteClient = ?";
+		try{
+			jdbcTemplate.update(delTransaction,idCompte);
+			return true;	
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+	}
 	
 	
+
 	public void update(PojoAdministrateur administrateur) {
 		
 		String sql = "";
@@ -113,9 +163,26 @@ private JdbcTemplate jdbcTemplate;
 	
 	public List<PojoClient> getAllClient() {
 		String sql = "SELECT * FROM clients";
-		
 		try{
 			List<PojoClient> result = jdbcTemplate.query(sql,new MappingClient());
+			if(result.isEmpty()){
+				return null;
+			}
+			else{
+				return result;
+			}	
+		}
+		catch(Exception e){
+			return null;
+		}
+		
+	}
+	
+	public List<PojoCompte> getAllComptesClient(int id){
+		String getAllComptes = "SELECT * FROM compte where idClient ="+id;		
+		try{
+			ArrayList<PojoCompte> result = (ArrayList<PojoCompte>) jdbcTemplate.query(getAllComptes,new MappingCompte());
+			result = this.getAllTransactionByCompte(result);
 			
 			if(result.isEmpty()){
 				return null;
@@ -127,7 +194,28 @@ private JdbcTemplate jdbcTemplate;
 		catch(Exception e){
 			return null;
 		}
+	}
 	
+	
+	private ArrayList<PojoCompte> getAllTransactionByCompte(ArrayList<PojoCompte> l){
+    	System.out.println("Je suis dans getAllTransactionsByCompte ................");
+    	
+		String getAllTransactions = "SELECT * FROM transaction WHERE idCompteClient = ";
+		
+		System.out.println("Size de la liste : "+l.size());
+	   	
+	    for(int i=0; i<l.size();i++){
+	    	
+	    	List<PojoTransaction> result = jdbcTemplate.query(
+	    			getAllTransactions+l.get(i).getIdCompte()
+	    			,new MappingTransaction());
+	    	
+	    	System.out.println("Size de la liste de transaction : "+result.size());
+	    	l.get(i).setTransactions(result);
+	    	System.out.println("La transaction contenues dans la liste : "+l.get(i).getTransactions().toString());
+		}
 
+		return l;
+		
 	}
 }

@@ -9,13 +9,10 @@ public class PojoAdministrateur {
 		private String mdp;
 		private int key;
 		
-		public PojoAdministrateur (int idR, String nomR, String prenomR,String mdpR){
-			id = idR;
-			nom = nomR;
-			prenom = prenomR;
-			mdp = mdpR;
+		public PojoAdministrateur() {
+			// TODO Auto-generated constructor stub
 		}
-
+		
 		public int getKey() {
 			return key;
 		}
@@ -24,9 +21,6 @@ public class PojoAdministrateur {
 			this.key = key;
 		}
 
-		public PojoAdministrateur() {
-			// TODO Auto-generated constructor stub
-		}
 
 		public int getId() {
 			return id;
