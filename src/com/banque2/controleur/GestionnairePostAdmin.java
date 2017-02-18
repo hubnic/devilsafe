@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.banque2.modele.PojoAdministrateur;
 import com.banque2.modele.PojoClient;
 import com.banque2.services.ServiceDaoAdministrateur;
+import com.banque2.services.ServiceDaoClient;
 import com.banque2.services.ServiceAuthentification;
 
 @Controller
@@ -23,6 +24,7 @@ public class GestionnairePostAdmin {
 	
 	@Autowired
 	private ServiceAuthentification serviceSecurite;
+	
 	
 	private String explication;
 	
@@ -157,4 +159,25 @@ public class GestionnairePostAdmin {
 			
 			return true;
 		}
+		
+		
+		//ADMINISTRATEUR
+		@RequestMapping(value = {"/showAccount"}, method = RequestMethod.POST)
+		public ModelAndView postShowAccount(	
+				@RequestParam("id") int id){
+			System.out.println(id);
+			ModelAndView vueModele;
+			vueModele = new ModelAndView();
+			vueModele.setViewName("/admin/admin_showAccount");
+			PojoClient client = serviceDaoAdministrateur.getClient(id);	
+			//serviceDaoAdministrateur.getAllComptesClient();	
+			vueModele.addObject("client",client);
+			vueModele.addObject("comptes");
+			
+			return vueModele;
+		}
+		
+		
+		
+		
 }

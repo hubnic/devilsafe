@@ -2,7 +2,7 @@ package com.banque2.modele;
 
 public class PojoClient {
 	
-	private int id;
+	private int identifiant;
 	private String nom;
 	private String prenom;
 	private String courriel;
@@ -22,7 +22,7 @@ public class PojoClient {
 
 	public PojoClient(int id, String nom, String prenom, String courriel, String dateNaissance, String telephone,
 			String adresse, String mdp, String prefixe) {
-		this.id = id;
+		this.identifiant = id;
 		this.nom = nom;
 		this.prenom = prenom;
 		this.courriel = courriel;
@@ -33,12 +33,22 @@ public class PojoClient {
 		this.prefixe = prefixe;
 	}
 
+	public PojoClient(int id, String nom, String prenom, String courriel, String dateNaissance, String telephone,
+			String adresse) {
+		this.identifiant = id;
+		this.nom = nom;
+		this.prenom = prenom;
+		this.courriel = courriel;
+		this.dateNaissance = dateNaissance;
+		this.telephone = telephone;
+		this.adresse = adresse;
+	}
 
 
 
 	@Override
 	public String toString() {
-		return "PojoClient [id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", courriel=" + courriel
+		return "PojoClient [id=" + identifiant + ", nom=" + nom + ", prenom=" + prenom + ", courriel=" + courriel
 				+ ", dateNaissance=" + dateNaissance + ", telephone=" + telephone + ", adresse=" + adresse + ", mdp="
 				+ mdp + ", prefixe=" + prefixe + "]";
 	}
@@ -46,15 +56,15 @@ public class PojoClient {
 
 
 
-	public int getId() {
-		return id;
+	public int getIdentifiant() {
+		return identifiant;
 	}
 
 
 
 
 	public void setId(int id) {
-		this.id = id;
+		this.identifiant = id;
 	}
 
 

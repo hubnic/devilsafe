@@ -23,9 +23,7 @@ public final class MappingClient implements RowMapper<PojoClient> {
 	        		resultSet.getString("courriel"),
 	        		resultSet.getString("dateNaissance"),
 	        		resultSet.getString("telephone"),
-	        		resultSet.getString("adresse"),
-	        		resultSet.getString("dateNaissance"),
-	        		resultSet.getString("mdp"));
+	        		resultSet.getString("adresse"));
 	        return client;
 	    }
 }

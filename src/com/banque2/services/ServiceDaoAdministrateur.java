@@ -1,16 +1,11 @@
 package com.banque2.services;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
 import java.util.List;
-
 import javax.sql.DataSource;
-
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.ResultSetExtractor;
-
 import com.banque2.mappingModele.MappingAdminitrateur;
+import com.banque2.mappingModele.MappingClient;
 import com.banque2.modele.PojoAdministrateur;
 import com.banque2.modele.PojoClient;
 
@@ -63,6 +58,27 @@ private JdbcTemplate jdbcTemplate;
 		
 	}
 	
+	public PojoClient getClient(int id) {
+		String getClient = "SELECT * FROM clients WHERE identifiant=" + id;
+		
+		try{
+			List<PojoClient> result = jdbcTemplate.query(getClient,new MappingClient());
+			
+			if(result.isEmpty()){
+				return null;
+			}
+			else{
+				return result.get(0);
+			}	
+		}
+		catch(Exception e){
+			return null;
+		}
+		
+	}
+	
+	
+	
 	public void update(PojoAdministrateur administrateur) {
 		
 		String sql = "";
@@ -95,5 +111,23 @@ private JdbcTemplate jdbcTemplate;
 
 	}
 	
+	public List<PojoClient> getAllClient() {
+		String sql = "SELECT * FROM clients";
+		
+		try{
+			List<PojoClient> result = jdbcTemplate.query(sql,new MappingClient());
+			
+			if(result.isEmpty()){
+				return null;
+			}
+			else{
+				return result;
+			}	
+		}
+		catch(Exception e){
+			return null;
+		}
+	
 
+	}
 }

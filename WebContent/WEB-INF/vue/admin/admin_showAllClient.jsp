@@ -78,11 +78,7 @@
 				<br>
 				<hr>
 				<br>
-				<form
-					method="post"
-					id="changePwd"
-					action="<c:url value="/AdminShowAccount" />"
-					role="form">
+
 					<div class="col-sm-10">
 						<div class="container">
 							<div class="row">
@@ -99,53 +95,35 @@
 											</tr>
 										</thead>
 										<tbody>
-											<tr>
-												<td class="col-xs-2">123</td>
-												<td class="col-xs-5">Mike Adams</td>
-												<td class="col-xs-2"><a
-													href="<c:url value="/showAccount "/>"> <span
-														class="glyphicon glyphicon-eye-open"></span>
-												</a></td>
-											</tr>
-											<tr>
-												<td class="col-xs-2">2543</td>
-												<td class="col-xs-5">Holly Galivan</td>
-												<td class="col-xs-2"><a
-													href="<c:url value="/showAccount "/>"> <span
-														class="glyphicon glyphicon-eye-open"></span>
-												</a></td>
-											</tr>
-											<tr>
-												<td class="col-xs-2">356465</td>
-												<td class="col-xs-5">Mary Shea</td>
-												<td class="col-xs-2"><a
-													href="<c:url value="/showAccount "/>"> <span
-														class="glyphicon glyphicon-eye-open"></span>
-												</a></td>
-											</tr>
-											<tr>
-												<td class="col-xs-2">435</td>
-												<td class="col-xs-5">Jim Adams</td>
-												<td class="col-xs-2"><a
-													href="<c:url value="/showAccount "/>"> <span
-														class="glyphicon glyphicon-eye-open"></span>
-												</a></td>
-											</tr>
-											<tr>
-												<td class="col-xs-2">5345</td>
-												<td class="col-xs-5">Henry Galivan</td>
-												<td class="col-xs-2"><a
-													href="<c:url value="/showAccount "/>"> <span
-														class="glyphicon glyphicon-eye-open"></span>
-												</a></td>
-											</tr>
+				
+										<c:forEach items="${clients}" var="clients">
+										
+												<tr>
+												
+												<td class="col-xs-2"><c:out value="${clients.identifiant}" /></td>
+												<td class="col-xs-5"><c:out value="${clients.nom} ${clients.prenom}" /></td>
+												<td class="col-xs-2">
+												<form method="post" id="id" action="<c:url value="/showAccount" />"
+							role="form">
+													<input type="hidden" class="form-control" id="id" name="id" value="${clients.identifiant}" readonly>
+													<button type="submit"> 
+													<span class="glyphicon glyphicon-eye-open"></span>
+													</button>
+													<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+												</form>
+												</td>
+											
+												</tr>
+											
+										</c:forEach>
 										</tbody>
 									</table>
 								</div>
 							</div>
 						</div>
 					</div>
-				</form>
+
+
 			</div>
 		</div>
 	</div>

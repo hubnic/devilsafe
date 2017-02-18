@@ -78,8 +78,9 @@
 					<div class="col-sm-9">
 						<div class="container">
 							<h3>
-								Information personnelles de :  
-								<span class="glyphicon glyphicon-user"></span>
+							<span class="glyphicon glyphicon-user"></span>
+								Information personnelles de : ${client.nom} ${client.prenom} 
+								
 							</h3>
 							<br>
 							<div class="row">
@@ -92,7 +93,7 @@
 											<input
 												class="form-control"
 												type="text"
-												value="${client}"
+												value="${client.nom}"
 												id="nom"
 												readonly>
 										</div>
@@ -105,7 +106,7 @@
 											<input
 												class="form-control"
 												type="text"
-												value="${userFirstName}"
+												value="${client.prenom}"
 												id="prenom"
 												readonly>
 										</div>
@@ -118,7 +119,7 @@
 											<input
 												class="form-control"
 												type="tel"
-												value="${tel}"
+												value="${client.telephone}"
 												id="tel"
 												readonly>
 										</div>
@@ -139,7 +140,7 @@
 												<input
 													class="form-control"
 													type="email"
-													value="${courriel}"
+													value="${client.courriel}"
 													id="courriel"
 													readonly>
 											</div>
@@ -152,7 +153,7 @@
 												<input
 													class="form-control"
 													type="tel"
-													value="${tel}"
+													value="${client.adresse}"
 													id="tel"
 													readonly>
 											</div>
