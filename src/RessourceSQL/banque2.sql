@@ -57,7 +57,10 @@ INSERT INTO `administrateurs` (`identifiant`, `nom`, `prenom`, `mdp`, `secureKey
 CREATE TABLE `carte` (
   `numCarte` int(11) NOT NULL,
   `dateExp` date NOT NULL,
-  `crypto` int(11) NOT NULL
+  `crypto` int(11) NOT NULL,
+  `prenom` varchar(25) NOT NULL,
+  `nom` varchar(25) NOT NULL,
+  `idCompte` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -104,7 +107,6 @@ INSERT INTO `clients` (`identifiant`, `nom`, `prenom`, `courriel`, `dateNaissanc
 CREATE TABLE `compte` (
   `idCompte` int(11) NOT NULL,
   `type` varchar(6) NOT NULL,
-  `numCarte` int(11) NOT NULL,
   `Solde` float NOT NULL,
   `idClient` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
