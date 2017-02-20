@@ -7,7 +7,7 @@
 	uri="http://java.sun.com/jsp/jstl/core"%>
 <html lang="fr">
 <head>
-<title>Admin profil</title>
+<title>Profil Administrateur</title>
 <link
 	rel="stylesheet"
 	href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.min.css" />">
@@ -82,6 +82,7 @@
 							class="glyphicon glyphicon-user"></span>
 					</h1>
 					<br>
+					
 					<div class="row">
 						<div class="col-sm-4">
 							<div class="form-group row">
@@ -128,6 +129,16 @@
 						<div class="col-sm-4">
 							<h4>Modifier votre mot de passe</h4>
 							<hr>
+							<c:if test="${succes == true}">
+							<div class="alert alert-success">
+								<p>${description}</p>
+							</div>
+						</c:if>
+						<c:if test="${succes == false}">
+							<div class="alert alert-danger">
+								<p>${description}</p>
+							</div>
+						</c:if>
 							<form
 								method="post"
 								id="changePwdAdmin"
@@ -179,6 +190,7 @@
 											class="btn btn-warning">Changer mot de passe</button>
 									</div>
 								</div>
+								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 							</form>
 						</div>
 					</div>

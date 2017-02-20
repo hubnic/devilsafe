@@ -69,7 +69,7 @@ public class ServiceAuthentification {
 		return auth;
 	}
 	
-	private boolean authentificationClient(String user, String textEnClair){
+	public boolean authentificationClient(String user, String textEnClair){
 		String authentificationClient = 
 				"SELECT mdp,CONCAT(prefixe,identifiant) AS login " 
 				+"FROM clients "
@@ -91,24 +91,34 @@ public class ServiceAuthentification {
 		}
 	}
 	
-	private boolean authentificationAdmin(String user, String textEnClair){
+	public boolean authentificationAdmin(String user, String textEnClair){
 		String authentificationAdmin = 
 				"SELECT mdp,CONCAT(prefixe,identifiant) AS login " 
 				+"FROM administrateurs "
 				+"HAVING login = ? ";
 		try{
 			List<Map<String, Object>> auth = jdbcTemplate.queryForList(authentificationAdmin,user);
-			System.out.println(auth.get(0).get("mdp"));
-			if(auth!=null && samePassHash(textEnClair,auth.get(0).get("mdp").toString())){
-				System.out.println("Le mot de passe est correct");
-				return true;
-			}else{
-				System.out.println("Le compte utilisateur n'existe pas ou le mot de passe est errone");
+			if(!auth.isEmpty()){
+				if(samePassHash(textEnClair,auth.get(0).get("mdp").toString())){
+					System.out.println("Le mot de passe est correct");
+					return true;
+				}else{
+					System.out.println("Mauvais mot de passe");
+					return false;
+				}
+			}
+			else{
+				System.out.println("Le compte utilisateur n'existe pas.");
 				return false;
 			}
 		}catch(Exception e){
 			e.printStackTrace();
 			return false;
 		}
+	}
+	
+	public void updateAdminPass(String id, String mdp){
+		String updatePass = "UPDATE administrateurs SET mdp=? WHERE identifiant=?";
+		jdbcTemplate.update(updatePass, hashMDP(mdp) , id);
 	}
 }

@@ -173,7 +173,6 @@ public class GestionnairePostAdmin {
 			return vueModele;
 		}
 		
-		
 				//ADMINISTRATEUR
 				@RequestMapping(value = {"/addAccountClient"}, method = RequestMethod.POST)
 				public ModelAndView postAddAccountClient(	
@@ -285,14 +284,30 @@ public class GestionnairePostAdmin {
 						@RequestParam("newPass") String newPass1,
 						@RequestParam("newPass2") String newPass2){
 					
+					
 					String id = SecurityContextHolder.getContext().getAuthentication().getName();
 					
-					System.out.println("Post changePwdAdmin :  ID :"+ id +" "+oldPass +" "+newPass1 +" "+newPass2);
 					
 					ModelAndView vueModele = new ModelAndView();
 					vueModele.setViewName("/admin/admin_adminProfil");
 					
+					if(newPass1.equals(newPass2)){
+						if(serviceSecurite.authentificationAdmin("a"+id, oldPass)){
+							serviceSecurite.updateAdminPass(id, newPass1);
+							vueModele.addObject("succes", true);
+							vueModele.addObject("description", "Votre mot de passe a ete modifie avec succes.");
+							System.out.println("Mise a jour du mdp OK");
+						}
+						else{
+							vueModele.addObject("succes", false);
+							vueModele.addObject("description", "L'ancien mot de passe est errone.");
+						}
+					}else{
+						vueModele.addObject("succes", false);
+						vueModele.addObject("description", "Les mots de passe ne concordent pas.");
+					}
 					
+					vueModele.addObject("admin", serviceDaoAdministrateur.getProfil(SecurityContextHolder.getContext().getAuthentication().getName()));
 					return vueModele;
 				}
 		
