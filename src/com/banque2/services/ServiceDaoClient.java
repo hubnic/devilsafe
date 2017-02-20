@@ -6,7 +6,7 @@ import javax.sql.DataSource;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import com.banque2.mappingModele.MappingAdminitrateur;
+import com.banque2.mappingModele.MappingAdministrateur;
 import com.banque2.modele.PojoAdministrateur;
 import com.banque2.modele.PojoClient;
 
@@ -40,7 +40,7 @@ public PojoAdministrateur getClient(int clientId) {
 	
 	String sql = "SELECT * FROM client WHERE id=" + clientId;
 	
-	List<PojoAdministrateur> result = jdbcTemplate.query(sql,new MappingAdminitrateur());
+	List<PojoAdministrateur> result = jdbcTemplate.query(sql,new MappingAdministrateur());
 	
 	if(result.isEmpty()){
 		return null;

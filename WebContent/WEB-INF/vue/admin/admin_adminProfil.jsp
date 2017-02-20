@@ -87,12 +87,12 @@
 							<div class="form-group row">
 								<label
 									for="courriel"
-									class="col-2 col-form-label">Identifiant</label>
+									class="col-2 col-form-label">Identifiant :</label>
 								<div class="col-10">
 									<input
 										class="form-control"
 										type="email"
-										value="${courriel}"
+										value="${admin.identifiant}"
 										id="courriel"
 										readonly>
 								</div>
@@ -105,7 +105,7 @@
 									<input
 										class="form-control"
 										type="text"
-										value="${userName}"
+										value="${admin.nom}"
 										id="nom"
 										readonly>
 								</div>
@@ -118,7 +118,7 @@
 									<input
 										class="form-control"
 										type="text"
-										value="${userFirstName}"
+										value="${admin.prenom}"
 										id="prenom"
 										readonly>
 								</div>
@@ -130,8 +130,8 @@
 							<hr>
 							<form
 								method="post"
-								id="changePwd"
-								action="<c:url value="/changePwd" />"
+								id="changePwdAdmin"
+								action="<c:url value="/changePwdAdmin" />"
 								role="form">
 								<div class="form-group row">
 									<label

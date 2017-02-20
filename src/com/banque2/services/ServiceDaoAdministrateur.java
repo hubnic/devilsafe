@@ -3,9 +3,11 @@ package com.banque2.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 import javax.sql.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
-import com.banque2.mappingModele.MappingAdminitrateur;
+import com.banque2.mappingModele.MappingAdministrateur;
 import com.banque2.mappingModele.MappingClient;
 import com.banque2.mappingModele.MappingCompte;
 import com.banque2.mappingModele.MappingTransaction;
@@ -129,10 +131,31 @@ private JdbcTemplate jdbcTemplate;
 	
 	
 
-	public void update(PojoAdministrateur administrateur) {
-		
-		String sql = "";
-		jdbcTemplate.execute(sql);
+	public PojoAdministrateur getProfil(String idAdmin) {
+		String getProfil =
+		"SELECT * "
+		+"FROM administrateurs " 
+		+"WHERE CONCAT(prefixe,identifiant) = ?";
+		System.out.println("Execution de la requete.......");
+		try{
+			List<Map<String, Object>> profil = jdbcTemplate.queryForList(getProfil,"a"+idAdmin);
+			System.out.println(profil.toString());
+			if(profil.isEmpty()){
+				return null;
+			}
+			else{
+				PojoAdministrateur admin = new PojoAdministrateur();
+				admin.setIdentifiant(Integer.parseInt(profil.get(0).get("identifiant").toString()));
+				admin.setNom(profil.get(0).get("nom").toString());
+				admin.setPrenom(profil.get(0).get("prenom").toString());
+				
+				return admin;
+			}	
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	public void delete(PojoAdministrateur administrateur) {
@@ -145,7 +168,7 @@ private JdbcTemplate jdbcTemplate;
 		String sql = "SELECT * FROM administrateur WHERE id=" + adminId;
 		
 		try{
-			List<PojoAdministrateur> result = jdbcTemplate.query(sql,new MappingAdminitrateur());
+			List<PojoAdministrateur> result = jdbcTemplate.query(sql,new MappingAdministrateur());
 			
 			if(result.isEmpty()){
 				return null;

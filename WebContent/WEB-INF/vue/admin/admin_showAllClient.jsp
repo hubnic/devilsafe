@@ -7,7 +7,7 @@
 	uri="http://java.sun.com/jsp/jstl/core"%>
 <html lang="fr">
 <head>
-<title>All Client</title>
+<title>Membre Client</title>
 <link
 	rel="stylesheet"
 	href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.min.css" />">
@@ -78,7 +78,11 @@
 				<br>
 				<hr>
 				<br>
-
+				<c:if test="${succes == true}">
+							<div class="alert alert-success">
+								<p>${description}</p>
+							</div>
+				</c:if>
 					<div class="col-sm-10">
 						<div class="container">
 							<div class="row">

@@ -43,7 +43,7 @@ public class ServiceAuthentification {
 			if(authentificationClient(user, textEnClair)){
 				auth[0]="true";
 				auth[1]="ROLE_CLIENT";
-				auth[2]= user;
+				auth[2]= user.substring(1, user.length());
 				auth[3]= hashMDP(textEnClair);
 			}else{
 				auth[0]="false";
@@ -54,7 +54,7 @@ public class ServiceAuthentification {
 			if(authentificationAdmin(user, textEnClair)){
 				auth[0]="true";
 				auth[1]="ROLE_ADMIN";
-				auth[2]= user;
+				auth[2]= user.substring(1, user.length());
 				auth[3]= hashMDP(textEnClair);
 				
 			}else{

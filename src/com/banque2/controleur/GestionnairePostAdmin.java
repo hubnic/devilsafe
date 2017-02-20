@@ -1,20 +1,18 @@
 package com.banque2.controleur;
 
-import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Random;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-
 import com.banque2.modele.PojoAdministrateur;
 import com.banque2.modele.PojoClient;
 import com.banque2.modele.PojoCompte;
 import com.banque2.services.ServiceDaoAdministrateur;
-import com.banque2.services.ServiceDaoClient;
 import com.banque2.services.ServiceAuthentification;
 
 @Controller
@@ -26,8 +24,6 @@ public class GestionnairePostAdmin {
 	@Autowired
 	private ServiceAuthentification serviceSecurite;
 	
-	
-	private String explication;
 	
 	//ADMINISTRATEUR
 		@RequestMapping(value = {"/secureAdmin"}, method = RequestMethod.POST)
@@ -127,9 +123,11 @@ public class GestionnairePostAdmin {
 				newClient.setMdp(serviceSecurite.hashMDP(pass1));
 				
 				if(serviceDaoAdministrateur.createClient(newClient)){
-					vueModele.setViewName("/admin/admin_showAccount");
+					vueModele.setViewName("/admin/admin_showAllClient");
 					vueModele.addObject("succes", true);
-					vueModele.addObject("description", "Le Client : " + newClient.getNom() +" a ete crée avec succes");
+					vueModele.addObject("description", "Le Client : " + newClient.getNom() +" "+ newClient.getPrenom() +" a ete crée avec succes");
+					ArrayList<PojoClient> clients = (ArrayList<PojoClient>) serviceDaoAdministrateur.getAllClient();
+					vueModele.addObject("clients", clients);
 				}else {
 					vueModele.setViewName("/admin/admin_newClient");
 					vueModele.addObject("succes", false);
@@ -275,6 +273,25 @@ public class GestionnairePostAdmin {
 					
 					vueModele.addObject("client",serviceDaoAdministrateur.getClient(id));
 					vueModele.addObject("comptes",serviceDaoAdministrateur.getAllComptesClient(id));
+					
+					return vueModele;
+				}
+				
+				
+				//ADMINISTRATEUR
+				@RequestMapping(value = {"/changePwdAdmin"}, method = RequestMethod.POST)
+				public ModelAndView postChangePassAdmin(	
+						@RequestParam("oldPass") String oldPass,
+						@RequestParam("newPass") String newPass1,
+						@RequestParam("newPass2") String newPass2){
+					
+					String id = SecurityContextHolder.getContext().getAuthentication().getName();
+					
+					System.out.println("Post changePwdAdmin :  ID :"+ id +" "+oldPass +" "+newPass1 +" "+newPass2);
+					
+					ModelAndView vueModele = new ModelAndView();
+					vueModele.setViewName("/admin/admin_adminProfil");
+					
 					
 					return vueModele;
 				}

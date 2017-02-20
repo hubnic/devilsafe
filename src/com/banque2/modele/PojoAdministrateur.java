@@ -3,7 +3,7 @@ package com.banque2.modele;
 
 public class PojoAdministrateur {
 	
-		private int id;
+		private int identifiant;
 		private String nom;
 		private String prenom;
 		private String mdp;
@@ -22,17 +22,17 @@ public class PojoAdministrateur {
 		}
 
 
-		public int getId() {
-			return id;
+		public int getIdentifiant() {
+			return identifiant;
 		}
 
 		@Override
 		public String toString() {
-			return "PojoAdministrateur [id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", mdp=" + mdp + "]";
+			return "PojoAdministrateur [identifiant=" + identifiant + ", nom=" + nom + ", prenom=" + prenom + ", mdp=" + mdp + "]";
 		}
 
-		public void setId(int id) {
-			this.id = id;
+		public void setIdentifiant(int id) {
+			this.identifiant = id;
 		}
 
 		public String getNom() {

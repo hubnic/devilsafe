@@ -2,14 +2,8 @@ package com.banque2.mappingModele;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
-
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-
-import com.banque2.modele.PojoClient;
 import com.banque2.modele.PojoCompte;
-import com.banque2.modele.PojoTransaction;
 
 
 
