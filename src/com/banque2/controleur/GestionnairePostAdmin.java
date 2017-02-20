@@ -252,5 +252,31 @@ public class GestionnairePostAdmin {
 				}
 		
 		
+				//ADMINISTRATEUR
+				@RequestMapping(value = {"/updateProfilAdmin"}, method = RequestMethod.POST)
+				public ModelAndView postUpdateProfilAdmin(	
+						@RequestParam("idClient") int id,
+						@RequestParam("idCompte") int idCompte){
+					
+					System.out.println("Post delAccount : "+ id +" "+idCompte);
+					
+					ModelAndView vueModele = new ModelAndView();
+					vueModele.setViewName("/admin/admin_showAccount");
+					
+					if(serviceDaoAdministrateur.deleteAccount(idCompte)){
+						
+							vueModele.addObject("supres", true);
+							vueModele.addObject("description", "Le compte ("+idCompte + ") a été supprimé avec succès.");
+					}
+					else{
+						vueModele.addObject("supres", false);
+						vueModele.addObject("description", "Le compte ("+idCompte + ") n'a pu être supprimé.");
+					}		
+					
+					vueModele.addObject("client",serviceDaoAdministrateur.getClient(id));
+					vueModele.addObject("comptes",serviceDaoAdministrateur.getAllComptesClient(id));
+					
+					return vueModele;
+				}
 		
 }

@@ -86,6 +86,19 @@
 						<div class="col-sm-4">
 							<div class="form-group row">
 								<label
+									for="courriel"
+									class="col-2 col-form-label">Identifiant</label>
+								<div class="col-10">
+									<input
+										class="form-control"
+										type="email"
+										value="${courriel}"
+										id="courriel"
+										readonly>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label
 									for="example-email-input"
 									class="col-2 col-form-label">Nom :</label>
 								<div class="col-10">
@@ -107,32 +120,6 @@
 										type="text"
 										value="${userFirstName}"
 										id="prenom"
-										readonly>
-								</div>
-							</div>
-							<div class="form-group row">
-								<label
-									for="courriel"
-									class="col-2 col-form-label">Email</label>
-								<div class="col-10">
-									<input
-										class="form-control"
-										type="email"
-										value="${courriel}"
-										id="courriel"
-										readonly>
-								</div>
-							</div>
-							<div class="form-group row">
-								<label
-									for="tel"
-									class="col-2 col-form-label">Telephone</label>
-								<div class="col-10">
-									<input
-										class="form-control"
-										type="tel"
-										value="${tel}"
-										id="tel"
 										readonly>
 								</div>
 							</div>

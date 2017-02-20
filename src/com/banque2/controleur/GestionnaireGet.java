@@ -20,9 +20,7 @@ import com.banque2.services.ServiceAuthentification;
 public class GestionnaireGet {
 		@Autowired
 		private ServiceDaoAdministrateur serviceDaoAdministrateur;
-		@Autowired
-		private ServiceAuthentification serviceSecurite;
-		
+	
 		
 		private static final Logger log = Logger.getLogger(GestionnaireGet.class);
 		

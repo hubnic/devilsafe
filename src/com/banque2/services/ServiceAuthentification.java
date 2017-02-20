@@ -1,5 +1,8 @@
 package com.banque2.services;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.sql.DataSource;
 
 import org.jasypt.util.password.StrongPasswordEncryptor;
@@ -28,9 +31,84 @@ public class ServiceAuthentification {
 		return mdp.checkPassword(texteEnClair, hash);
 	}
 	
-	public boolean authentification(String user, String textEnClair){
+	
+	public String[] authentification(String user, String textEnClair){
 		
+		String[] auth = new String[4];
+		String type = Character.toString(user.charAt(0));
 		
-		return true;
+		if(type.equals("c")){
+			//SUREMENT UN CLIENT
+			System.out.println("CECI EST UN CLIENT");
+			if(authentificationClient(user, textEnClair)){
+				auth[0]="true";
+				auth[1]="ROLE_CLIENT";
+				auth[2]= user;
+				auth[3]= hashMDP(textEnClair);
+			}else{
+				auth[0]="false";
+			}
+			
+		}else if(type.equals("a")){
+			//SUREMENT UN ADMIN
+			if(authentificationAdmin(user, textEnClair)){
+				auth[0]="true";
+				auth[1]="ROLE_ADMIN";
+				auth[2]= user;
+				auth[3]= hashMDP(textEnClair);
+				
+			}else{
+				auth[0]="false";
+			}
+		}
+		else{
+			auth[0]="false";
+		}
+		
+		System.out.println(auth[0]);
+		return auth;
+	}
+	
+	private boolean authentificationClient(String user, String textEnClair){
+		String authentificationClient = 
+				"SELECT mdp,CONCAT(prefixe,identifiant) AS login " 
+				+"FROM clients "
+				+"HAVING login = ? ";
+		
+		try{
+			List<Map<String, Object>> auth = jdbcTemplate.queryForList(authentificationClient,user);
+			System.out.println(auth.get(0).get("mdp"));
+			if(auth!=null && samePassHash(textEnClair,auth.get(0).get("mdp").toString())){
+				System.out.println("Le mot de passe est correct");
+				return true;
+			}else{
+				System.out.println("Le compte utilisateur n'existe pas ou le mot de passe est errone");
+				return false;
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	private boolean authentificationAdmin(String user, String textEnClair){
+		String authentificationAdmin = 
+				"SELECT mdp,CONCAT(prefixe,identifiant) AS login " 
+				+"FROM administrateurs "
+				+"HAVING login = ? ";
+		try{
+			List<Map<String, Object>> auth = jdbcTemplate.queryForList(authentificationAdmin,user);
+			System.out.println(auth.get(0).get("mdp"));
+			if(auth!=null && samePassHash(textEnClair,auth.get(0).get("mdp").toString())){
+				System.out.println("Le mot de passe est correct");
+				return true;
+			}else{
+				System.out.println("Le compte utilisateur n'existe pas ou le mot de passe est errone");
+				return false;
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
 	}
 }

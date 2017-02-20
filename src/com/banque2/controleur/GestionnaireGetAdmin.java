@@ -3,15 +3,23 @@ package com.banque2.controleur;
 
 import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+
 import com.banque2.modele.PojoClient;
 import com.banque2.services.ServiceDaoAdministrateur;
 
 @Controller
+@SessionAttributes
 public class GestionnaireGetAdmin {
 
 	@Autowired
@@ -22,6 +30,15 @@ public class GestionnaireGetAdmin {
 	public String getLogAdmin(ModelMap listeElement) {
 		listeElement.addAttribute("username", "admin");
 		return "/admin/admin_auth";
+	}
+	
+	
+	
+	@RequestMapping(value = {"/homeAdmin"}, method = RequestMethod.GET)
+	public String getAdminHome(ModelMap listeElement) {
+		System.out.println(RequestContextHolder.getRequestAttributes().getSessionId());
+		listeElement.addAttribute("username", "admin");
+		return "/admin/admin_home";
 	}
 	
 	
@@ -41,11 +58,6 @@ public class GestionnaireGetAdmin {
 		return "/admin/admin_showAccount";
 	}
 	
-	@RequestMapping(value = {"/homeAdmin"}, method = RequestMethod.GET)
-	public String getAdminHome(ModelMap listeElement) {
-		listeElement.addAttribute("username", "admin");
-		return "/admin/admin_home";
-	}
 			
 	@RequestMapping(value = {"/showLog"}, method = RequestMethod.GET)
 	public String getAdminLog(ModelMap listeElement) {
@@ -60,7 +72,7 @@ public class GestionnaireGetAdmin {
 	}
 	
 	@RequestMapping(value = {"/showAllClient"}, method = RequestMethod.GET)
-	public String getAdminAllClient(
+	public String getAdminAllClient( 
 			ModelMap listeElement) {
 		listeElement.addAttribute("username", "admin");
 		ArrayList<PojoClient> clients = (ArrayList<PojoClient>) serviceDaoAdministrateur.getAllClient();
@@ -74,5 +86,6 @@ public class GestionnaireGetAdmin {
 		listeElement.addAttribute("username", "admin");
 		return "/admin/admin_adminProfil";
 	}
+	
 	
 }

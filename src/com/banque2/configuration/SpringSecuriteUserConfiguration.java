@@ -1,7 +1,5 @@
 package com.banque2.configuration;
 
-import javax.sql.DataSource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -14,8 +12,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 @EnableWebSecurity
 public class SpringSecuriteUserConfiguration extends WebSecurityConfigurerAdapter {
  
+
 	@Autowired
-	DataSource dataSource;
+	private SpringCustomAuthentificationProvider springAuthenticationProvider;
 	
     @Autowired
     SpringSuccessHandler customSuccessHandler;
@@ -25,7 +24,10 @@ public class SpringSecuriteUserConfiguration extends WebSecurityConfigurerAdapte
     	
         auth.inMemoryAuthentication().withUser("client").password("client").roles("CLIENT");
         auth.inMemoryAuthentication().withUser("admin").password("admin").roles("ADMIN");
-        
+       
+        //Permet de gerer l'authentification se le login et le mdp saisi
+        auth.authenticationProvider(springAuthenticationProvider);
+
     }
  
     @Override
@@ -38,17 +40,27 @@ public class SpringSecuriteUserConfiguration extends WebSecurityConfigurerAdapte
         .antMatchers("/transfertOut/**").access("hasRole('CLIENT')")
         .antMatchers("/credit/**").access("hasRole('CLIENT')")
         .antMatchers("/profil/**").access("hasRole('CLIENT')")
-        .antMatchers("/logAdmin/**").access("hasRole('ADMIN')")
-        .antMatchers("/addAccount/**").access("hasRole('ADMIN')")
+        .antMatchers("/secureAdmin/**").access("hasRole('ADMIN')")
+        .antMatchers("/homeAdmin/**").access("hasRole('ADMIN')")
+        .antMatchers("/newAdmin/**").access("hasRole('ADMIN')")
         .antMatchers("/showAccount/**").access("hasRole('ADMIN')")
+        .antMatchers("/showLog/**").access("hasRole('ADMIN')")
+        .antMatchers("/newClient/**").access("hasRole('ADMIN')")
+        .antMatchers("/showAllClient/**").access("hasRole('ADMIN')")
+        .antMatchers("/adminProfil/**").access("hasRole('ADMIN')")
+        .antMatchers("/addAdmin/**").access("hasRole('ADMIN')")
+        .antMatchers("/addAccountClient/**").access("hasRole('ADMIN')")
+        .antMatchers("/delAccount/**").access("hasRole('ADMIN')")
+        .antMatchers("/updateProfilAdmin/**").access("hasRole('ADMIN')")
+        
         .and().formLogin().loginPage("/portail").successHandler(customSuccessHandler)
         .usernameParameter("idt").passwordParameter("pswd")
         .and().csrf()
         .and().exceptionHandling().accessDeniedPage("/portail");
-      //PROPRIETES DE SPRING PERMETTTANT DE CONFIGURER LE MAX DE SESSION 
-      http.sessionManagement().sessionFixation().migrateSession();
-  	  http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
- 	  http.sessionManagement().maximumSessions(1);
+	      //PROPRIETES DE SPRING PERMETTTANT DE CONFIGURER LE MAX DE SESSION 
+	      http.sessionManagement().sessionFixation().migrateSession();
+	  	  http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
+	 	  http.sessionManagement().maximumSessions(1);
 
     }
  
