@@ -17,5 +17,6 @@ public class SpringInitialiseurServlet extends AbstractAnnotationConfigDispatche
 		    protected String[] getServletMappings() {
 		        return new String[] { "/" };
 		    }
+		    
 }
 

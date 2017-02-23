@@ -194,35 +194,47 @@
 									<table class="table table-striped">
 										<thead>
 											<tr>
-												<th>Nom du compte</th>
 												<th>N° du compte</th>
+												<th>Nom du compte</th>
 												<th>Solde</th>
 												<th>Voir</th>
+												<th>Creer Carte</th>
 												<th>Clôturer</th>
 											</tr>
 										</thead>
 										<tbody>
 											<tr>
-												<td>${comptes.type}</td>
-												<td>${comptes.idCompte}</td>
-												<td>${comptes.solde}</td>
+												<td class="col-xs-2">${comptes.idBanque}${comptes.idCompte}</td>
+												<td class="col-xs-2">${comptes.type}</td>
+												<td class="col-xs-2">${comptes.solde}</td>
 												<td class="col-xs-2"><a
 													data-toggle="collapse"
 													data-parent="#accordion"
 													href="#${comptes.idCompte}"> <span
 														class="glyphicon glyphicon-eye-open"></span>
 												</a></td>
-												
+												<td class="col-xs-2">
+												<form method="post" id="addCreditCard" action="<c:url value="/addCreditCard" />"role="form">
+													<input type="hidden" class="form-control" id="idClient" name="idClient" value="${client.identifiant}" readonly>
+													<input type="hidden" class="form-control" id="idCompte" name="idCompte" value="${comptes.idCompte}" readonly>
+													<button type="submit"> 
+													<span class="glyphicon glyphicon-credit-card"></span>
+													</button>
+													<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+												</form>
+											</td>
 											<td class="col-xs-2">
 												<form method="post" id="delAccount" action="<c:url value="/delAccount" />"role="form">
 													<input type="hidden" class="form-control" id="idClient" name="idClient" value="${client.identifiant}" readonly>
 													<input type="hidden" class="form-control" id="idCompte" name="idCompte" value="${comptes.idCompte}" readonly>
-													<button type="submit"> 
+													<input type="hidden" class="form-control" id="typeCompte" name="typeCompte" value="${comptes.type}" readonly>
+													<button type="submit" class="submit-icon"> 
 													<span class="glyphicon glyphicon-trash"></span>
 													</button>
 													<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 												</form>
-												</td>
+											</td>
+												
 											</tr>
 										</tbody>
 									</table>

@@ -212,7 +212,7 @@ public class GestionnairePostAdmin {
 				}
 				
 				private boolean verifierSaisieCompte(int id, String typeCompte, double montant){
-					if(id > 0 && (typeCompte.equals("Credit") || typeCompte.equals("Debit")) && montant >0){
+					if(id > 0 && (typeCompte.equals("Credit") || typeCompte.equals("Debit")) && montant >=0){
 						return true;
 					}
 					else {
@@ -225,7 +225,8 @@ public class GestionnairePostAdmin {
 				@RequestMapping(value = {"/delAccount"}, method = RequestMethod.POST)
 				public ModelAndView postdelAccount(	
 						@RequestParam("idClient") int id,
-						@RequestParam("idCompte") int idCompte){
+						@RequestParam("idCompte") int idCompte,
+						@RequestParam("typeCompte") String typeCompte){
 					
 					System.out.println("Post delAccount : "+ id +" "+idCompte);
 					
@@ -235,11 +236,11 @@ public class GestionnairePostAdmin {
 					if(serviceDaoAdministrateur.deleteAccount(idCompte)){
 						
 							vueModele.addObject("supres", true);
-							vueModele.addObject("description", "Le compte ("+idCompte + ") a été supprimé avec succès.");
+							vueModele.addObject("description", "Le compte " +typeCompte+ " ayant le numéro : "+idCompte + " a été supprimé avec succès.");
 					}
 					else{
 						vueModele.addObject("supres", false);
-						vueModele.addObject("description", "Le compte ("+idCompte + ") n'a pu être supprimé.");
+						vueModele.addObject("description", "Le compte " +typeCompte+ " ayant le numéro : "+idCompte + " n'a pu être supprimé.");
 					}		
 					
 					vueModele.addObject("client",serviceDaoAdministrateur.getClient(id));
@@ -308,6 +309,34 @@ public class GestionnairePostAdmin {
 					}
 					
 					vueModele.addObject("admin", serviceDaoAdministrateur.getProfil(SecurityContextHolder.getContext().getAuthentication().getName()));
+					return vueModele;
+				}
+				
+				//ADMINISTRATEUR
+				@RequestMapping(value = {"/addCreditCard"}, method = RequestMethod.POST)
+				public ModelAndView postAddCreditCard(	
+						@RequestParam("idClient") int idClient,
+						@RequestParam("idCompte") int idCompte){
+					
+					System.out.println("Post AddCreditCard : "+ idClient +" "+idCompte);
+					
+					ModelAndView vueModele = new ModelAndView();
+					vueModele.setViewName("/admin/admin_showAccount");
+					
+					if(serviceDaoAdministrateur.checkIfCardIsAlreadyPresent(idCompte)){
+							System.out.println("La carte n'existe pas on va la créer");
+							//serviceDaoAdministrateur.createCreditCard(idClient,idCompte);
+							vueModele.addObject("succes", true);
+							vueModele.addObject("description", "Le carte a ete ajoutee au compte numero : "+idCompte +" avec succes");
+					}
+					else{
+						vueModele.addObject("succes", false);
+						vueModele.addObject("description", "La carte n a pu etre ajoutee au compte numero " +idCompte);
+					}		
+					
+					vueModele.addObject("client",serviceDaoAdministrateur.getClient(idClient));
+					vueModele.addObject("comptes",serviceDaoAdministrateur.getAllComptesClient(idClient));
+					
 					return vueModele;
 				}
 		

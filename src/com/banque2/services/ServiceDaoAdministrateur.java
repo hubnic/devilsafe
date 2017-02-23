@@ -8,10 +8,12 @@ import java.util.Map;
 import javax.sql.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import com.banque2.mappingModele.MappingAdministrateur;
+import com.banque2.mappingModele.MappingCarte;
 import com.banque2.mappingModele.MappingClient;
 import com.banque2.mappingModele.MappingCompte;
 import com.banque2.mappingModele.MappingTransaction;
 import com.banque2.modele.PojoAdministrateur;
+import com.banque2.modele.PojoCarte;
 import com.banque2.modele.PojoClient;
 import com.banque2.modele.PojoCompte;
 import com.banque2.modele.PojoTransaction;
@@ -66,13 +68,12 @@ private JdbcTemplate jdbcTemplate;
 	}
 	public boolean createCompteClient(PojoCompte compte) {
 		
-		String addClient = "INSERT INTO compte (type, numCarte, solde, idClient) "
-				+ "VALUES (?, ?, ?, ?)";
+		String addClient = "INSERT INTO compte (type, solde, idClient) "
+				+ "VALUES (?, ?, ?)";
 
 		try{
 				jdbcTemplate.update(addClient, 
 						compte.getType(),
-						1234567,
 						compte.getSolde(),
 						compte.getIdClient());
 				return true;	
@@ -240,5 +241,23 @@ private JdbcTemplate jdbcTemplate;
 
 		return l;
 		
+	}
+	
+	public boolean checkIfCardIsAlreadyPresent(int idCompte){
+		String checkCC = "SELECT * FROM carte WHERE idCompte = "+idCompte;
+		
+		try{
+			List<PojoCarte> result = jdbcTemplate.query(checkCC,new MappingCarte());
+			
+			if(result.isEmpty()){
+				return true;
+			}
+			else{
+				return false;
+			}	
+		}
+		catch(Exception e){
+			return false;
+		}
 	}
 }

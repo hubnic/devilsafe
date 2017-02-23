@@ -5,8 +5,8 @@ import java.util.List;
 public class PojoCompte {
 	
 	private int idCompte;
+	private String idBanque;
 	private String type;
-	private int numCarte;
 	private double solde;
 	private int idClient;
 	private List<PojoTransaction> transactions;
@@ -26,12 +26,7 @@ public class PojoCompte {
 	public void setType(String type) {
 		this.type = type;
 	}
-	public int getNumCarte() {
-		return numCarte;
-	}
-	public void setNumCarte(int numCarte) {
-		this.numCarte = numCarte;
-	}
+
 	public double getSolde() {
 		return solde;
 	}
@@ -44,12 +39,20 @@ public class PojoCompte {
 	public void setIdClient(int idClient) {
 		this.idClient = idClient;
 	}
+
+
+	
+	public String getIdBanque() {
+		return idBanque;
+	}
+	public void setIdBanque(String idBanque) {
+		this.idBanque = idBanque;
+	}
 	@Override
 	public String toString() {
-		return "PojoCompte [idCompte=" + idCompte + ", type=" + type + ", numCarte=" + numCarte + ", solde=" + solde
-				+ ", idClient=" + idClient + "]";
+		return "PojoCompte [idCompte=" + idCompte + ", idBanque=" + idBanque + ", type=" + type + ", solde=" + solde
+				+ ", idClient=" + idClient + ", transactions=" + transactions + "]";
 	}
-	
 	public List<PojoTransaction> getTransactions() {
 		return transactions;
 	}
