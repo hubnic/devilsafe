@@ -184,6 +184,7 @@
 										value="12345"
 										id="pass1"
 										name="pass1"
+										onkeyup="checkPass();"
 										required>
 								</div>
 							</div>
@@ -197,7 +198,10 @@
 										type="password"
 										value="12345"
 										id="pass2"
-										name="pass2">
+										name="pass2"
+										onkeyup="checkPass();"
+										required>
+									<span id="confirmMessage" class="confirmMessage"></span>
 								</div>
 							</div>
 							
