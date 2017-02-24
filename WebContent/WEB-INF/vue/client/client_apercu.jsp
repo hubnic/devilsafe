@@ -1,7 +1,5 @@
-<%@ page
-	language="java"
-	contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@taglib
 	prefix="c"
 	uri="http://java.sun.com/jsp/jstl/core"%>
@@ -57,7 +55,7 @@
 			</div>
 			<div class="col-sm-9">
 				<hr>
-				<h2>Détails de vos comptes</h2>
+				<h2>DÃ©tails de vos comptes</h2>
 				<img
 					width="60"
 					height="60"
@@ -78,7 +76,7 @@
 										<thead>
 											<tr>
 												<th>Nom du compte</th>
-												<th>N° du compte</th>
+												<th>NÂ° du compte</th>
 												<th>Solde</th>
 											</tr>
 										</thead>
@@ -98,7 +96,7 @@
 							class="panel-collapse collapse">
 							<div class="panel-body">
 								<h2>${account}</h2>
-								<p>Voici le détails de votre compte :</p>
+								<p>Voici le dÃ©tails de votre compte :</p>
 								<table class="table table-striped">
 									<thead>
 										<tr>
@@ -141,7 +139,7 @@
 										<thead>
 											<tr>
 												<th>Nom du compte</th>
-												<th>N° du compte</th>
+												<th>NÂ° du compte</th>
 												<th>Solde</th>
 											</tr>
 										</thead>
@@ -161,7 +159,7 @@
 							class="panel-collapse collapse">
 							<div class="panel-body">
 								<h2>${creditAccount}</h2>
-								<p>Voici le détails de votre compte :</p>
+								<p>Voici le dÃ©tails de votre compte :</p>
 								<table class="table table-striped">
 									<thead>
 										<tr>

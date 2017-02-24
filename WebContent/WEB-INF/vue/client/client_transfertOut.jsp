@@ -1,7 +1,5 @@
-<%@ page
-	language="java"
-	contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@taglib
 	prefix="c"
 	uri="http://java.sun.com/jsp/jstl/core"%>
@@ -115,7 +113,7 @@
 									</div>
 								</div>
 							</div>
-							<h3>3. Inscrire le montant désiré</h3>
+							<h3>3. Inscrire le montant dÃ©sirÃ©</h3>
 							<div class="form-group">
 								<input
 									type="number"

@@ -1,7 +1,5 @@
-<%@ page
-	language="java"
-	contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib
 	prefix="c"
 	uri="http://java.sun.com/jsp/jstl/core"%>
@@ -51,7 +49,7 @@
 				<h5>Gestion des clients</h5>
 				<ul class="nav nav-pills nav-stacked">
 					<li><a href="<c:url value="/newClient"/>">Nouveau client?</a></li>
-					<li><a href="<c:url value="/showAllClient"/>">Gérer un compte existant?</a></li>
+					<li><a href="<c:url value="/showAllClient"/>">GÃ©rer un compte existant?</a></li>
 				</ul>
 				<br>
 				<hr>
@@ -59,7 +57,7 @@
 					<span class="glyphicon glyphicon-user"></span> Gestion des administrateur
 				</h5>
 				<ul class="nav nav-pills nav-stacked">
-					<li><a href="<c:url value="/newAdmin"/>">Créer compte Administrateur</a></li>
+					<li><a href="<c:url value="/newAdmin"/>">CrÃ©er compte Administrateur</a></li>
 				</ul>
     </div>
     <div class="col-sm-8 text-left"> 
@@ -79,9 +77,9 @@
 										<thead>
 											<tr>
 												<th class="col-xs-1">#client</th>
-												<th class="col-xs-1">Nom et Prénom</th>
+												<th class="col-xs-1">Nom et PrÃ©nom</th>
 												<th class="col-xs-1">Courriel</th>
-												<th class="col-xs-1">Accéder au compte</th>
+												<th class="col-xs-1">AccÃ©der au compte</th>
 											</tr>
 										</thead>
 										<tbody>

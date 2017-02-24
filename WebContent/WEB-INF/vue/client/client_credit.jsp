@@ -1,7 +1,5 @@
-<%@ page
-	language="java"
-	contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@taglib
 	prefix="c"
 	uri="http://java.sun.com/jsp/jstl/core"%>
@@ -83,7 +81,7 @@
 											readonly>
 									</div>
 									<div class="form-group">
-										<label for="usr">N° Compte :</label> <input
+										<label for="usr">NÂ° Compte :</label> <input
 											type="text"
 											class="form-control"
 											id="idCompte"
@@ -92,7 +90,7 @@
 											readonly>
 									</div>
 									<div class="form-group">
-										<label for="usr">Montant à rembourser ($) :</label> <input
+										<label for="usr">Montant Ã  rembourser ($) :</label> <input
 											type="number"
 											class="form-control"
 											id="montant"
@@ -121,14 +119,14 @@
 											</select>
 										</div>
 										<hr>
-										<h4>2. Inscrire le montant désiré</h4>
+										<h4>2. Inscrire le montant dÃ©sirÃ©</h4>
 										<div class="form-group">
 											<input
 												type="number"
 												class="form-control"
 												id="montant"
 												name="montant"
-												placeholder="Indiquer le montant désiré"
+												placeholder="Indiquer le montant dÃ©sirÃ©"
 												required>
 										</div>
 										<h4>3. Veuillez valider le remboursement en inscrivant
