@@ -113,19 +113,27 @@
       <h4>Zone de Recherche</h4>
      <form method="post" id="search" action="<c:url value="/searchClientByElm" />"role="form">
 									<div class="row">
-									  <div class="col-sm-2"><input type="text" id="rId" name="rId" placeholder="Recherche ID"></div>
+									<div class="col-sm-10">
+											<select	class="form-control" id="critere" name="critere">
+												<option>CHOISIR CRITERE</option>
+												<option>ID CLIENT</option>
+												<option>NOM CLIENT</option>
+												<option>PRENOM CLIENT</option>
+												<option>COURRIEL CLIENT</option>
+												<option>SANS CRITERES</option>
+											</select>
 									  </div>
+									  </div>
+									  <br>
 									  <div class="row">
-									  <div class="col-sm-2"><input type="text" id="rNom" name="rNom" placeholder="Recherche NOM"></div>
+									 	<div class="col-sm-10">
+									  	<input class="form-control" type="text" id="critereValue" name="critereValue" placeholder="Indiquer Recherche"></div>
 									  </div>
-									  <div class="row">
-									  <div class="col-sm-2"><input type="text" id="rPrenom"  name="rPrenom" placeholder="Recherche PRENOM"></div>
-									  </div>
-									  <div class="row">
-									  <div class="col-sm-2"><input type="text" id="rCourriel"  name="rCourriel" placeholder="Recherche Courriel"></div>
-									  </div>
-									   <div class="row">
-									  <div class="col-sm-2"><button type="submit" class="btn btn-info">Rechercher</button></div>
+									  `<br>
+									    <div class="row">
+									 	<div class="col-sm-10">
+									  	 <button type="submit" class="btn btn-info">Rechercher</button></div>
+									  	   <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 									  </div>
 									</form>
       </div>

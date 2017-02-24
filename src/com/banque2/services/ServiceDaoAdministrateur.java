@@ -200,8 +200,89 @@ private JdbcTemplate jdbcTemplate;
 		catch(Exception e){
 			return null;
 		}
-		
 	}
+	
+	
+	public List<PojoClient> getAllClientByID(String idClient) {
+		String recherche = 
+				"SELECT * "
+				+"FROM clients "
+				+"WHERE "
+				+"identifiant = "+idClient;
+		try{
+			List<PojoClient> result = jdbcTemplate.query(recherche, new MappingClient());
+			if(result.isEmpty()){
+				return null;
+			}
+			else{
+				return result;
+			}	
+		}
+		catch(Exception e){
+			return null;
+		}
+	}
+	
+	public List<PojoClient> getAllClientByNom(String nom) {
+		String recherche = 
+				"SELECT * "
+				+"FROM clients "
+				+"WHERE "
+				+"nom LIKE '%"+nom+"%'";
+		try{
+			List<PojoClient> result = jdbcTemplate.query(recherche, new MappingClient());
+			if(result.isEmpty()){
+				return null;
+			}
+			else{
+				return result;
+			}	
+		}
+		catch(Exception e){
+			return null;
+		}
+	}
+	
+	public List<PojoClient> getAllClientByPrenom(String prenom) {
+		String recherche = 
+				"SELECT * "
+				+"FROM clients "
+				+"WHERE "
+				+"prenom LIKE '%"+prenom+"%'";
+		try{
+			List<PojoClient> result = jdbcTemplate.query(recherche, new MappingClient());
+			if(result.isEmpty()){
+				return null;
+			}
+			else{
+				return result;
+			}	
+		}
+		catch(Exception e){
+			return null;
+		}
+	}
+	
+	public List<PojoClient> getAllClientByCourriel(String courriel) {
+		String recherche = 
+				"SELECT * "
+				+"FROM clients "
+				+"WHERE "
+				+"courriel LIKE '%"+courriel+"%'";
+		try{
+			List<PojoClient> result = jdbcTemplate.query(recherche, new MappingClient());
+			if(result.isEmpty()){
+				return null;
+			}
+			else{
+				return result;
+			}	
+		}
+		catch(Exception e){
+			return null;
+		}
+	}
+	
 	
 	public List<PojoCompte> getAllComptesClient(int id){
 		String getAllComptes = "SELECT * FROM compte where idClient ="+id;		

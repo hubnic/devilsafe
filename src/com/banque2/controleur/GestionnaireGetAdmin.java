@@ -37,6 +37,12 @@ public class GestionnaireGetAdmin {
 		return "/admin/admin_addAdmin";
 	}
 	
+	@RequestMapping(value = {"/showAllClient"}, method = RequestMethod.GET)
+	public String getAdminAllClient( 
+			ModelMap listeElement) {
+		listeElement.addAttribute("clients", (ArrayList<PojoClient>) serviceDaoAdministrateur.getAllClient());
+		return "/admin/admin_showAllClient";
+	}
 	
 	@RequestMapping(value = {"/showAccount"}, method = RequestMethod.GET)
 	public String getAdminshowAccount(
@@ -54,15 +60,6 @@ public class GestionnaireGetAdmin {
 		listeElement.addAttribute("username", "admin");
 		return "/admin/admin_newClient";
 	}
-	
-	@RequestMapping(value = {"/showAllClient"}, method = RequestMethod.GET)
-	public String getAdminAllClient( 
-			ModelMap listeElement) {
-		ArrayList<PojoClient> clients = (ArrayList<PojoClient>) serviceDaoAdministrateur.getAllClient();
-		listeElement.addAttribute("clients", clients);
-		return "/admin/admin_showAllClient";
-	}
-	
 	
 	@RequestMapping(value = {"/adminProfil"}, method = RequestMethod.GET)
 	public String getAdminAddProfil(ModelMap listeElement) {

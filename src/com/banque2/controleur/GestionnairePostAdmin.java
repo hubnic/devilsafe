@@ -160,6 +160,35 @@ public class GestionnairePostAdmin {
 		}
 		
 		//ADMINISTRATEUR
+		@RequestMapping(value = {"/searchClientByElm"}, method = RequestMethod.POST)
+		public ModelAndView postAddCreditCard(	
+				@RequestParam("critere") String critere,
+				@RequestParam("critereValue") String critereValue){
+			
+			System.out.println("Post Recherche selon les termes suivants  : "+ critere +" "+critereValue);
+			
+			ModelAndView vueModele = new ModelAndView();
+			vueModele.setViewName("/admin/admin_showAllClient");
+			if(critere.equals("SANS CRITERES") || critere.equals("CHOISIR CRITERE")){
+				vueModele.addObject("clients", (ArrayList<PojoClient>) serviceDaoAdministrateur.getAllClient());
+			}
+			if(critere.equals("ID CLIENT")){
+				vueModele.addObject("clients", (ArrayList<PojoClient>) serviceDaoAdministrateur.getAllClientByID(critereValue));
+			}
+			else if(critere.equals("NOM CLIENT")){
+				vueModele.addObject("clients", (ArrayList<PojoClient>) serviceDaoAdministrateur.getAllClientByNom(critereValue));
+			}
+			else if(critere.equals("PRENOM CLIENT")){
+				vueModele.addObject("clients", (ArrayList<PojoClient>) serviceDaoAdministrateur.getAllClientByPrenom(critereValue));
+			}
+			else if(critere.equals("COURRIEL CLIENT")){
+				vueModele.addObject("clients", (ArrayList<PojoClient>) serviceDaoAdministrateur.getAllClientByCourriel(critereValue));
+			}
+			
+			return vueModele;
+		}
+		
+		//ADMINISTRATEUR
 		@RequestMapping(value = {"/showAccount"}, method = RequestMethod.POST)
 		public ModelAndView postShowAccount(	
 				@RequestParam("id") int id){
