@@ -19,7 +19,10 @@
 <script
 	src="<c:url value="/librairie/bootstrap-3.3.7/js/bootstrap.min.js" />"></script>
 </head>
+
+
 <body>
+
 	<nav class="navbar navbar-inverse">
 		<div class="container-fluid">
 			<div class="navbar-header">
@@ -28,7 +31,7 @@
 					href="#">Votre Espace D</a>
 			</div>
 			<ul class="nav navbar-nav">
-				<li class="active"><a href="<c:url value="/homeAdmin" />"><span
+				<li><a href="<c:url value="/homeAdmin" />"><span
 						class="glyphicon glyphicon-home"></span> Accueil</a></li>
 				<li><a href="<c:url value="/adminProfil" />"><span
 						class="glyphicon glyphicon-user"></span> Mon profil</a></li>
@@ -39,34 +42,29 @@
 			</ul>
 		</div>
 	</nav>
-	<div class="container-fluid">
-		<div class="row content">
-			<div class="col-sm-3 sidenav">
-				<h4>
-					Administration <span class="glyphicon glyphicon-cog"></span>
-				</h4>
+  
+<div class="container-fluid text-center">    
+  <div class="row content">
+    <div class="col-sm-2 sidenav">
+          <h4>Administration <span class="glyphicon glyphicon-cog"></span></h4>
 				<br>
 				<hr>
-				<h5>
-					Gestion des clients<span class="glyphicon glyphicon-usd"></span>
-				</h5>
+				<h5>Gestion des clients</h5>
 				<ul class="nav nav-pills nav-stacked">
 					<li><a href="<c:url value="/newClient"/>">Nouveau client?</a></li>
-					<li><a href="<c:url value="/showAllClient"/>">Gérer un
-							compte existant?</a></li>
+					<li><a href="<c:url value="/showAllClient"/>">Gérer un compte existant?</a></li>
 				</ul>
 				<br>
 				<hr>
 				<h5>
-					Gestion des administrateur<span class="glyphicon glyphicon-user"></span>
+					<span class="glyphicon glyphicon-user"></span> Gestion des administrateur
 				</h5>
 				<ul class="nav nav-pills nav-stacked">
-					<li><a href="<c:url value="/newAdmin"/>">Créer compte
-							Administrateur</a></li>
+					<li><a href="<c:url value="/newAdmin"/>">Créer compte Administrateur</a></li>
 				</ul>
-			</div>
-			<div class="col-sm-9">
-				<h4>Ajouter un compte administrateur</h4>
+    </div>
+    <div class="col-sm-8 text-left"> 
+      <h4>Ajouter un compte administrateur</h4>
 				<br>
 				<hr>
 				<br>
@@ -176,8 +174,16 @@
 						name="${_csrf.parameterName}"
 						value="${_csrf.token}" />
 				</form>
-			</div>
-		</div>
-	</div>
+    </div>
+    <div class="col-sm-2 sidenav">
+      
+    </div>
+  </div>
+</div>
+
+<footer class="container-fluid text-center">
+  <p>Banque du Demon</p>
+</footer>
+
 </body>
 </html>
