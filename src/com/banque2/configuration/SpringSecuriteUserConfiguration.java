@@ -56,10 +56,12 @@ public class SpringSecuriteUserConfiguration extends WebSecurityConfigurerAdapte
         .usernameParameter("idt").passwordParameter("pswd")
         .and().csrf()
         .and().exceptionHandling().accessDeniedPage("/portail");
+      
 	      //PROPRIETES DE SPRING PERMETTTANT DE CONFIGURER LE MAX DE SESSION 
 	      http.sessionManagement().sessionFixation().migrateSession();
 	  	  http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
 	 	  http.sessionManagement().maximumSessions(1);
+	 	  
 
     }
  
