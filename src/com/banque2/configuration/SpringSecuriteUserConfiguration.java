@@ -44,7 +44,6 @@ public class SpringSecuriteUserConfiguration extends WebSecurityConfigurerAdapte
         .antMatchers("/homeAdmin/**").access("hasRole('ADMIN')")
         .antMatchers("/newAdmin/**").access("hasRole('ADMIN')")
         .antMatchers("/showAccount/**").access("hasRole('ADMIN')")
-        .antMatchers("/showLog/**").access("hasRole('ADMIN')")
         .antMatchers("/newClient/**").access("hasRole('ADMIN')")
         .antMatchers("/showAllClient/**").access("hasRole('ADMIN')")
         .antMatchers("/adminProfil/**").access("hasRole('ADMIN')")

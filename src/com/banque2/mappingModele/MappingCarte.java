@@ -11,7 +11,6 @@ public class MappingCarte implements RowMapper<PojoCarte> {
 
     public PojoCarte mapRow(ResultSet resultSet, int element) throws SQLException {
     	PojoCarte carte = new PojoCarte();
-    	
     	carte.setNumCarte(resultSet.getInt("numCarte"));
     	carte.setDateExp(resultSet.getString("dateExp"));
     	carte.setCrypto(resultSet.getInt("crypto"));

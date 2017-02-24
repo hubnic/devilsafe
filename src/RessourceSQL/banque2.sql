@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  127.0.0.1
--- Généré le :  Lun 20 Février 2017 à 22:52
+-- Généré le :  Ven 24 Février 2017 à 02:43
 -- Version du serveur :  5.7.14
 -- Version de PHP :  5.6.25
 
@@ -28,6 +28,7 @@ USE `banque2`;
 -- Structure de la table `administrateurs`
 --
 
+DROP TABLE IF EXISTS `administrateurs`;
 CREATE TABLE `administrateurs` (
   `identifiant` int(11) NOT NULL,
   `nom` varchar(25) NOT NULL,
@@ -54,14 +55,22 @@ INSERT INTO `administrateurs` (`identifiant`, `nom`, `prenom`, `mdp`, `secureKey
 -- Structure de la table `carte`
 --
 
+DROP TABLE IF EXISTS `carte`;
 CREATE TABLE `carte` (
-  `numCarte` int(11) NOT NULL,
+  `numCarte` varchar(16) NOT NULL,
   `dateExp` date NOT NULL,
   `crypto` int(11) NOT NULL,
-  `prenom` varchar(25) NOT NULL,
   `nom` varchar(25) NOT NULL,
+  `prenom` varchar(25) NOT NULL,
   `idCompte` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Contenu de la table `carte`
+--
+
+INSERT INTO `carte` (`numCarte`, `dateExp`, `crypto`, `nom`, `prenom`, `idCompte`) VALUES
+('66668659753319', '2018-02-01', 390, 'test', 'test', 10000);
 
 -- --------------------------------------------------------
 
@@ -69,6 +78,7 @@ CREATE TABLE `carte` (
 -- Structure de la table `clients`
 --
 
+DROP TABLE IF EXISTS `clients`;
 CREATE TABLE `clients` (
   `identifiant` int(11) NOT NULL,
   `nom` varchar(25) NOT NULL,
@@ -96,7 +106,8 @@ INSERT INTO `clients` (`identifiant`, `nom`, `prenom`, `courriel`, `dateNaissanc
 (9007, 'Dup', 'Jean', 'jdup@j.com', '01-08-89', '512-234-4567', '12 rue v Montreal', 'z3QD/lfFz6o/ilRb2Kx8iatJCBW7M3337MXGI8BHqkVyQxUyTUXLSoHGPmCUrz05', 'c'),
 (9008, 'Dup', 'Jean', 'jdup@j.com', '01-08-89', '512-234-4567', '12 rue v Montreal', '+Qk6Ob8kVXvkKVzrZvAmaS4cbLV6uiRGbKE+yZ52uFbjuCoBg6UxgFfIg8Dwo3cH', 'c'),
 (9009, 'Dup', 'Jean', 'jdup@j.com', '01-08-89', '512-234-4567', '12 rue v Montreal', 'XQhJAyB1J7BmWyPJC2vofuHgQ7j2KengLKyU++2iXILNURyAymjw19DsWyLb7Zi+', 'c'),
-(9010, 'utilisateur', 'Jean', 'jdup@j.com', '01-08-89', '512-234-4567', '12 rue v Montreal', 'gUx+NI6EjvyEXqT4v/VqKHXi7BdpS9IGeH/kNR9/x5pUrhmv8Rx/YFvTKzywE2jg', 'c');
+(9010, 'utilisateur', 'Jean', 'jdup@j.com', '01-08-89', '512-234-4567', '12 rue v Montreal', 'gUx+NI6EjvyEXqT4v/VqKHXi7BdpS9IGeH/kNR9/x5pUrhmv8Rx/YFvTKzywE2jg', 'c'),
+(9011, 'test', 'test', 'jdup@j.com', '2017-01-02', '512-234-4567', '12 rue v Montreal', 'sHVyMOHbV0/TcfkIfxP09xr/RwMVcjXODvyyugg3/KclR4eRigCk5flxbh7PI8jj', 'c');
 
 -- --------------------------------------------------------
 
@@ -104,8 +115,10 @@ INSERT INTO `clients` (`identifiant`, `nom`, `prenom`, `courriel`, `dateNaissanc
 -- Structure de la table `compte`
 --
 
+DROP TABLE IF EXISTS `compte`;
 CREATE TABLE `compte` (
-  `idCompte` int(11) NOT NULL,
+  `idCompte` int(5) NOT NULL,
+  `idBanque` varchar(4) NOT NULL DEFAULT '666-',
   `type` varchar(6) NOT NULL,
   `Solde` float NOT NULL,
   `idClient` int(11) NOT NULL
@@ -115,10 +128,8 @@ CREATE TABLE `compte` (
 -- Contenu de la table `compte`
 --
 
-INSERT INTO `compte` (`idCompte`, `type`, `numCarte`, `Solde`, `idClient`) VALUES
-(1, 'Debit', 123456, 750, 9000),
-(3, 'Credit', 213456, 1000, 9001),
-(5, 'Debit', 1234567, 500, 9002);
+INSERT INTO `compte` (`idCompte`, `idBanque`, `type`, `Solde`, `idClient`) VALUES
+(10000, '666-', 'Debit', 1234, 9011);
 
 -- --------------------------------------------------------
 
@@ -126,6 +137,7 @@ INSERT INTO `compte` (`idCompte`, `type`, `numCarte`, `Solde`, `idClient`) VALUE
 -- Structure de la table `transaction`
 --
 
+DROP TABLE IF EXISTS `transaction`;
 CREATE TABLE `transaction` (
   `idTransaction` int(11) NOT NULL,
   `idCompteClient` int(11) NOT NULL,
@@ -188,20 +200,15 @@ ALTER TABLE `transaction`
 ALTER TABLE `administrateurs`
   MODIFY `identifiant` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1005;
 --
--- AUTO_INCREMENT pour la table `carte`
---
-ALTER TABLE `carte`
-  MODIFY `numCarte` int(11) NOT NULL AUTO_INCREMENT;
---
 -- AUTO_INCREMENT pour la table `clients`
 --
 ALTER TABLE `clients`
-  MODIFY `identifiant` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9011;
+  MODIFY `identifiant` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9012;
 --
 -- AUTO_INCREMENT pour la table `compte`
 --
 ALTER TABLE `compte`
-  MODIFY `idCompte` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `idCompte` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10001;
 --
 -- AUTO_INCREMENT pour la table `transaction`
 --

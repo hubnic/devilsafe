@@ -64,14 +64,6 @@
 					<li><a href="<c:url value="/newAdmin"/>">Créer compte
 							Administrateur</a></li>
 				</ul>
-				<br>
-				<hr>
-				<h5>
-					Analyse des logs<span class="glyphicon glyphicon-wrench"></span>
-				</h5>
-				<ul class="nav nav-pills nav-stacked">
-					<li><a href="<c:url value="/showLog"/>">Voir les Logs</a></li>
-				</ul>
 			</div>
 			<div class="col-sm-9">
 				<h4>Ajouter un client</h4>

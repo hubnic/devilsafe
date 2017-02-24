@@ -48,12 +48,6 @@ public class GestionnaireGetAdmin {
 		return "/admin/admin_showAccount";
 	}
 	
-			
-	@RequestMapping(value = {"/showLog"}, method = RequestMethod.GET)
-	public String getAdminLog(ModelMap listeElement) {
-		listeElement.addAttribute("username", "admin");
-		return "/admin/admin_log";
-	}
 	
 	@RequestMapping(value = {"/newClient"}, method = RequestMethod.GET)
 	public String getAdminAddPers(ModelMap listeElement) {

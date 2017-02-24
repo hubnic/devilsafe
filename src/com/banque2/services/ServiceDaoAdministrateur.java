@@ -1,9 +1,11 @@
 package com.banque2.services;
 
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.sql.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -17,7 +19,6 @@ import com.banque2.modele.PojoCarte;
 import com.banque2.modele.PojoClient;
 import com.banque2.modele.PojoCompte;
 import com.banque2.modele.PojoTransaction;
-
 
 
 public class ServiceDaoAdministrateur {
@@ -259,5 +260,89 @@ private JdbcTemplate jdbcTemplate;
 		catch(Exception e){
 			return false;
 		}
+	}
+	
+	public boolean createCreditCard(int idClient,int idCompte){
+		PojoClient client = getClient(idClient);
+		Date date;
+		
+		String insertCC = 
+				"INSERT INTO carte (numCarte, dateExp, crypto, nom, prenom, idCompte) "
+				+ "VALUES (?, ?, ?, ?, ?, ?)";
+		
+		try{
+			jdbcTemplate.update(insertCC, 
+					creerCarteLuhn(), 
+					"2018/02/01",
+					new Random().nextInt(999), 
+					client.getNom(),
+					client.getPrenom(), 
+					idCompte);
+			return true;	
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	private String creerCarteLuhn(){
+
+		Random random = new Random();
+		
+		int zero = 6666;	
+		int un = random.nextInt(9999);	
+		int deux = random.nextInt(9999);	
+		int trois = random.nextInt(9999);
+		
+		String carte = 
+				Integer.toString(zero) +
+				Integer.toString(un) +
+				Integer.toString(deux) +
+				Integer.toString(trois);
+		System.out.println(carte);
+		int calc=0;
+		int i = carte.length()-1;
+		boolean carteValide = false;
+		int valeur;
+		
+		while(!carteValide){
+			
+			if(i % 2 == 0){
+				System.out.println("modulo 2 ok");
+				valeur = Character.getNumericValue(carte.charAt(i)) * 2;
+				if(valeur > 10){
+					
+					valeur = valeur -9;
+				}
+				calc = calc + valeur;
+			}
+			else{
+				calc = calc + Character.getNumericValue(carte.charAt(i)); 
+			}
+			if(i==0){
+				System.out.println("Voici le resultat du calc : " +calc);
+				
+				if(calc % 10 == 0){
+					carteValide = true;
+					System.out.println("voici la carte valide : "+carte);
+				}else{	
+					calc = 0;
+					un = random.nextInt(9999);	
+					deux = random.nextInt(9999);	
+					trois = random.nextInt(9999);
+					
+					carte = 
+							zero +
+							Integer.toString(un) +
+							Integer.toString(deux) +
+							Integer.toString(trois);
+					
+					i = carte.length();
+				}
+				
+			}
+			i--;
+		}
+		return carte;
 	}
 }
