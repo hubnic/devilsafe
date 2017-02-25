@@ -24,6 +24,7 @@ public class GestionnairePostAdmin {
 	@Autowired
 	private ServiceAuthentification serviceSecurite;
 	
+	final String regex = "[a-zA-Z0-9^.*\\W]{8,}";
 	
 	//ADMINISTRATEUR
 		@RequestMapping(value = {"/secureAdmin"}, method = RequestMethod.POST)
@@ -67,7 +68,7 @@ public class GestionnairePostAdmin {
 		vueModele = new ModelAndView();
 		vueModele.setViewName("/admin/admin_addAdmin");
 		
-		if(valideNewAmin(nom,prenom,role,pass1,pass2)){
+		if(valideNewIntervenant(nom,prenom,role,pass1,pass2)){
 			PojoAdministrateur newAdmin = new PojoAdministrateur();
 			newAdmin.setNom(nom);
 			newAdmin.setPrenom(prenom);
@@ -85,7 +86,7 @@ public class GestionnairePostAdmin {
 		}else {
 			vueModele.addObject("succes", false);
 			vueModele.addObject("description", "Echec lors de la création du compte administrateur, "
-					+ "les mots de passe ne concordent pas");
+					+ "les mots de passe ne concordent pas ou il ne respecte pas le REGEX");
 		}
 		
 		return vueModele;
@@ -111,7 +112,7 @@ public class GestionnairePostAdmin {
 			vueModele = new ModelAndView();
 			
 			
-			if(valideNewUser()){
+			if(valideNewIntervenant(nom,prenom,"client",pass1,pass2)){
 				
 				PojoClient newClient = new PojoClient();
 				newClient.setNom(nom);
@@ -139,24 +140,25 @@ public class GestionnairePostAdmin {
 				vueModele.setViewName("/admin/admin_newClient");
 				vueModele.addObject("succes", false);
 				vueModele.addObject("description", "Echec lors de la création du compte administrateur, "
-						+ "les mots de passe ne concordent pas");
+						+ "les mots de passe ne concordent pas ou il ne respecte pas le REGEX");
 			}
 			
 			return vueModele;
 		}
 		
-		private boolean valideNewAmin(String nom, String prenom, String role, String pass1, String pass2){
+		private boolean valideNewIntervenant(String nom, String prenom, String role, String pass1, String pass2){
 			
 			if(nom!=null && prenom != null && role != null && pass1 != null && pass2 != null && pass1.equals(pass2)){
-				return true;
+				System.out.println(regex);
+				if(pass1.matches(regex)){
+					return true;
+				}else{
+					return false;
+				}
 			}else{
 				return false;
 			}
 			
-		}
-		private boolean valideNewUser(){
-			
-			return true;
 		}
 		
 		//ADMINISTRATEUR
