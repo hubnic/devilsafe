@@ -6,9 +6,7 @@ import javax.sql.DataSource;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import com.banque2.mappingModele.MappingClient;
 import com.banque2.mappingModele.MappingPreautorisation;
-import com.banque2.modele.PojoClient;
 import com.banque2.modele.PojoPreautorisation;
 
 public class ServiceDaoApi {
