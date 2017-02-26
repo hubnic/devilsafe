@@ -223,7 +223,7 @@ public class GestionnairePostAdmin {
 						compte.setSolde(montant);
 						if(serviceDaoAdministrateur.createCompteClient(compte)){
 							vueModele.addObject("succes", true);
-							vueModele.addObject("description", "Le compte a ete ajouté au client : " +id);
+							vueModele.addObject("description", "Le compte ["+typeCompte+"] a ete ajouté au client : " +id);
 						}
 						else{
 							vueModele.addObject("succes", false);
@@ -233,7 +233,7 @@ public class GestionnairePostAdmin {
 					}
 					else{
 						vueModele.addObject("succes", false);
-						vueModele.addObject("description", "Le compte n'a pu être ajouté au client : " +id);
+						vueModele.addObject("description", "Le compte ["+typeCompte+"] n'a pu être ajouté au client : " +id);
 					}		
 					vueModele.addObject("client",serviceDaoAdministrateur.getClient(id));
 					vueModele.addObject("comptes",serviceDaoAdministrateur.getAllComptesClient(id));
@@ -264,11 +264,11 @@ public class GestionnairePostAdmin {
 					vueModele.setViewName("/admin/admin_showAccount");
 					
 					if(serviceDaoAdministrateur.deleteAccount(idCompte)){					
-							vueModele.addObject("supres", true);
+							vueModele.addObject("succes", true);
 							vueModele.addObject("description", "Le compte [" +typeCompte+ "] ayant le numéro : ["+idCompte + "] a été supprimé avec succès.");
 					}
 					else{
-						vueModele.addObject("supres", false);
+						vueModele.addObject("succes", false);
 						vueModele.addObject("description", "Le compte " +typeCompte+ " ayant le numéro : ["+idCompte + "] n'a pu être supprimé.");
 					}		
 					
@@ -323,10 +323,17 @@ public class GestionnairePostAdmin {
 					
 					if(newPass1.equals(newPass2)){
 						if(serviceSecurite.authentificationAdmin("a"+id, oldPass)){
-							serviceSecurite.updateAdminPass(id, newPass1);
-							vueModele.addObject("succes", true);
-							vueModele.addObject("description", "Votre mot de passe a ete modifie avec succes.");
-							System.out.println("Mise a jour du mdp OK");
+							if(newPass1.matches(regex)){
+								serviceSecurite.updateAdminPass(id, newPass1);
+								vueModele.addObject("succes", true);
+								vueModele.addObject("description", "Votre mot de passe a ete modifie avec succes.");
+								System.out.println("Mise a jour du mdp OK");
+							}
+							else{
+								vueModele.addObject("succes", false);
+								vueModele.addObject("description", "Le nouveau mot de passe ne respect pas le REGEX.");
+							}
+						
 						}
 						else{
 							vueModele.addObject("succes", false);

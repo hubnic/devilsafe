@@ -35,18 +35,28 @@ function confirmAddAccount()
 	}
 }
 
-function confirmAddCC()
+function confirmAddCC(id)
 {
-	var retour = confirm("Est-vous sur d'ajouter la carte de crédit au compte ?"  );
+	var retour = confirm("Est-vous sur d'ajouter la carte de crédit au compte 666-"+id+" ?"  );
 	if (retour == true) {
-	  document.getElementById("addCreditCard").submit();
+	  document.getElementById("addCreditCard"+id).submit();
 	}
 }
 
-function confirmDelAccount()
+function confirmDelAccount(id)
 {
-	var retour = confirm("Est-vous sur de supprimer le compte client ?"  );
+	var retour = confirm("Est-vous sur de supprimer le compte 666-"+id+" ?" );
 	if (retour == true) {
-	  document.getElementById("delAccount").submit();
+	  document.getElementById("delAccount"+id).submit();
 	}
 }
+
+function confirmChangePassAdmin()
+{
+	var retour = confirm("Est-vous sur de vouloir modifier votre mot de passe ?");
+	if (retour == true) {
+	  document.getElementById("changePwdAdmin").submit();
+	}
+}
+
+

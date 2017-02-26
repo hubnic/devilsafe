@@ -63,9 +63,9 @@
 							<h3>
 							<span class="glyphicon glyphicon-user"></span>
 								Information personnelles de : ${client.nom} ${client.prenom} 
-								
 							</h3>
 							<br>
+						
 							<div class="row">
 								<div class="col-sm-4">
 									<div class="form-group row">
@@ -157,16 +157,7 @@
 						<h3>
 							Voici les comptes <span class="glyphicon glyphicon-usd"></span>
 						</h3>
-							<c:if test="${supres == true}">
-							<div class="alert alert-success">
-								<p>${description}</p>
-							</div>
-						</c:if>
-						<c:if test="${supres == false}">
-							<div class="alert alert-danger">
-								<p>${description}</p>
-							</div>
-						</c:if>
+				
 						<c:forEach items="${comptes}" var="comptes">
 					
 					<div class="container">
@@ -197,21 +188,21 @@
 														class="glyphicon glyphicon-eye-open"></span>
 												</a></td>
 												<td class="col-xs-2">
-												<form method="post" id="addCreditCard" action="<c:url value="/addCreditCard" />"role="form">
+												<form method="post" id="addCreditCard ${comptes.idCompte}" action="<c:url value="/addCreditCard" />"role="form">
 													<input type="hidden" class="form-control" id="idClient" name="idClient" value="${client.identifiant}" readonly>
 													<input type="hidden" class="form-control" id="idCompte" name="idCompte" value="${comptes.idCompte}" readonly>
-													<button onclick="confirmAddCC()"> 
+													<button onclick="confirmAddCC(${comptes.idCompte})"> 
 													<span class="glyphicon glyphicon-credit-card"></span>
 													</button>
 													<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 												</form>
 											</td>
 											<td class="col-xs-2">
-												<form method="post" id="delAccount" action="<c:url value="/delAccount" />"role="form">
+												<form method="post" id="delAccount ${comptes.idCompte}" action="<c:url value="/delAccount" />"role="form">
 													<input type="hidden" class="form-control" id="idClient" name="idClient" value="${client.identifiant}" readonly>
 													<input type="hidden" class="form-control" id="idCompte" name="idCompte" value="${comptes.idCompte}" readonly>
 													<input type="hidden" class="form-control" id="typeCompte" name="typeCompte" value="${comptes.type}" readonly>
-													<button type="submit" class="submit-icon"> 
+													<button onclick="confirmDelAccount(${comptes.idCompte})"> 
 													<span class="glyphicon glyphicon-trash"></span>
 													</button>
 													<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -222,9 +213,7 @@
 										</tbody>
 									</table>
 								</div>
-								<div
-									id="${comptes.idCompte}"
-									class="panel-collapse collapse">
+								<div id="${comptes.idCompte}" class="panel-collapse collapse">
 									<div class="panel-body">
 										<h2>${account}</h2>
 										<p>Voici le détails de votre compte :</p>
@@ -256,16 +245,7 @@
 							Ajouter un compte <span
 								class="glyphicon glyphicon-plus"></span>
 						</h3>
-						<c:if test="${succes == true}">
-							<div class="alert alert-success">
-								<p>${description}</p>
-							</div>
-						</c:if>
-						<c:if test="${succes == false}">
-							<div class="alert alert-danger">
-								<p>${description}</p>
-							</div>
-						</c:if>
+					
 						<form
 							method="post"
 							id="addAccountClient"
@@ -312,6 +292,16 @@
     
     
     <div class="col-sm-2 sidenav">
+    	<c:if test="${succes == true}">
+			<div class="alert alert-success">
+				<p>${description}</p>
+			</div>
+	</c:if>
+			<c:if test="${succes == false}">
+			<div class="alert alert-danger">
+				<p>${description}</p>
+			</div>
+	</c:if>
     </div>
     
   </div>

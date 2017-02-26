@@ -6,16 +6,12 @@
 <html lang="fr">
 <head>
 <title>Profil Administrateur</title>
-<link
-	rel="stylesheet"
-	href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.min.css" />">
-<link
-	rel="stylesheet"
-	href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.css" />">
+<link rel="stylesheet" href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.min.css" />">
+<link rel="stylesheet" href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.css" />">
 <script src="<c:url value="/librairie/js/valideLogin.js" />"></script>
+<script src="<c:url value="/librairie/js/confirmWindow.js" />"></script>
 <script src="<c:url value="/librairie/jquery/jquery-3.1.1.min.js" />"></script>
-<script
-	src="<c:url value="/librairie/bootstrap-3.3.7/js/bootstrap.min.js" />"></script>
+<script src="<c:url value="/librairie/bootstrap-3.3.7/js/bootstrap.min.js" />"></script>
 </head>
 
 
@@ -112,16 +108,6 @@
 						<div class="col-sm-4">
 							<h4>Modifier votre mot de passe</h4>
 							<hr>
-							<c:if test="${succes == true}">
-							<div class="alert alert-success">
-								<p>${description}</p>
-							</div>
-						</c:if>
-						<c:if test="${succes == false}">
-							<div class="alert alert-danger">
-								<p>${description}</p>
-							</div>
-						</c:if>
 							<form
 								method="post"
 								id="changePwdAdmin"
@@ -168,15 +154,24 @@
 								</div>
 								<div class="form-group row">
 									<div class="offset-sm-2 col-sm-10">
-										<button
-											type="submit"
-											class="btn btn-warning">Changer mot de passe</button>
+										<button onclick="confirmChangePassAdmin()"
+										class="btn btn-warning">Changer mot de passe</button>
 									</div>
 								</div>
 								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 							</form>
     </div>
     <div class="col-sm-2 sidenav">
+    		<c:if test="${succes == true}">
+							<div class="alert alert-success">
+								<p>${description}</p>
+							</div>
+						</c:if>
+						<c:if test="${succes == false}">
+							<div class="alert alert-danger">
+								<p>${description}</p>
+							</div>
+						</c:if>
   </div>
   </div>
     </div>

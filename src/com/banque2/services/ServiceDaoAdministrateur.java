@@ -1,8 +1,9 @@
 package com.banque2.services;
 
 
-import java.sql.Date;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -356,8 +357,8 @@ private JdbcTemplate jdbcTemplate;
 	
 	public boolean createCreditCard(int idClient,int idCompte){
 		PojoClient client = getClient(idClient);
-		Date date;
-		
+		Date date = new Date();
+		System.out.println("Voici la date :"+date.getYear()+"/"+ date.getMonth() +"/"+ date.getDay());
 		String insertCC = 
 				"INSERT INTO carte (numCarte, dateExp, crypto, nom, prenom, idCompte) "
 				+ "VALUES (?, ?, ?, ?, ?, ?)";
@@ -391,7 +392,7 @@ private JdbcTemplate jdbcTemplate;
 				Integer.toString(un) +
 				Integer.toString(deux) +
 				Integer.toString(trois);
-		System.out.println(carte);
+		//System.out.println(carte);
 		int calc=0;
 		int i = carte.length()-1;
 		boolean carteValide = false;
@@ -400,7 +401,7 @@ private JdbcTemplate jdbcTemplate;
 		while(!carteValide){
 			
 			if(i % 2 == 0){
-				System.out.println("modulo 2 ok");
+				//System.out.println("modulo 2 ok");
 				valeur = Character.getNumericValue(carte.charAt(i)) * 2;
 				if(valeur > 10){
 					
@@ -412,11 +413,11 @@ private JdbcTemplate jdbcTemplate;
 				calc = calc + Character.getNumericValue(carte.charAt(i)); 
 			}
 			if(i==0){
-				System.out.println("Voici le resultat du calc : " +calc);
+				//System.out.println("Voici le resultat du calc : " +calc);
 				
 				if(calc % 10 == 0){
 					carteValide = true;
-					System.out.println("voici la carte valide : "+carte);
+					//System.out.println("voici la carte valide : "+carte);
 				}else{	
 					calc = 0;
 					un = random.nextInt(9999);	
