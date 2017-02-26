@@ -3,38 +3,102 @@ package com.banque2.controleur;
 /**
  * Created by tinic on 2/20/17.
  */
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
-import com.banque2.modele.PojoClient;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.ObjectNode;
+import org.codehaus.jackson.type.TypeReference;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
+//import com.fasterxml.jackson.core.JsonFactory;
+//import com.fasterxml.jackson.core.JsonParser;
 
 @RestController
 @RequestMapping(value = "/api", consumes = {APPLICATION_JSON_VALUE}, produces = {APPLICATION_JSON_VALUE})
 public class GestionnaireAPI {
+
+    int i= 0;
+    final int CREATION = 0;
+    final int MODIF =1;
 
     @RequestMapping(method = RequestMethod.GET)
     public String listTroopers() {
         return "salut";
     }
 
-    @RequestMapping(value = "/preauth/{id}", method = RequestMethod.POST, headers={"key=1234"})
-    public @ResponseBody
-    ResponseEntity updateTrooper(@PathVariable("id") int id) {
+
+    @RequestMapping(value = "/preauth", method = RequestMethod.POST, headers={"key=1234"})
+    public ResponseEntity<String> creerPreauth(@RequestBody  String body ) throws IOException {
+
+
+        Map<String, Object> map = new HashMap<String, Object>();
+        ObjectMapper mapper = new ObjectMapper();
+        // convert JSON string to Map
+        map = mapper.readValue(body, new TypeReference<Map<String, String>>() {});
+
+        /* CRÉATION DE LA PRÉAUTORIZATION ICI*/
+
+        if (CREATION == 1) {
+            ObjectNode preauth = mapper.createObjectNode();
+            preauth.put("preauth_id", i);
+            preauth.put("preauth_status", "CREATED");
+            preauth.put("preauth_expiration", new Date(Calendar.getInstance().getTimeInMillis() + (15 * 60000)).toString());
+            preauth.put("detail_transaction", "Preautorisation creee avec succes");
+            i++;
+            return ResponseEntity.ok().header("salut", "réponse").body(preauth.toString());
+        } else {
+            ObjectNode preauth = mapper.createObjectNode();
+            preauth.put("preauth_status", "FAILURE");
+            preauth.put("detail_transaction", "La preautorisation n'a pu etre creee");
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).header("status", "pas bon").body(preauth.toString());
+        }
+    }
+
+
+
+    @RequestMapping(value = "/preauth/{id}", method = RequestMethod.PATCH, headers={"key=1234"})
+    public ResponseEntity<String> ModifierPreauth(@PathVariable("id") int id, @RequestBody String body2 ) throws IOException {
+
+        Map<String, Object> map2 = new HashMap<String, Object>();
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode rootNode = mapper.readTree(body2);
+        JsonNode idNode = rootNode.path("credit_id");
+        map2 = mapper.readValue(body2, new TypeReference<Map<String, String>>(){});
+
+        /* CRÉATION DE LA PRÉAUTORIZATION ICI*/
+
         if(id == 1){
-            return ResponseEntity.ok().header("nope", "marche pas").build();
+            ObjectNode preauth_modif = mapper.createObjectNode();
+            preauth_modif.put("preauth_id", idNode);
+            preauth_modif.put("preauth_status","CREATED");
+            preauth_modif.put("preauth_expiration", new Date(Calendar.getInstance().getTimeInMillis() + (15 * 60000)).toString());
+            preauth_modif.put("detail_transaction", "Preautorisation creee avec succes");
+            i++;
+            return ResponseEntity.ok().header("salut", "réponse").body(preauth_modif.toString());
         }
         else{
-            return new ResponseEntity((HttpStatus.BAD_REQUEST));
+            ObjectNode preauth_modif = mapper.createObjectNode();
+            preauth_modif.put("preauth_status","FAILURE");
+            preauth_modif.put("detail_transaction", "La preautorisation n'a pu etre creee");
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).header("status", "pas bon").body(preauth_modif.toString());
         }
+    }
+
+    @RequestMapping(value = "/virement", method = RequestMethod.POST, headers={"key=1234"})
+    public ResponseEntity<String> creerVirement(@RequestBody String body ) {
+
+        body.toString();
+        return ResponseEntity.ok().header("salut", "salut").body(body);
     }
 /**
     @RequestMapping(path = "/{id}", method = RequestMethod.GET)
@@ -63,6 +127,18 @@ public class GestionnaireAPI {
     public void deleteTrooper(@PathVariable("id") String id) {
         trooperDao.deleteStormtrooper(id);
     }
+
+
+
+    //read json file data to String
+    byte[] jsonData = Files.readAllBytes(Paths.get("employee.txt"));
+
+    //create ObjectMapper instance
+    ObjectMapper objectMapper = new ObjectMapper();
+
+    //read JSON like DOM Parser
+    JsonNode rootNode = objectMapper.readTree(jsonData);
+    JsonNode idNode = rootNode.path("id");
 **/
 
 }
