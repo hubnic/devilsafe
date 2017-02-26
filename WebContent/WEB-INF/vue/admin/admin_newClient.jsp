@@ -6,13 +6,10 @@
 <html lang="fr">
 <head>
 <title>Ajouter Client</title>
-<link
-	rel="stylesheet"
-	href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.min.css" />">
-<link
-	rel="stylesheet"
-	href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.css" />">
+<link rel="stylesheet" href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.min.css" />">
+<link rel="stylesheet" href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.css" />">
 <script src="<c:url value="/librairie/js/valideLogin.js" />"></script>
+<script src="<c:url value="/librairie/js/confirmWindow.js" />"></script>
 <script src="<c:url value="/librairie/jquery/jquery-3.1.1.min.js" />"></script>
 <script
 	src="<c:url value="/librairie/bootstrap-3.3.7/js/bootstrap.min.js" />"></script>
@@ -77,15 +74,11 @@
 								<p>${description}</p>
 							</div>
 						</c:if>
-				<form
-					method="post"
-					id="newClient"
-					action="<c:url value="/newClient" />"
-					role="form">
+				<form method="post" id="newClient" action="<c:url value="/newClient" />" role="form">
 					<div class="col-sm-5">
 							<div class="form-group row">
 								<label
-									for="example-email-input"
+									for="nom"
 									class="col-2 col-form-label">Nom :</label>
 								<div class="col-10">
 									<input
@@ -99,7 +92,7 @@
 							</div>
 							<div class="form-group row">
 								<label
-									for="example-email-input"
+									for="prenom"
 									class="col-2 col-form-label">Prenom :</label>
 								<div class="col-10">
 									<input
@@ -112,45 +105,21 @@
 								</div>
 							</div>
 							<div class="form-group row">
-								<label
-									for="date"
-									class="col-2 col-form-label">Date de naissance :</label>
+								<label for="date" class="col-2 col-form-label">Date de naissance :</label>
 								<div class="col-10">
-									<input
-										class="form-control"
-										type="date"
-										value="01-08-89"
-										id="date"
-										name="date"
-										required>
+									<input class="form-control" type="date" id="date" name="date" required>
 								</div>
 							</div>
 							<div class="form-group row">
-								<label
-									for="telephone"
-									class="col-2 col-form-label">Telephone</label>
+								<label 	for="telephone" class="col-2 col-form-label">Telephone</label>
 								<div class="col-10">
-									<input
-										class="form-control"
-										type="tel"
-										value="512-234-4567"
-										id="telephone"
-										name="telephone"
-										required>
+									<input class="form-control" type="tel" value="512-234-4567" id="telephone" name="telephone" required>
 								</div>
 							</div>
 							<div class="form-group row">
-								<label
-									for="adresse"
-									class="col-2 col-form-label">Adresse :</label>
+								<label for="adresse" class="col-2 col-form-label">Adresse :</label>
 								<div class="col-10">
-									<input
-										class="form-control"
-										type="text"
-										value="12 rue v Montreal"
-										id="adresse"
-										name="adresse"
-										required>
+									<input class="form-control" type="text" value="12 rue v Montreal" id="adresse" 	name="adresse" required>
 								</div>
 							</div>
 							<div class="form-group row">
@@ -204,9 +173,7 @@
 							
 						<div class="form-group row">
 							<div class="offset-sm-2 col-sm-10">
-								<button
-									type="submit"
-									class="btn btn-primary">Créer compte client</button>
+								<button onclick="confirmAddClient()" class="btn btn-primary">Créer compte client</button>
 							</div>
 						</div>
 						</div>

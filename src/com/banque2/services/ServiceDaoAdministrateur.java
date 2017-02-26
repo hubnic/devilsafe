@@ -107,7 +107,7 @@ private JdbcTemplate jdbcTemplate;
 	
 	public boolean deleteAccount(int idCompte) {
 		String deleteAccount  = "DELETE FROM compte WHERE idCompte = ?";
-		if(deleteAllTransaction(idCompte)){
+		if(deleteAllTransaction(idCompte) && deleteCC(idCompte)){
 			try{
 				jdbcTemplate.update(deleteAccount,idCompte);
 				return true;	
@@ -124,6 +124,17 @@ private JdbcTemplate jdbcTemplate;
 		String delTransaction  = "DELETE FROM transaction WHERE idCompteClient = ?";
 		try{
 			jdbcTemplate.update(delTransaction,idCompte);
+			return true;	
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public boolean deleteCC(int idCompte) {
+		String delCC  = "DELETE FROM carte WHERE idCompte = ?";
+		try{
+			jdbcTemplate.update(delCC,idCompte);
 			return true;	
 		}catch(Exception e){
 			e.printStackTrace();

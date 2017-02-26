@@ -6,13 +6,10 @@
 <html lang="fr">
 <head>
 <title>Infos Client</title>
-<link
-	rel="stylesheet"
-	href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.min.css" />">
-<link
-	rel="stylesheet"
-	href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.css" />">
+<link rel="stylesheet" href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.min.css" />">
+<link rel="stylesheet" href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.css" />">
 <script src="<c:url value="/librairie/js/valideLogin.js" />"></script>
+<script src="<c:url value="/librairie/js/confirmWindow.js" />"></script>
 <script src="<c:url value="/librairie/jquery/jquery-3.1.1.min.js" />"></script>
 <script
 	src="<c:url value="/librairie/bootstrap-3.3.7/js/bootstrap.min.js" />"></script>
@@ -203,7 +200,7 @@
 												<form method="post" id="addCreditCard" action="<c:url value="/addCreditCard" />"role="form">
 													<input type="hidden" class="form-control" id="idClient" name="idClient" value="${client.identifiant}" readonly>
 													<input type="hidden" class="form-control" id="idCompte" name="idCompte" value="${comptes.idCompte}" readonly>
-													<button type="submit"> 
+													<button onclick="confirmAddCC()"> 
 													<span class="glyphicon glyphicon-credit-card"></span>
 													</button>
 													<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -303,7 +300,7 @@
 								name="idClient"
 								value="${client.identifiant}" />
 							<button
-								type="submit"
+								onclick="confirmAddAccount()"
 								class="btn btn-danger">Ajouter le compte</button>
 							<input
 								type="hidden"

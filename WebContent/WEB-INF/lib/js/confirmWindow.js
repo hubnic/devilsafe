@@ -1,0 +1,52 @@
+function confirmAddClient()
+{
+	var nom = document.getElementById("nom").value;
+	var prenom = document.getElementById("prenom").value;
+	var date = document.getElementById("date").value;
+	var telephone = document.getElementById("telephone").value;
+	var adresse = document.getElementById("adresse").value;
+	var courriel = document.getElementById("courriel").value;
+
+	var retour = confirm("Est-vous sur de procéder à l'ajout du client : s" + "\n" +nom + "\n" +prenom + "\n" +date + "\n" +telephone + "\n" +adresse + "\n" +courriel+" ?"  );
+	if (retour == true) {
+	  document.getElementById("newClient").submit();
+	}
+}
+
+function confirmAddAdmin()
+{
+	var nom = document.getElementById("nom").value;
+	var prenom = document.getElementById("prenom").value;
+
+	var retour = confirm("Est-vous sur de procéder à l'ajout de l'administrateur :" + "\n" +nom + "\n" +prenom +" ?"  );
+	if (retour == true) {
+	  document.getElementById("addAdmin").submit();
+	}
+}
+
+function confirmAddAccount()
+{
+	var typeCompte = document.getElementById("typeCompte").value;
+	var montant = document.getElementById("montant").value;
+
+	var retour = confirm("Est-vous sur de procéder à l'ajout du compte :" + "\n" +typeCompte + "\n" +montant +" ?"  );
+	if (retour == true) {
+	  document.getElementById("addAccountClient").submit();
+	}
+}
+
+function confirmAddCC()
+{
+	var retour = confirm("Est-vous sur d'ajouter la carte de crédit au compte ?"  );
+	if (retour == true) {
+	  document.getElementById("addCreditCard").submit();
+	}
+}
+
+function confirmDelAccount()
+{
+	var retour = confirm("Est-vous sur de supprimer le compte client ?"  );
+	if (retour == true) {
+	  document.getElementById("delAccount").submit();
+	}
+}

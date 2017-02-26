@@ -13,6 +13,7 @@
 	rel="stylesheet"
 	href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.css" />">
 <script src="<c:url value="/librairie/js/valideLogin.js" />"></script>
+<script src="<c:url value="/librairie/js/confirmWindow.js" />"></script>
 <script src="<c:url value="/librairie/jquery/jquery-3.1.1.min.js" />"></script>
 <script
 	src="<c:url value="/librairie/bootstrap-3.3.7/js/bootstrap.min.js" />"></script>
@@ -84,7 +85,7 @@
 					<div class="col-sm-5">
 						<div class="form-group row">
 							<label
-								for="example-email-input"
+								for="nom"
 								class="col-2 col-form-label">Nom :</label>
 							<div class="col-10">
 								<input
@@ -98,7 +99,7 @@
 						</div>
 						<div class="form-group row">
 							<label
-								for="example-email-input"
+								for="prenom"
 								class="col-2 col-form-label">Prenom :</label>
 							<div class="col-10">
 								<input
@@ -108,20 +109,6 @@
 									id="prenom"
 									name ="prenom"
 									required>
-							</div>
-						</div>
-						<div class="form-group row">
-							<label
-								for="example-email-input"
-								class="col-2 col-form-label">Role :</label>
-							<div class="col-10">
-								<select
-									class="form-control"
-									id="role"
-									name="role">
-									<option>Choisir Role</option>
-									<option>ADMIN</option>
-								</select>
 							</div>
 						</div>
 					</div>
@@ -162,7 +149,7 @@
 						<div class="form-group row">
 							<div class="offset-sm-2 col-sm-10">
 								<button
-									type="submit"
+									onclick="confirmAddAdmin()"
 									class="btn btn-primary">Créer compte Administrateur</button>
 							</div>
 						</div>

@@ -58,17 +58,16 @@ public class GestionnairePostAdmin {
 	public ModelAndView postAddAdmin(	
 			@RequestParam("nom") String nom, 
 			@RequestParam("prenom") String prenom,
-			@RequestParam("role") String role,
 			@RequestParam("pass1") String pass1,
 			@RequestParam("pass2") String pass2){
 
-		System.out.println(nom +" "+ prenom +" "+role +" "+pass1 +" "+pass2);
+		System.out.println(nom +" "+ prenom  +" "+pass1 +" "+pass2);
 		ModelAndView vueModele;
 		
 		vueModele = new ModelAndView();
 		vueModele.setViewName("/admin/admin_addAdmin");
 		
-		if(valideNewIntervenant(nom,prenom,role,pass1,pass2)){
+		if(valideNewIntervenant(nom,prenom,pass1,pass2)){
 			PojoAdministrateur newAdmin = new PojoAdministrateur();
 			newAdmin.setNom(nom);
 			newAdmin.setPrenom(prenom);
@@ -112,7 +111,7 @@ public class GestionnairePostAdmin {
 			vueModele = new ModelAndView();
 			
 			
-			if(valideNewIntervenant(nom,prenom,"client",pass1,pass2)){
+			if(valideNewIntervenant(nom,prenom,pass1,pass2)){
 				
 				PojoClient newClient = new PojoClient();
 				newClient.setNom(nom);
@@ -146,9 +145,9 @@ public class GestionnairePostAdmin {
 			return vueModele;
 		}
 		
-		private boolean valideNewIntervenant(String nom, String prenom, String role, String pass1, String pass2){
+		private boolean valideNewIntervenant(String nom, String prenom, String pass1, String pass2){
 			
-			if(nom!=null && prenom != null && role != null && pass1 != null && pass2 != null && pass1.equals(pass2)){
+			if(nom!=null && prenom != null && pass1 != null && pass2 != null && pass1.equals(pass2)){
 				System.out.println(regex);
 				if(pass1.matches(regex)){
 					return true;
@@ -264,14 +263,13 @@ public class GestionnairePostAdmin {
 					ModelAndView vueModele = new ModelAndView();
 					vueModele.setViewName("/admin/admin_showAccount");
 					
-					if(serviceDaoAdministrateur.deleteAccount(idCompte)){
-						
+					if(serviceDaoAdministrateur.deleteAccount(idCompte)){					
 							vueModele.addObject("supres", true);
-							vueModele.addObject("description", "Le compte " +typeCompte+ " ayant le numéro : "+idCompte + " a été supprimé avec succès.");
+							vueModele.addObject("description", "Le compte [" +typeCompte+ "] ayant le numéro : ["+idCompte + "] a été supprimé avec succès.");
 					}
 					else{
 						vueModele.addObject("supres", false);
-						vueModele.addObject("description", "Le compte " +typeCompte+ " ayant le numéro : "+idCompte + " n'a pu être supprimé.");
+						vueModele.addObject("description", "Le compte " +typeCompte+ " ayant le numéro : ["+idCompte + "] n'a pu être supprimé.");
 					}		
 					
 					vueModele.addObject("client",serviceDaoAdministrateur.getClient(id));
@@ -358,11 +356,11 @@ public class GestionnairePostAdmin {
 							System.out.println("La carte n'existe pas on va la créer");
 							serviceDaoAdministrateur.createCreditCard(idClient,idCompte);
 							vueModele.addObject("succes", true);
-							vueModele.addObject("description", "Le carte a ete ajoutee au compte numero : "+idCompte +" avec succes");
+							vueModele.addObject("description", "Le carte a ete ajoutee au compte numero : ["+idCompte +"] avec succes");
 					}
 					else{
 						vueModele.addObject("succes", false);
-						vueModele.addObject("description", "La carte n a pu etre ajoutee au compte numero " +idCompte);
+						vueModele.addObject("description", "La carte n'a pas été ajoutée, le compte ["+idCompte+"] dispose déjà d'une carte.");
 					}		
 					
 					vueModele.addObject("client",serviceDaoAdministrateur.getClient(idClient));
