@@ -164,3 +164,27 @@ CREATE TABLE IF NOT EXISTS `transaction` (
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `preautorisation`
+--
+
+DROP TABLE IF EXISTS `preautorisation`;
+CREATE TABLE IF NOT EXISTS `preautorisation` (
+  `preauth_id` int(11) NOT NULL AUTO_INCREMENT,
+  `credit_id` int(11) NOT NULL ,
+  `credit_expiration` date NOT NULL,
+  `credit_nom` varchar(25) NOT NULL,
+  `credit_prenom` varchar(25) NOT NULL,
+  `credit_cvs` varchar(3) NOT NULL,
+  `source_id` int(11) NOT NULL,
+  `montant` DOUBLE NOT NULL,
+  PRIMARY KEY (`preauth_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
