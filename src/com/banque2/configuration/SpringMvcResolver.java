@@ -13,6 +13,7 @@ import org.springframework.web.servlet.view.JstlView;
 
 import com.banque2.services.ServiceAuthentification;
 import com.banque2.services.ServiceDaoAdministrateur;
+import com.banque2.services.ServiceDaoApi;
 import com.banque2.services.ServiceDaoClient;
 
 @Configuration
@@ -52,6 +53,11 @@ public class SpringMvcResolver extends WebMvcConfigurerAdapter {
 	    @Bean
 	    public ServiceDaoClient getServiceDaoClient() {
 			return new ServiceDaoClient(dataSource());
+		}
+	    
+	    @Bean
+	    public ServiceDaoApi getServiceDaoApi() {
+			return new ServiceDaoApi(dataSource());
 		}
 	    
 	    

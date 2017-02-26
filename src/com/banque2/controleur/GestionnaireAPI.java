@@ -8,10 +8,11 @@ import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ObjectNode;
 import org.codehaus.jackson.type.TypeReference;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import com.banque2.services.ServiceDaoApi;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
@@ -30,6 +31,9 @@ public class GestionnaireAPI {
     int i= 0;
     final int CREATION = 0;
     final int MODIF =1;
+    
+    @Autowired
+	private ServiceDaoApi serviceDaoApi;
 
     @RequestMapping(method = RequestMethod.GET)
     public String listTroopers() {
