@@ -68,6 +68,29 @@ private JdbcTemplate jdbcTemplate;
 			}
 		
 	}
+	
+	public boolean deleteClient(int idClient) {
+		
+		String delCarte = "DELETE FROM carte WHERE idCompte IN (SELECT idCompte FROM compte WHERE idClient = ?)";
+		String delTransactions = "DELETE FROM transaction WHERE idCompteClient IN (SELECT idCompte FROM compte WHERE idClient = ?)";
+		String delCompte = "DELETE FROM compte WHERE idClient = ?";
+		String delClient = "DELETE FROM clients WHERE identifiant = ?";
+		try{
+				jdbcTemplate.update(delCarte,idClient);
+				jdbcTemplate.update(delTransactions,idClient);
+				jdbcTemplate.update(delCompte,idClient);
+				jdbcTemplate.update(delClient,idClient);
+				
+				return true;	
+			}catch(Exception e){
+				e.printStackTrace();
+				return false;
+			}
+		
+	}
+
+	
+	
 	public boolean createCompteClient(PojoCompte compte) {
 		
 		String addClient = "INSERT INTO compte (type, solde, idClient) "

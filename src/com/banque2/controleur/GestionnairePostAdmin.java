@@ -277,6 +277,29 @@ public class GestionnairePostAdmin {
 					
 					return vueModele;
 				}
+				
+				//ADMINISTRATEUR
+				@RequestMapping(value = {"/delClient"}, method = RequestMethod.POST)
+				public ModelAndView postdelClient(	
+						@RequestParam("idClient") int idClient){
+					
+					System.out.println("Post delClient : "+ idClient );
+					
+					ModelAndView vueModele = new ModelAndView();
+					vueModele.setViewName("/admin/admin_showAllClient");
+					
+					if(serviceDaoAdministrateur.deleteClient(idClient)){					
+							vueModele.addObject("succes", true);
+							vueModele.addObject("description", "Le client [" +idClient+ "] a été supprimé avec succès.");
+					}
+					else{
+						vueModele.addObject("succes", false);
+						vueModele.addObject("description", "Le compte " +idClient+ "] n'a pu être supprimé.");
+					}		
+					
+					vueModele.addObject("clients", (ArrayList<PojoClient>) serviceDaoAdministrateur.getAllClient());
+					return vueModele;
+				}
 		
 		
 				//ADMINISTRATEUR

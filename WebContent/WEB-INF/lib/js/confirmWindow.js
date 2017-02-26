@@ -51,6 +51,16 @@ function confirmDelAccount(id)
 	}
 }
 
+function confirmDelClient(id)
+{
+	var retour = confirm("Est-vous sur de supprimer l'utilisateur : "+id+" ?" );
+	if (retour == true) {
+	  document.getElementById("delClient"+id).submit();
+	}
+}
+
+
+
 function confirmChangePassAdmin()
 {
 	var retour = confirm("Est-vous sur de vouloir modifier votre mot de passe ?");

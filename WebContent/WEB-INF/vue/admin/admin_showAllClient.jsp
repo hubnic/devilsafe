@@ -6,16 +6,12 @@
 <html lang="fr">
 <head>
 <title>Membre Client</title>
-<link
-	rel="stylesheet"
-	href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.min.css" />">
-<link
-	rel="stylesheet"
-	href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.css" />">
+<link rel="stylesheet" href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.min.css" />">
+<link rel="stylesheet" href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.css" />">
 <script src="<c:url value="/librairie/js/valideLogin.js" />"></script>
+<script src="<c:url value="/librairie/js/confirmWindow.js" />"></script>
 <script src="<c:url value="/librairie/jquery/jquery-3.1.1.min.js" />"></script>
-<script
-	src="<c:url value="/librairie/bootstrap-3.3.7/js/bootstrap.min.js" />"></script>
+<script src="<c:url value="/librairie/bootstrap-3.3.7/js/bootstrap.min.js" />"></script>
 </head>
 
 
@@ -62,11 +58,16 @@
     </div>
     <div class="col-sm-8 text-left"> 
       <h1>Liste des membres</h1>
-      <c:if test="${succes == true}">
+  <c:if test="${succes == true}">
 							<div class="alert alert-success">
 								<p>${description}</p>
 							</div>
-				</c:if>
+						</c:if>
+						<c:if test="${succes == false}">
+							<div class="alert alert-danger">
+								<p>${description}</p>
+							</div>
+						</c:if>
 				
 							<div class="row">
 								<div class="panel panel-default">
@@ -80,6 +81,7 @@
 												<th class="col-xs-1">Nom et Prénom</th>
 												<th class="col-xs-1">Courriel</th>
 												<th class="col-xs-1">Accéder au compte</th>
+												<th class="col-xs-1">Supprimer client</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -93,6 +95,15 @@
 													<input type="hidden" class="form-control" id="id" name="id" value="${clients.identifiant}" readonly>
 													<button type="submit"> 
 													<span class="glyphicon glyphicon-eye-open"></span>
+													</button>
+													<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+												</form>
+												</td>
+												<td class="col-xs-1">
+												<form method="post" id="delClient ${clients.identifiant}" action="<c:url value="/delClient" />"role="form">
+													<input type="hidden" class="form-control" id="idClient" name="idClient" value="${clients.identifiant}" readonly>
+													<button onclick="confirmDelClient(${clients.identifiant})"> 
+													<span class="glyphicon glyphicon-trash"></span>
 													</button>
 													<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 												</form>
