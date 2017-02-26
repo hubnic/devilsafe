@@ -8,6 +8,7 @@ import javax.sql.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.banque2.mappingModele.MappingAdministrateur;
+import com.banque2.mappingModele.MappingClient;
 import com.banque2.mappingModele.MappingCompte;
 import com.banque2.mappingModele.MappingTransaction;
 import com.banque2.modele.PojoAdministrateur;
@@ -23,11 +24,7 @@ public class ServiceDaoClient {
 		jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 	
-	public void create(PojoClient client) {
-		
-		String sql = "";
-		jdbcTemplate.execute(sql);
-}
+
 
 public void update(PojoAdministrateur administrateur) {
 	
@@ -35,25 +32,24 @@ public void update(PojoAdministrateur administrateur) {
 	jdbcTemplate.execute(sql);
 }
 
-public void delete(PojoAdministrateur administrateur) {
-	
-	String sql = "";
-	jdbcTemplate.execute(sql);
-}
 
-public PojoAdministrateur getClient(int clientId) {
+public PojoClient getProfilClient(int id) {
+	String getClient = "SELECT * FROM clients WHERE identifiant=" + id;
 	
-	String sql = "SELECT * FROM client WHERE id=" + clientId;
-	
-	List<PojoAdministrateur> result = jdbcTemplate.query(sql,new MappingAdministrateur());
-	
-	if(result.isEmpty()){
+	try{
+		List<PojoClient> result = jdbcTemplate.query(getClient,new MappingClient());
+		
+		if(result.isEmpty()){
+			return null;
+		}
+		else{
+			return result.get(0);
+		}	
+	}
+	catch(Exception e){
 		return null;
 	}
-	else{
-		return result.get(0);
-	}	
-
+	
 }
 
 public List<PojoCompte> getAllComptesClient(int idClient){

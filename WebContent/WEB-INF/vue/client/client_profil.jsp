@@ -2,7 +2,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
 <head>
-<title>Apercu Details</title>
+<title>Mon profil</title>
 <link rel="stylesheet" href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.min.css" />">
 <link rel="stylesheet" href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.css" />">
 <script src="<c:url value="/librairie/jquery/jquery-3.1.1.min.js" />"></script>
@@ -35,26 +35,39 @@
 						<div class="col-sm-4">
 							<div class="form-group row">
 								<label
-									for="example-email-input"
+									for="identifiant"
+									class="col-2 col-form-label">Identifiant :</label>
+								<div class="col-10">
+									<input
+										class="form-control"
+										type="text"
+										value="${client.identifiant}"
+										id="identifiant"
+										readonly>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label
+									for="nom"
 									class="col-2 col-form-label">Nom :</label>
 								<div class="col-10">
 									<input
 										class="form-control"
 										type="text"
-										value="${userName}"
+										value="${client.nom}"
 										id="nom"
 										readonly>
 								</div>
 							</div>
 							<div class="form-group row">
 								<label
-									for="example-email-input"
+									for="prenom"
 									class="col-2 col-form-label">Prenom :</label>
 								<div class="col-10">
 									<input
 										class="form-control"
 										type="text"
-										value="${userFirstName}"
+										value="${client.prenom}"
 										id="prenom"
 										readonly>
 								</div>
@@ -67,7 +80,7 @@
 									<input
 										class="form-control"
 										type="email"
-										value="${courriel}"
+										value="${client.courriel}"
 										id="courriel"
 										readonly>
 								</div>
@@ -80,8 +93,21 @@
 									<input
 										class="form-control"
 										type="tel"
-										value="${tel}"
+										value="${client.telephone}"
 										id="tel"
+										readonly>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label
+									for="adresse"
+									class="col-2 col-form-label">Telephone</label>
+								<div class="col-10">
+									<input
+										class="form-control"
+										type="text"
+										value="${client.adresse}"
+										id="adresse"
 										readonly>
 								</div>
 							</div>

@@ -46,10 +46,7 @@ public class GestionnaireGetClient {
 	}
 	@RequestMapping(value = {"/profil"}, method = RequestMethod.GET)
 	public String getProfil(ModelMap listeElement) {
-		listeElement.addAttribute("userName", "Dupont");
-		listeElement.addAttribute("userFirstName", "Jean");
-		listeElement.addAttribute("courriel", "jean.dupont@jdupe.com");
-		listeElement.addAttribute("tel", "514-555-7777");
+		listeElement.addAttribute("client",serviceDaoClient.getProfilClient(Integer.parseInt(SecurityContextHolder.getContext().getAuthentication().getName())));
 		return "/client/client_profil";
 	}
 	
