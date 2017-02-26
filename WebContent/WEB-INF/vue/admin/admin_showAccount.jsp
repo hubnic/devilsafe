@@ -1,34 +1,28 @@
-<%@ page
-	language="java"
-	contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib
 	prefix="c"
 	uri="http://java.sun.com/jsp/jstl/core"%>
 <html lang="fr">
 <head>
 <title>Infos Client</title>
-<link
-	rel="stylesheet"
-	href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.min.css" />">
-<link
-	rel="stylesheet"
-	href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.css" />">
+<link rel="stylesheet" href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.min.css" />">
+<link rel="stylesheet" href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.css" />">
 <script src="<c:url value="/librairie/js/valideLogin.js" />"></script>
+<script src="<c:url value="/librairie/js/confirmWindow.js" />"></script>
 <script src="<c:url value="/librairie/jquery/jquery-3.1.1.min.js" />"></script>
 <script
 	src="<c:url value="/librairie/bootstrap-3.3.7/js/bootstrap.min.js" />"></script>
 </head>
 <body>
-	<nav class="navbar navbar-inverse">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<a
-					class="navbar-brand"
-					href="#">Votre Espace D</a>
+
+<nav class="navbar navbar-inverse">
+	<div class="container-fluid">
+		<div class="navbar-header">
+		<a class="navbar-brand" href="#">Votre Espace D</a>
 			</div>
 			<ul class="nav navbar-nav">
-				<li class="active"><a href="<c:url value="/homeAdmin" />"><span
+				<li><a href="<c:url value="/homeAdmin" />"><span
 						class="glyphicon glyphicon-home"></span> Accueil</a></li>
 				<li><a href="<c:url value="/adminProfil" />"><span
 						class="glyphicon glyphicon-user"></span> Mon profil</a></li>
@@ -38,43 +32,40 @@
 						class="glyphicon glyphicon-log-out"></span> Deconnexion</a></li>
 			</ul>
 		</div>
-	</nav>
-	<div class="container-fluid">
-		<div class="row content">
-			<div class="col-sm-3 sidenav">
-				<h4>
-					Administration <span class="glyphicon glyphicon-cog"></span>
-				</h4>
+</nav>
+  
+<div class="container-fluid text-center">    
+  <div class="row content">
+    <div class="col-sm-2 sidenav">
+           <h4>Administration <span class="glyphicon glyphicon-cog"></span></h4>
 				<br>
 				<hr>
-				<h5>
-					Gestion des clients<span class="glyphicon glyphicon-usd"></span>
-				</h5>
+				<h5>Gestion des clients</h5>
 				<ul class="nav nav-pills nav-stacked">
 					<li><a href="<c:url value="/newClient"/>">Nouveau client?</a></li>
-					<li><a href="<c:url value="/showAllClient"/>">Gérer un
-							compte existant?</a></li>
+					<li><a href="<c:url value="/showAllClient"/>">GÃ©rer un compte existant?</a></li>
 				</ul>
 				<br>
 				<hr>
 				<h5>
-					Gestion des administrateur<span class="glyphicon glyphicon-user"></span>
+					<span class="glyphicon glyphicon-user"></span> Gestion des administrateur
 				</h5>
 				<ul class="nav nav-pills nav-stacked">
-					<li><a href="<c:url value="/newAdmin"/>">Créer compte
-							Administrateur</a></li>
+					<li><a href="<c:url value="/newAdmin"/>">CrÃ©er compte Administrateur</a></li>
 				</ul>
-			</div>
-			<div class="col-sm-9">
-				<div class="col-sm-10">
-					<div class="col-sm-9">
+    </div>
+    
+    
+    
+    <div class="col-sm-8 text-left"> 
+				<div class="col-sm-9">
 						<div class="container">
 							<h3>
 							<span class="glyphicon glyphicon-user"></span>
 								Information personnelles de : ${client.nom} ${client.prenom} 
-								
 							</h3>
 							<br>
+						
 							<div class="row">
 								<div class="col-sm-4">
 									<div class="form-group row">
@@ -166,32 +157,23 @@
 						<h3>
 							Voici les comptes <span class="glyphicon glyphicon-usd"></span>
 						</h3>
-							<c:if test="${supres == true}">
-							<div class="alert alert-success">
-								<p>${description}</p>
-							</div>
-						</c:if>
-						<c:if test="${supres == false}">
-							<div class="alert alert-danger">
-								<p>${description}</p>
-							</div>
-						</c:if>
+				
 						<c:forEach items="${comptes}" var="comptes">
-						<div
-							class="panel-group"
-							id="accordion">
+					
+					<div class="container">
+						<div class="panel-group" id="accordion">
 							<div class="panel panel-default">
 								<div class="panel-heading">
 									<h4 class="panel-title"></h4>
 									<table class="table table-striped">
 										<thead>
 											<tr>
-												<th>N° du compte</th>
+												<th>NÂ° du compte</th>
 												<th>Nom du compte</th>
 												<th>Solde</th>
 												<th>Voir</th>
 												<th>Creer Carte</th>
-												<th>Clôturer</th>
+												<th>ClÃ´turer</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -206,21 +188,21 @@
 														class="glyphicon glyphicon-eye-open"></span>
 												</a></td>
 												<td class="col-xs-2">
-												<form method="post" id="addCreditCard" action="<c:url value="/addCreditCard" />"role="form">
+												<form method="post" id="addCreditCard ${comptes.idCompte}" action="<c:url value="/addCreditCard" />"role="form">
 													<input type="hidden" class="form-control" id="idClient" name="idClient" value="${client.identifiant}" readonly>
 													<input type="hidden" class="form-control" id="idCompte" name="idCompte" value="${comptes.idCompte}" readonly>
-													<button type="submit"> 
+													<button onclick="confirmAddCC(${comptes.idCompte})"> 
 													<span class="glyphicon glyphicon-credit-card"></span>
 													</button>
 													<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 												</form>
 											</td>
 											<td class="col-xs-2">
-												<form method="post" id="delAccount" action="<c:url value="/delAccount" />"role="form">
+												<form method="post" id="delAccount ${comptes.idCompte}" action="<c:url value="/delAccount" />"role="form">
 													<input type="hidden" class="form-control" id="idClient" name="idClient" value="${client.identifiant}" readonly>
 													<input type="hidden" class="form-control" id="idCompte" name="idCompte" value="${comptes.idCompte}" readonly>
 													<input type="hidden" class="form-control" id="typeCompte" name="typeCompte" value="${comptes.type}" readonly>
-													<button type="submit" class="submit-icon"> 
+													<button onclick="confirmDelAccount(${comptes.idCompte})"> 
 													<span class="glyphicon glyphicon-trash"></span>
 													</button>
 													<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -231,12 +213,10 @@
 										</tbody>
 									</table>
 								</div>
-								<div
-									id="${comptes.idCompte}"
-									class="panel-collapse collapse">
+								<div id="${comptes.idCompte}" class="panel-collapse collapse">
 									<div class="panel-body">
 										<h2>${account}</h2>
-										<p>Voici le détails de votre compte :</p>
+										<p>Voici le dÃ©tails de votre compte :</p>
 										<table class="table table-striped">
 											<thead>
 												<tr>
@@ -258,30 +238,21 @@
 									</div>
 								</div>
 							</div>
-							</div>
-							<br>
-								</c:forEach>
+							</div>		
+							</div>					
+						</c:forEach>
 						<h3>
 							Ajouter un compte <span
 								class="glyphicon glyphicon-plus"></span>
 						</h3>
-						<c:if test="${succes == true}">
-							<div class="alert alert-success">
-								<p>${description}</p>
-							</div>
-						</c:if>
-						<c:if test="${succes == false}">
-							<div class="alert alert-danger">
-								<p>${description}</p>
-							</div>
-						</c:if>
+					
 						<form
 							method="post"
 							id="addAccountClient"
 							name ="addAccountClient"
 							action="<c:url value="/addAccountClient" />"
 							role="form">
-							<h3>1. Choisir le type de compte à ajouter</h3>
+							<h3>1. Choisir le type de compte Ã  ajouter</h3>
 							<hr>
 							<div class="form-group">
 								<label for="typeCompte">Choisir le type de compte</label> <select
@@ -309,7 +280,7 @@
 								name="idClient"
 								value="${client.identifiant}" />
 							<button
-								type="submit"
+								onclick="confirmAddAccount()"
 								class="btn btn-danger">Ajouter le compte</button>
 							<input
 								type="hidden"
@@ -317,9 +288,28 @@
 								value="${_csrf.token}" />
 						</form>
 					</div>
-				</div>
+    </div>
+    
+    
+    <div class="col-sm-2 sidenav">
+    	<c:if test="${succes == true}">
+			<div class="alert alert-success">
+				<p>${description}</p>
 			</div>
-		</div>
-	</div>
+	</c:if>
+			<c:if test="${succes == false}">
+			<div class="alert alert-danger">
+				<p>${description}</p>
+			</div>
+	</c:if>
+    </div>
+    
+  </div>
+</div>
+
+<footer class="container-fluid text-center">
+  <p>Banque du Demon</p>
+</footer>
 </body>
+
 </html>

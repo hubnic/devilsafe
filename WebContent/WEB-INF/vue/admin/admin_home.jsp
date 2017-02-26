@@ -1,7 +1,5 @@
-<%@ page
-	language="java"
-	contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib
 	prefix="c"
 	uri="http://java.sun.com/jsp/jstl/core"%>
@@ -40,43 +38,25 @@
 			</ul>
 		</div>
 	</nav>
-	<div class="container-fluid">
-		<div class="row content">
-			<div class="col-sm-3 sidenav">
-				<h4>
-					Administration <span class="glyphicon glyphicon-cog"></span>
-				</h4>
+<div class="container-fluid text-center">    
+  <div class="row content">
+    <div class="col-sm-2 sidenav">
+				<h4>Administration <span class="glyphicon glyphicon-cog"></span></h4>
 				<br>
 				<hr>
-				<h5>
-					Gestion des clients<span class="glyphicon glyphicon-usd"></span>
-				</h5>
+				<h5>Gestion des clients</h5>
 				<ul class="nav nav-pills nav-stacked">
 					<li><a href="<c:url value="/newClient"/>">Nouveau client?</a></li>
-					<li><a href="<c:url value="/showAllClient"/>">Gérer un
-							compte existant?</a></li>
+					<li><a href="<c:url value="/showAllClient"/>">GÃ©rer un compte existant?</a></li>
 				</ul>
 				<br>
 				<hr>
 				<h5>
-					Gestion des administrateur<span class="glyphicon glyphicon-user"></span>
+					<span class="glyphicon glyphicon-user"></span> Gestion des administrateur
 				</h5>
 				<ul class="nav nav-pills nav-stacked">
-					<li><a href="<c:url value="/newAdmin"/>">Créer
-							compte Administrateur</a></li>
+					<li><a href="<c:url value="/newAdmin"/>">CrÃ©er compte Administrateur</a></li>
 				</ul>
-			</div>
-			<div class="col-sm-9">
-			
-				<h4>
-					Espace d'administration
-				</h4>
-				<br>
-				<hr>
-				<br>
-			
-				
-				
 			</div>
 		</div>
 	</div>

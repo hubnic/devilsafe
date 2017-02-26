@@ -24,6 +24,7 @@ public class GestionnairePostAdmin {
 	@Autowired
 	private ServiceAuthentification serviceSecurite;
 	
+	final String regex = "[a-zA-Z0-9^.*\\W]{8,}";
 	
 	//ADMINISTRATEUR
 		@RequestMapping(value = {"/secureAdmin"}, method = RequestMethod.POST)
@@ -57,17 +58,16 @@ public class GestionnairePostAdmin {
 	public ModelAndView postAddAdmin(	
 			@RequestParam("nom") String nom, 
 			@RequestParam("prenom") String prenom,
-			@RequestParam("role") String role,
 			@RequestParam("pass1") String pass1,
 			@RequestParam("pass2") String pass2){
 
-		System.out.println(nom +" "+ prenom +" "+role +" "+pass1 +" "+pass2);
+		System.out.println(nom +" "+ prenom  +" "+pass1 +" "+pass2);
 		ModelAndView vueModele;
 		
 		vueModele = new ModelAndView();
 		vueModele.setViewName("/admin/admin_addAdmin");
 		
-		if(valideNewAmin(nom,prenom,role,pass1,pass2)){
+		if(valideNewIntervenant(nom,prenom,pass1,pass2)){
 			PojoAdministrateur newAdmin = new PojoAdministrateur();
 			newAdmin.setNom(nom);
 			newAdmin.setPrenom(prenom);
@@ -85,7 +85,7 @@ public class GestionnairePostAdmin {
 		}else {
 			vueModele.addObject("succes", false);
 			vueModele.addObject("description", "Echec lors de la création du compte administrateur, "
-					+ "les mots de passe ne concordent pas");
+					+ "les mots de passe ne concordent pas ou il ne respecte pas le REGEX");
 		}
 		
 		return vueModele;
@@ -111,7 +111,7 @@ public class GestionnairePostAdmin {
 			vueModele = new ModelAndView();
 			
 			
-			if(valideNewUser()){
+			if(valideNewIntervenant(nom,prenom,pass1,pass2)){
 				
 				PojoClient newClient = new PojoClient();
 				newClient.setNom(nom);
@@ -139,24 +139,54 @@ public class GestionnairePostAdmin {
 				vueModele.setViewName("/admin/admin_newClient");
 				vueModele.addObject("succes", false);
 				vueModele.addObject("description", "Echec lors de la création du compte administrateur, "
-						+ "les mots de passe ne concordent pas");
+						+ "les mots de passe ne concordent pas ou il ne respecte pas le REGEX");
 			}
 			
 			return vueModele;
 		}
 		
-		private boolean valideNewAmin(String nom, String prenom, String role, String pass1, String pass2){
+		private boolean valideNewIntervenant(String nom, String prenom, String pass1, String pass2){
 			
-			if(nom!=null && prenom != null && role != null && pass1 != null && pass2 != null && pass1.equals(pass2)){
-				return true;
+			if(nom!=null && prenom != null && pass1 != null && pass2 != null && pass1.equals(pass2)){
+				System.out.println(regex);
+				if(pass1.matches(regex)){
+					return true;
+				}else{
+					return false;
+				}
 			}else{
 				return false;
 			}
 			
 		}
-		private boolean valideNewUser(){
+		
+		//ADMINISTRATEUR
+		@RequestMapping(value = {"/searchClientByElm"}, method = RequestMethod.POST)
+		public ModelAndView postAddCreditCard(	
+				@RequestParam("critere") String critere,
+				@RequestParam("critereValue") String critereValue){
 			
-			return true;
+			System.out.println("Post Recherche selon les termes suivants  : "+ critere +" "+critereValue);
+			
+			ModelAndView vueModele = new ModelAndView();
+			vueModele.setViewName("/admin/admin_showAllClient");
+			if(critere.equals("SANS CRITERES") || critere.equals("CHOISIR CRITERE")){
+				vueModele.addObject("clients", (ArrayList<PojoClient>) serviceDaoAdministrateur.getAllClient());
+			}
+			if(critere.equals("ID CLIENT")){
+				vueModele.addObject("clients", (ArrayList<PojoClient>) serviceDaoAdministrateur.getAllClientByID(critereValue));
+			}
+			else if(critere.equals("NOM CLIENT")){
+				vueModele.addObject("clients", (ArrayList<PojoClient>) serviceDaoAdministrateur.getAllClientByNom(critereValue));
+			}
+			else if(critere.equals("PRENOM CLIENT")){
+				vueModele.addObject("clients", (ArrayList<PojoClient>) serviceDaoAdministrateur.getAllClientByPrenom(critereValue));
+			}
+			else if(critere.equals("COURRIEL CLIENT")){
+				vueModele.addObject("clients", (ArrayList<PojoClient>) serviceDaoAdministrateur.getAllClientByCourriel(critereValue));
+			}
+			
+			return vueModele;
 		}
 		
 		//ADMINISTRATEUR
@@ -193,7 +223,7 @@ public class GestionnairePostAdmin {
 						compte.setSolde(montant);
 						if(serviceDaoAdministrateur.createCompteClient(compte)){
 							vueModele.addObject("succes", true);
-							vueModele.addObject("description", "Le compte a ete ajouté au client : " +id);
+							vueModele.addObject("description", "Le compte ["+typeCompte+"] a ete ajouté au client : " +id);
 						}
 						else{
 							vueModele.addObject("succes", false);
@@ -203,7 +233,7 @@ public class GestionnairePostAdmin {
 					}
 					else{
 						vueModele.addObject("succes", false);
-						vueModele.addObject("description", "Le compte n'a pu être ajouté au client : " +id);
+						vueModele.addObject("description", "Le compte ["+typeCompte+"] n'a pu être ajouté au client : " +id);
 					}		
 					vueModele.addObject("client",serviceDaoAdministrateur.getClient(id));
 					vueModele.addObject("comptes",serviceDaoAdministrateur.getAllComptesClient(id));
@@ -233,19 +263,41 @@ public class GestionnairePostAdmin {
 					ModelAndView vueModele = new ModelAndView();
 					vueModele.setViewName("/admin/admin_showAccount");
 					
-					if(serviceDaoAdministrateur.deleteAccount(idCompte)){
-						
-							vueModele.addObject("supres", true);
-							vueModele.addObject("description", "Le compte " +typeCompte+ " ayant le numéro : "+idCompte + " a été supprimé avec succès.");
+					if(serviceDaoAdministrateur.deleteAccount(idCompte)){					
+							vueModele.addObject("succes", true);
+							vueModele.addObject("description", "Le compte [" +typeCompte+ "] ayant le numéro : ["+idCompte + "] a été supprimé avec succès.");
 					}
 					else{
-						vueModele.addObject("supres", false);
-						vueModele.addObject("description", "Le compte " +typeCompte+ " ayant le numéro : "+idCompte + " n'a pu être supprimé.");
+						vueModele.addObject("succes", false);
+						vueModele.addObject("description", "Le compte " +typeCompte+ " ayant le numéro : ["+idCompte + "] n'a pu être supprimé.");
 					}		
 					
 					vueModele.addObject("client",serviceDaoAdministrateur.getClient(id));
 					vueModele.addObject("comptes",serviceDaoAdministrateur.getAllComptesClient(id));
 					
+					return vueModele;
+				}
+				
+				//ADMINISTRATEUR
+				@RequestMapping(value = {"/delClient"}, method = RequestMethod.POST)
+				public ModelAndView postdelClient(	
+						@RequestParam("idClient") int idClient){
+					
+					System.out.println("Post delClient : "+ idClient );
+					
+					ModelAndView vueModele = new ModelAndView();
+					vueModele.setViewName("/admin/admin_showAllClient");
+					
+					if(serviceDaoAdministrateur.deleteClient(idClient)){					
+							vueModele.addObject("succes", true);
+							vueModele.addObject("description", "Le client [" +idClient+ "] a été supprimé avec succès.");
+					}
+					else{
+						vueModele.addObject("succes", false);
+						vueModele.addObject("description", "Le compte " +idClient+ "] n'a pu être supprimé.");
+					}		
+					
+					vueModele.addObject("clients", (ArrayList<PojoClient>) serviceDaoAdministrateur.getAllClient());
 					return vueModele;
 				}
 		
@@ -294,10 +346,17 @@ public class GestionnairePostAdmin {
 					
 					if(newPass1.equals(newPass2)){
 						if(serviceSecurite.authentificationAdmin("a"+id, oldPass)){
-							serviceSecurite.updateAdminPass(id, newPass1);
-							vueModele.addObject("succes", true);
-							vueModele.addObject("description", "Votre mot de passe a ete modifie avec succes.");
-							System.out.println("Mise a jour du mdp OK");
+							if(newPass1.matches(regex)){
+								serviceSecurite.updateAdminPass(id, newPass1);
+								vueModele.addObject("succes", true);
+								vueModele.addObject("description", "Votre mot de passe a ete modifie avec succes.");
+								System.out.println("Mise a jour du mdp OK");
+							}
+							else{
+								vueModele.addObject("succes", false);
+								vueModele.addObject("description", "Le nouveau mot de passe ne respect pas le REGEX.");
+							}
+						
 						}
 						else{
 							vueModele.addObject("succes", false);
@@ -327,11 +386,11 @@ public class GestionnairePostAdmin {
 							System.out.println("La carte n'existe pas on va la créer");
 							serviceDaoAdministrateur.createCreditCard(idClient,idCompte);
 							vueModele.addObject("succes", true);
-							vueModele.addObject("description", "Le carte a ete ajoutee au compte numero : "+idCompte +" avec succes");
+							vueModele.addObject("description", "Le carte a ete ajoutee au compte numero : ["+idCompte +"] avec succes");
 					}
 					else{
 						vueModele.addObject("succes", false);
-						vueModele.addObject("description", "La carte n a pu etre ajoutee au compte numero " +idCompte);
+						vueModele.addObject("description", "La carte n'a pas été ajoutée, le compte ["+idCompte+"] dispose déjà d'une carte.");
 					}		
 					
 					vueModele.addObject("client",serviceDaoAdministrateur.getClient(idClient));

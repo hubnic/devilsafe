@@ -1,8 +1,9 @@
 package com.banque2.services;
 
 
-import java.sql.Date;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -67,6 +68,29 @@ private JdbcTemplate jdbcTemplate;
 			}
 		
 	}
+	
+	public boolean deleteClient(int idClient) {
+		
+		String delCarte = "DELETE FROM carte WHERE idCompte IN (SELECT idCompte FROM compte WHERE idClient = ?)";
+		String delTransactions = "DELETE FROM transaction WHERE idCompteClient IN (SELECT idCompte FROM compte WHERE idClient = ?)";
+		String delCompte = "DELETE FROM compte WHERE idClient = ?";
+		String delClient = "DELETE FROM clients WHERE identifiant = ?";
+		try{
+				jdbcTemplate.update(delCarte,idClient);
+				jdbcTemplate.update(delTransactions,idClient);
+				jdbcTemplate.update(delCompte,idClient);
+				jdbcTemplate.update(delClient,idClient);
+				
+				return true;	
+			}catch(Exception e){
+				e.printStackTrace();
+				return false;
+			}
+		
+	}
+
+	
+	
 	public boolean createCompteClient(PojoCompte compte) {
 		
 		String addClient = "INSERT INTO compte (type, solde, idClient) "
@@ -102,12 +126,11 @@ private JdbcTemplate jdbcTemplate;
 		catch(Exception e){
 			return null;
 		}
-		
 	}
 	
 	public boolean deleteAccount(int idCompte) {
 		String deleteAccount  = "DELETE FROM compte WHERE idCompte = ?";
-		if(deleteAllTransaction(idCompte)){
+		if(deleteAllTransaction(idCompte) && deleteCC(idCompte)){
 			try{
 				jdbcTemplate.update(deleteAccount,idCompte);
 				return true;	
@@ -124,6 +147,17 @@ private JdbcTemplate jdbcTemplate;
 		String delTransaction  = "DELETE FROM transaction WHERE idCompteClient = ?";
 		try{
 			jdbcTemplate.update(delTransaction,idCompte);
+			return true;	
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public boolean deleteCC(int idCompte) {
+		String delCC  = "DELETE FROM carte WHERE idCompte = ?";
+		try{
+			jdbcTemplate.update(delCC,idCompte);
 			return true;	
 		}catch(Exception e){
 			e.printStackTrace();
@@ -200,8 +234,89 @@ private JdbcTemplate jdbcTemplate;
 		catch(Exception e){
 			return null;
 		}
-		
 	}
+	
+	
+	public List<PojoClient> getAllClientByID(String idClient) {
+		String recherche = 
+				"SELECT * "
+				+"FROM clients "
+				+"WHERE "
+				+"identifiant = "+idClient;
+		try{
+			List<PojoClient> result = jdbcTemplate.query(recherche, new MappingClient());
+			if(result.isEmpty()){
+				return null;
+			}
+			else{
+				return result;
+			}	
+		}
+		catch(Exception e){
+			return null;
+		}
+	}
+	
+	public List<PojoClient> getAllClientByNom(String nom) {
+		String recherche = 
+				"SELECT * "
+				+"FROM clients "
+				+"WHERE "
+				+"nom LIKE '%"+nom+"%'";
+		try{
+			List<PojoClient> result = jdbcTemplate.query(recherche, new MappingClient());
+			if(result.isEmpty()){
+				return null;
+			}
+			else{
+				return result;
+			}	
+		}
+		catch(Exception e){
+			return null;
+		}
+	}
+	
+	public List<PojoClient> getAllClientByPrenom(String prenom) {
+		String recherche = 
+				"SELECT * "
+				+"FROM clients "
+				+"WHERE "
+				+"prenom LIKE '%"+prenom+"%'";
+		try{
+			List<PojoClient> result = jdbcTemplate.query(recherche, new MappingClient());
+			if(result.isEmpty()){
+				return null;
+			}
+			else{
+				return result;
+			}	
+		}
+		catch(Exception e){
+			return null;
+		}
+	}
+	
+	public List<PojoClient> getAllClientByCourriel(String courriel) {
+		String recherche = 
+				"SELECT * "
+				+"FROM clients "
+				+"WHERE "
+				+"courriel LIKE '%"+courriel+"%'";
+		try{
+			List<PojoClient> result = jdbcTemplate.query(recherche, new MappingClient());
+			if(result.isEmpty()){
+				return null;
+			}
+			else{
+				return result;
+			}	
+		}
+		catch(Exception e){
+			return null;
+		}
+	}
+	
 	
 	public List<PojoCompte> getAllComptesClient(int id){
 		String getAllComptes = "SELECT * FROM compte where idClient ="+id;		
@@ -264,8 +379,8 @@ private JdbcTemplate jdbcTemplate;
 	
 	public boolean createCreditCard(int idClient,int idCompte){
 		PojoClient client = getClient(idClient);
-		Date date;
-		
+		Date date = new Date();
+		System.out.println("Voici la date :"+date.getYear()+"/"+ date.getMonth() +"/"+ date.getDay());
 		String insertCC = 
 				"INSERT INTO carte (numCarte, dateExp, crypto, nom, prenom, idCompte) "
 				+ "VALUES (?, ?, ?, ?, ?, ?)";
@@ -299,7 +414,7 @@ private JdbcTemplate jdbcTemplate;
 				Integer.toString(un) +
 				Integer.toString(deux) +
 				Integer.toString(trois);
-		System.out.println(carte);
+		//System.out.println(carte);
 		int calc=0;
 		int i = carte.length()-1;
 		boolean carteValide = false;
@@ -308,7 +423,7 @@ private JdbcTemplate jdbcTemplate;
 		while(!carteValide){
 			
 			if(i % 2 == 0){
-				System.out.println("modulo 2 ok");
+				//System.out.println("modulo 2 ok");
 				valeur = Character.getNumericValue(carte.charAt(i)) * 2;
 				if(valeur > 10){
 					
@@ -320,11 +435,11 @@ private JdbcTemplate jdbcTemplate;
 				calc = calc + Character.getNumericValue(carte.charAt(i)); 
 			}
 			if(i==0){
-				System.out.println("Voici le resultat du calc : " +calc);
+				//System.out.println("Voici le resultat du calc : " +calc);
 				
 				if(calc % 10 == 0){
 					carteValide = true;
-					System.out.println("voici la carte valide : "+carte);
+					//System.out.println("voici la carte valide : "+carte);
 				}else{	
 					calc = 0;
 					un = random.nextInt(9999);	

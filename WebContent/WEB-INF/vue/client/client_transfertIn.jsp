@@ -1,63 +1,29 @@
-<%@ page
-	language="java"
-	contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
-<%@taglib
-	prefix="c"
-	uri="http://java.sun.com/jsp/jstl/core"%>
-<html>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <head>
 <title>Transfert In</title>
-<link
-	rel="stylesheet"
-	href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.min.css" />">
-<link
-	rel="stylesheet"
-	href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.css" />">
-<script src="<c:url value="/librairie/js/valideLogin.js" />"></script>
+<link rel="stylesheet" href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.min.css" />">
+<link rel="stylesheet" href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.css" />">
 <script src="<c:url value="/librairie/jquery/jquery-3.1.1.min.js" />"></script>
-<script
-	src="<c:url value="/librairie/bootstrap-3.3.7/js/bootstrap.min.js" />"></script>
+<script src="<c:url value="/librairie/bootstrap-3.3.7/js/bootstrap.min.js" />"></script>
 </head>
 <body>
-	<nav class="navbar navbar-inverse">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<a
-					class="navbar-brand"
-					href="#">Votre Espace D</a>
-			</div>
-			<ul class="nav navbar-nav">
-				<li class="active"><a href="<c:url value="/apercu" />"><span
-						class="glyphicon glyphicon-home"></span> Accueil</a></li>
-				<li><a href="<c:url value="/profil" />"><span
-						class="glyphicon glyphicon-user"></span> Mon profil</a></li>
-			</ul>
-			<ul class="nav navbar-nav navbar-right">
-				<li><a href="<c:url value="/deconnexion" />"><span
-						class="glyphicon glyphicon-log-out"></span> Deconnexion</a></li>
-			</ul>
-		</div>
-	</nav>
-	<div class="container-fluid">
-		<div class="row content">
-			<div class="col-sm-3 sidenav">
-				<h5>Transfert interne</h5>
-				<br> <br>
-				<ul class="nav nav-pills nav-stacked">
-					<li><a href="<c:url value="/apercu"/>">Mes comptes</a></li>
-					<li><a href="<c:url value="/transfertIn"/>">Transfert
-							d'argent vers un compte interne</a></li>
-					<li><a href="<c:url value="/transfertOut"/>">Transfert
-							d'argent vers un compte externe</a></li>
-					<li><a href="<c:url value="/credit"/>">Rembourser ma carte
-							de credit</a></li>
-				</ul>
-				<br>
-			</div>
-			<div class="container">
-				<div class="row">
-					<div class="col-sm-8">
+<div class="container-fluid">
+  <div class="row content">
+    <div class="col-sm-3 sidenav">
+      <h4>Votre Espace D</h4>
+      <br>
+      <ul class="nav nav-pills nav-stacked">
+        <li><a href="<c:url value="/apercu"/>"><span class="glyphicon glyphicon-piggy-bank"></span> Mes comptes</a></li>
+		<li class="active"><a href="<c:url value="/transfertIn"/>"><span class="glyphicon glyphicon-transfer"></span> Transfert vers un compte interne</a></li>
+		<li><a href="<c:url value="/transfertOut"/>"><span class="glyphicon glyphicon-transfer"></span> Transfert vers un compte externe</a></li>
+		<li><a href="<c:url value="/credit"/>"><span class="glyphicon glyphicon-credit-card"></span> Rembourser carte de credit</a></li>
+		<li><a href="<c:url value="/profil" />"><span class="glyphicon glyphicon-user"></span> Mon profil</a></li>
+		<li><a href="<c:url value="/deconnexion" />"><span class="glyphicon glyphicon-log-out"></span> Deconnexion</a></li>
+      </ul><br>
+    </div>
+
+    <div class="col-sm-8">
 						<hr>
 						<h3>
 							Tranfert d'argent entre vos comptes<span
@@ -93,7 +59,7 @@
 									<option>Compte 3</option>
 								</select>
 							</div>
-							<h3>3. Inscrire le montant désiré</h3>
+							<h3>3. Inscrire le montant dÃ©sirÃ©</h3>
 							<div class="form-group">
 								<input
 									type="number"
@@ -121,12 +87,11 @@
 						</form>
 						<hr>
 					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<footer class="container-fluid">
-		<p>Banque 2</p>
-	</footer>
+  </div>
+</div>
+
+<footer class="container-fluid">
+  <p>Banque du Demon</p>
+</footer>
 </body>
 </html>

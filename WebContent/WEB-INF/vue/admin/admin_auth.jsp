@@ -1,7 +1,5 @@
-<%@ page
-	language="java"
-	contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib
 	prefix="c"
 	uri="http://java.sun.com/jsp/jstl/core"%>
@@ -36,7 +34,7 @@
 	</nav>
 	
 	<div class="container">
-		<h3>Accéder à mon compte d'administration</h3>
+		<h3>AccÃ©der Ã  mon compte d'administration</h3>
 		<br>
 		<hr>
 		<form
@@ -62,14 +60,14 @@
 			<div class="form-group row">
 				<label
 					for="inputPassword3"
-					class="col-sm-2 col-form-label">Clé de sécurité</label>
+					class="col-sm-2 col-form-label">ClÃ© de sÃ©curitÃ©</label>
 				<div class="col-sm-10">
 					<input
 						type="password"
 						class="form-control"
 						id="secureKey"
 						name="secureKey"
-						placeholder="Saisir votre clé de sécurité"
+						placeholder="Saisir votre clÃ© de sÃ©curitÃ©"
 						value="1234567"
 						required>
 				</div>
@@ -78,7 +76,7 @@
 				<div class="offset-sm-2 col-sm-10">
 					<button
 						type="submit"
-						class="btn btn-primary">Valider mon Identité</button>
+						class="btn btn-primary">Valider mon IdentitÃ©</button>
 					<input
 						type="hidden"
 						name="${_csrf.parameterName}"
@@ -88,12 +86,12 @@
 		</form>
 		<c:if test="${param.error != null}">
 			<div class="alert alert-danger">
-				<p>Problème d'authentification.</p>
+				<p>ProblÃ¨me d'authentification.</p>
 			</div>
 		</c:if>
 		<c:if test="${param.logout != null}">
 			<div class="alert alert-success">
-				<p>Deconnexion avec succès.</p>
+				<p>Deconnexion avec succÃ¨s.</p>
 			</div>
 		</c:if>
 	</div>
