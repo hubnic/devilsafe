@@ -40,16 +40,14 @@ public class GestionnaireAPI {
     @RequestMapping(value = "/preauth", method = RequestMethod.POST, headers={"key=1234"})
     public ResponseEntity<String> creerPreauth(@RequestBody  String body ) throws IOException {
 
-
-        Map<String, Object> map = new HashMap<String, Object>();
         ObjectMapper mapper = new ObjectMapper();
-        // convert JSON string to Map
-        map = mapper.readValue(body, new TypeReference<Map<String, String>>() {});
+        JsonNode rootNode = mapper.readTree(body);
+        JsonNode idNode = rootNode.path("credit_id");
 
         /* CRÉATION DE LA PRÉAUTORIZATION ICI*/
 
+        ObjectNode preauth = mapper.createObjectNode();
         if (CREATION == 1) {
-            ObjectNode preauth = mapper.createObjectNode();
             preauth.put("preauth_id", i);
             preauth.put("preauth_status", "CREATED");
             preauth.put("preauth_expiration", new Date(Calendar.getInstance().getTimeInMillis() + (15 * 60000)).toString());
@@ -57,7 +55,6 @@ public class GestionnaireAPI {
             i++;
             return ResponseEntity.ok().header("salut", "réponse").body(preauth.toString());
         } else {
-            ObjectNode preauth = mapper.createObjectNode();
             preauth.put("preauth_status", "FAILURE");
             preauth.put("detail_transaction", "La preautorisation n'a pu etre creee");
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).header("status", "pas bon").body(preauth.toString());
@@ -69,16 +66,14 @@ public class GestionnaireAPI {
     @RequestMapping(value = "/preauth/{id}", method = RequestMethod.PATCH, headers={"key=1234"})
     public ResponseEntity<String> ModifierPreauth(@PathVariable("id") int id, @RequestBody String body2 ) throws IOException {
 
-        Map<String, Object> map2 = new HashMap<String, Object>();
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootNode = mapper.readTree(body2);
         JsonNode idNode = rootNode.path("credit_id");
-        map2 = mapper.readValue(body2, new TypeReference<Map<String, String>>(){});
 
         /* CRÉATION DE LA PRÉAUTORIZATION ICI*/
 
+        ObjectNode preauth_modif = mapper.createObjectNode();
         if(id == 1){
-            ObjectNode preauth_modif = mapper.createObjectNode();
             preauth_modif.put("preauth_id", idNode);
             preauth_modif.put("preauth_status","CREATED");
             preauth_modif.put("preauth_expiration", new Date(Calendar.getInstance().getTimeInMillis() + (15 * 60000)).toString());
@@ -87,7 +82,6 @@ public class GestionnaireAPI {
             return ResponseEntity.ok().header("salut", "réponse").body(preauth_modif.toString());
         }
         else{
-            ObjectNode preauth_modif = mapper.createObjectNode();
             preauth_modif.put("preauth_status","FAILURE");
             preauth_modif.put("detail_transaction", "La preautorisation n'a pu etre creee");
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).header("status", "pas bon").body(preauth_modif.toString());
@@ -95,41 +89,34 @@ public class GestionnaireAPI {
     }
 
     @RequestMapping(value = "/virement", method = RequestMethod.POST, headers={"key=1234"})
-    public ResponseEntity<String> creerVirement(@RequestBody String body ) {
+    public ResponseEntity<String> creerVirement(@RequestBody  String body ) throws IOException {
 
-        body.toString();
-        return ResponseEntity.ok().header("salut", "salut").body(body);
-    }
-/**
-    @RequestMapping(path = "/{id}", method = RequestMethod.GET)
-    public Stormtrooper getTrooper(@PathVariable("id") String id) throws NotFoundException {
 
-        Stormtrooper stormtrooper = trooperDao.getStormtrooper(id);
-        if (stormtrooper == null) {
-            throw new NotFoundException();
+        Map<String, Object> map = new HashMap<String, Object>();
+        ObjectMapper mapper = new ObjectMapper();
+        // convert JSON string to Map
+        map = mapper.readValue(body, new TypeReference<Map<String, String>>() {});
+
+        /* CRÉATION DE LA PRÉAUTORIZATION ICI*/
+        ObjectNode virement = mapper.createObjectNode();
+        if (CREATION == 1) {
+
+            virement.put("preauth_id", i);
+            virement.put("preauth_status", "CREATED");
+            virement.put("preauth_expiration", new Date(Calendar.getInstance().getTimeInMillis() + (15 * 60000)).toString());
+            virement.put("detail_transaction", "Preautorisation creee avec succes");
+            i++;
+            return ResponseEntity.ok().header("salut", "réponse").body(virement.toString());
+        } else {
+            virement.put("preauth_status", "FAILURE");
+            virement.put("detail_transaction", "La preautorisation n'a pu etre creee");
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).header("status", "pas bon").body(virement.toString());
         }
-        return stormtrooper;
-    }
-
-    @RequestMapping(method = RequestMethod.POST)
-    public Stormtrooper createTrooper(@RequestBody Stormtrooper trooper) {
-        return trooperDao.addStormtrooper(trooper);
-    }
-
-    @RequestMapping(path = "/{id}", method = RequestMethod.POST)
-    public Stormtrooper updateTrooper(@PathVariable("id") String id, @RequestBody Stormtrooper updatedTrooper) throws NotFoundException {
-        return trooperDao.updateStormtrooper(id, updatedTrooper);
-    }
-
-
-    @RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void deleteTrooper(@PathVariable("id") String id) {
-        trooperDao.deleteStormtrooper(id);
     }
 
 
 
+/**
     //read json file data to String
     byte[] jsonData = Files.readAllBytes(Paths.get("employee.txt"));
 
