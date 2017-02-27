@@ -13,6 +13,8 @@ public class GestionnaireGetClient {
 	
 	@Autowired
 	private ServiceDaoClient serviceDaoClient;
+	
+	
 
 	@RequestMapping(value = {"/apercu"}, method = RequestMethod.GET)
 	public String getApercu(ModelMap listeElement) {	
@@ -23,25 +25,13 @@ public class GestionnaireGetClient {
 	
 	@RequestMapping(value = {"/transfertIn"}, method = RequestMethod.GET)
 	public String getTransfertIn(ModelMap listeElement) {
-		listeElement.addAttribute("username", "client");
-		listeElement.addAttribute("account", "Debit");
-		listeElement.addAttribute("accountID", "066-123456");
-		listeElement.addAttribute("accountBalance", "2599");
-		listeElement.addAttribute("creditAccount", "Credit");
-		listeElement.addAttribute("creditAccountId", "066-3223423423");
-		listeElement.addAttribute("creditBalance", "256");
+		listeElement.addAttribute("comptes", serviceDaoClient.getAllComptesClientForTransfert(Integer.parseInt(SecurityContextHolder.getContext().getAuthentication().getName())));	
 		return "/client/client_transfertIn";
 	}
 	
 	@RequestMapping(value = {"/transfertOut"}, method = RequestMethod.GET)
 	public String getTransfertOut(ModelMap listeElement) {
-		listeElement.addAttribute("username", "client");
-		listeElement.addAttribute("account", "Debit");
-		listeElement.addAttribute("accountId", "066-123456");
-		listeElement.addAttribute("accountBalance", "2599");
-		listeElement.addAttribute("creditAccount", "Credit");
-		listeElement.addAttribute("creditAccountID", "066-3223423423");
-		listeElement.addAttribute("creditBalance", "256");
+		listeElement.addAttribute("comptes", serviceDaoClient.getAllComptesClientForTransfert(Integer.parseInt(SecurityContextHolder.getContext().getAuthentication().getName())));		
 		return "/client/client_transfertOut";
 	}
 	@RequestMapping(value = {"/profil"}, method = RequestMethod.GET)
@@ -52,9 +42,8 @@ public class GestionnaireGetClient {
 	
 	@RequestMapping(value = {"/credit"}, method = RequestMethod.GET)
 	public String getCredit(ModelMap listeElement) {
-		listeElement.addAttribute("accountName", "Debit");
-		listeElement.addAttribute("accountId", "066-123456");
-		listeElement.addAttribute("montant", "256");
+		listeElement.addAttribute("comptes", serviceDaoClient.getAllComptesClientForTransfert(Integer.parseInt(SecurityContextHolder.getContext().getAuthentication().getName())));	
 		return "/client/client_credit";
 	}
+	
 }

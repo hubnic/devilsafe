@@ -75,9 +75,9 @@
 												name="compteOut"
 												required>
 												<option>Choisir Compte</option>
-												<option>Compte 1</option>
-												<option>Compte 2</option>
-												<option>Compte 2</option>
+												<c:forEach items="${comptes}" var="comptes">
+												<option>${comptes.type} ${comptes.idBanque}${comptes.idCompte} ${comptes.solde}$ </option>
+												</c:forEach>
 											</select>
 										</div>
 										<hr>

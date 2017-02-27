@@ -121,4 +121,9 @@ public class ServiceAuthentification {
 		String updatePass = "UPDATE administrateurs SET mdp=? WHERE identifiant=?";
 		jdbcTemplate.update(updatePass, hashMDP(mdp) , id);
 	}
+	
+	public void updateClientPass(String id, String mdp){
+		String updatePass = "UPDATE clients SET mdp=? WHERE identifiant=?";
+		jdbcTemplate.update(updatePass, hashMDP(mdp) , id);
+	}
 }

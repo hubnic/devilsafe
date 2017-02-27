@@ -25,14 +25,6 @@ public class ServiceDaoClient {
 	}
 	
 
-
-public void update(PojoAdministrateur administrateur) {
-	
-	String sql = "";
-	jdbcTemplate.execute(sql);
-}
-
-
 public PojoClient getProfilClient(int id) {
 	String getClient = "SELECT * FROM clients WHERE identifiant=" + id;
 	
@@ -72,6 +64,24 @@ public List<PojoCompte> getAllComptesClient(int idClient){
 	}
 }
 
+public List<PojoCompte> getAllComptesClientForTransfert(int idClient){
+	
+	System.out.println("Execution de la requete pour client "+idClient);
+	String getAllComptes = "SELECT * FROM compte where idClient ="+idClient;		
+	try{
+		ArrayList<PojoCompte> result = (ArrayList<PojoCompte>) jdbcTemplate.query(getAllComptes,new MappingCompte());
+		System.out.println(result.get(0));
+		if(result.isEmpty()){
+			return null;
+		}
+		else{
+			return result;
+		}	
+	}
+	catch(Exception e){
+		return null;
+	}
+}
 private ArrayList<PojoCompte> getAllTransactionByCompte(ArrayList<PojoCompte> l){
 	String getAllTransactions = "SELECT * FROM transaction WHERE idCompteClient = ";
 	

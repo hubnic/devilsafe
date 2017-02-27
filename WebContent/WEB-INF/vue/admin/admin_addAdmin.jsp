@@ -6,17 +6,12 @@
 <html lang="fr">
 <head>
 <title>Ajouter Admin</title>
-<link
-	rel="stylesheet"
-	href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.min.css" />">
-<link
-	rel="stylesheet"
-	href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.css" />">
+<link rel="stylesheet" href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.min.css" />">
+<link rel="stylesheet" href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.css" />">
 <script src="<c:url value="/librairie/js/valideLogin.js" />"></script>
 <script src="<c:url value="/librairie/js/confirmWindow.js" />"></script>
 <script src="<c:url value="/librairie/jquery/jquery-3.1.1.min.js" />"></script>
-<script
-	src="<c:url value="/librairie/bootstrap-3.3.7/js/bootstrap.min.js" />"></script>
+<script src="<c:url value="/librairie/bootstrap-3.3.7/js/bootstrap.min.js" />"></script>
 </head>
 
 

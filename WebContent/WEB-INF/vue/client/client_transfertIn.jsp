@@ -41,9 +41,9 @@
 									id="compteOut"
 									name="cpmpteOut">
 									<option>Choisir compte emetteur</option>
-									<option>Compte 1</option>
-									<option>Compte 2</option>
-									<option>Compte 3</option>
+									<c:forEach items="${comptes}" var="comptes">
+									<option>${comptes.type} ${comptes.idBanque}${comptes.idCompte} ${comptes.solde}$ </option>
+									</c:forEach>
 								</select>
 							</div>
 							<hr>
@@ -54,9 +54,9 @@
 									id="compteIn"
 									name="compteIn">
 									<option>Choisir compte receveur</option>
-									<option>Compte 1</option>
-									<option>Compte 2</option>
-									<option>Compte 3</option>
+									<c:forEach items="${comptes}" var="comptes">
+									<option>${comptes.type} ${comptes.idBanque}${comptes.idCompte} ${comptes.solde}$ </option>
+									</c:forEach>
 								</select>
 							</div>
 							<h3>3. Inscrire le montant désiré</h3>
