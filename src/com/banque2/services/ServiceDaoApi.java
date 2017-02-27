@@ -32,10 +32,9 @@ private JdbcTemplate jdbcTemplate;
 			return null;
 		}
 	}
-	
-	
+
 	public Boolean createPreautorisation(PojoPreautorisation preauth) {
-		String addpreauth = "INSERT INTO preautorisation (preauth_id, credit_id, credit_expiration, credit_nom, credit_prenom, credit_cvs, source_id, montant) VALUES (?,?, ?, ?, ?, ?, ?, ?)";
+		String addpreauth = "INSERT INTO preautorisation (preauth_id, credit_id, credit_expiration, credit_nom, credit_prenom, credit_cvs, source_id, montant, preauth_status) VALUES (?,?,?, ?, ?, ?, ?, ?, ?)";
 
 		try{
 				jdbcTemplate.update(addpreauth,
@@ -46,12 +45,38 @@ private JdbcTemplate jdbcTemplate;
 						preauth.getCredit_prenom(), 
 						preauth.getCredit_cvs(),
 						preauth.getSource_id(), 
-						preauth.getMontant());
+						preauth.getMontant(),
+						preauth.getPreauthStatus());
 				return true;	
 			}catch(Exception e){
 				e.printStackTrace();
 				return false;
 			}
+	}
+
+	public Boolean modifierPreautorizationStatus(PojoPreautorisation preauth){
+
+		String status = preauth.getPreauthStatus();
+		int id = preauth.getPreauth_id();
+		String modifStatus = "UPDATE preautorisation SET preauth_status = ? WHERE preauth_id = ?";
+
+		try{
+
+			jdbcTemplate.update(modifStatus,
+									preauth.getPreauthStatus(),
+									preauth.getPreauth_id());
+			return true;
+/*
+			if(result.isEmpty()){
+				return false;
+			}
+			else{
+				return true;
+			}*/
+		}
+		catch(Exception e){
+			return false;
+		}
 	}
 	
 	

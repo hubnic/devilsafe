@@ -1,9 +1,10 @@
 package com.banque2.mappingModele;
 
+import com.banque2.modele.PojoPreautorisation;
+import org.springframework.jdbc.core.RowMapper;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import org.springframework.jdbc.core.RowMapper;
-import com.banque2.modele.PojoPreautorisation;
 
 
 public class MappingPreautorisation implements RowMapper<PojoPreautorisation> {
@@ -19,6 +20,7 @@ public class MappingPreautorisation implements RowMapper<PojoPreautorisation> {
 		preautorisation.setSource_id(resultSet.getString("source_id"));
 		preautorisation.setMontant(resultSet.getDouble("montant"));
 		preautorisation.setPreauth_id(resultSet.getInt("preauth_id"));
+		preautorisation.setPreauthStatus(resultSet.getString("preauth_status"));
 		return preautorisation;
 	}
 

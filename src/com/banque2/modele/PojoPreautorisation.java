@@ -13,6 +13,7 @@ public class PojoPreautorisation {
     private String source_id;
     private double montant;
     private int preauth_id;
+    private String preauth_status;
 
     public PojoPreautorisation() {}
 
@@ -78,6 +79,14 @@ public class PojoPreautorisation {
 
     public void setPreauth_id(int preauth_id) {
         this.preauth_id = preauth_id;
+    }
+
+    public String getPreauthStatus() {
+        return preauth_status;
+    }
+
+    public void setPreauthStatus(String status) {
+        this.preauth_status = status;
     }
 
     @Override
