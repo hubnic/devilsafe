@@ -175,12 +175,12 @@ CREATE TABLE IF NOT EXISTS `transaction` (
 DROP TABLE IF EXISTS `preautorisation`;
 CREATE TABLE IF NOT EXISTS `preautorisation` (
   `preauth_id` int(11) NOT NULL AUTO_INCREMENT,
-  `credit_id` int(11) NOT NULL ,
+  `credit_id` VARCHAR (16) NOT NULL ,
   `credit_expiration` date NOT NULL,
   `credit_nom` varchar(25) NOT NULL,
   `credit_prenom` varchar(25) NOT NULL,
   `credit_cvs` varchar(3) NOT NULL,
-  `source_id` int(11) NOT NULL,
+  `source_id` varchar(11) ,
   `montant` DOUBLE NOT NULL,
   PRIMARY KEY (`preauth_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

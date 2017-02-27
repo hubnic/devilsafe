@@ -1,5 +1,6 @@
 package com.banque2.configuration;
 
+import com.banque2.services.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -10,11 +11,6 @@ import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
-
-import com.banque2.services.ServiceAuthentification;
-import com.banque2.services.ServiceDaoAdministrateur;
-import com.banque2.services.ServiceDaoApi;
-import com.banque2.services.ServiceDaoClient;
 
 @Configuration
 @EnableWebMvc
@@ -54,14 +50,19 @@ public class SpringMvcResolver extends WebMvcConfigurerAdapter {
 	    public ServiceDaoClient getServiceDaoClient() {
 			return new ServiceDaoClient(dataSource());
 		}
-	    
+
 	    @Bean
 	    public ServiceDaoApi getServiceDaoApi() {
 			return new ServiceDaoApi(dataSource());
 		}
-	    
-	    
-    @Override
+
+		@Bean
+		public ServiceDaoCompte getServiceDaoCompte() {
+		return new ServiceDaoCompte(dataSource());
+	}
+
+
+	@Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/librairie/**").addResourceLocations("/WEB-INF/lib/");
     }

@@ -1,13 +1,11 @@
 package com.banque2.services;
 
-import java.util.List;
-
-import javax.sql.DataSource;
-
-import org.springframework.jdbc.core.JdbcTemplate;
-
 import com.banque2.mappingModele.MappingPreautorisation;
 import com.banque2.modele.PojoPreautorisation;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import javax.sql.DataSource;
+import java.util.List;
 
 public class ServiceDaoApi {
 
@@ -37,10 +35,11 @@ private JdbcTemplate jdbcTemplate;
 	
 	
 	public Boolean createPreautorisation(PojoPreautorisation preauth) {
-		String addpreauth = "INSERT INTO preauth_id (credit_id, credit_expiration, credit_nom, credit_prenom, credit_cvs, source_id, montant) VALUES (?, ?, ?, ?, ?, ?, ?)";
+		String addpreauth = "INSERT INTO preautorisation (preauth_id, credit_id, credit_expiration, credit_nom, credit_prenom, credit_cvs, source_id, montant) VALUES (?,?, ?, ?, ?, ?, ?, ?)";
 
 		try{
-				jdbcTemplate.update(addpreauth, 
+				jdbcTemplate.update(addpreauth,
+						preauth.getPreauth_id(),
 						preauth.getCredit_id(), 
 						preauth.getCredit_expiration(),
 						preauth.getCredit_nom(), 

@@ -4,20 +4,21 @@ package com.banque2.controleur;
  * Created by tinic on 2/20/17.
  */
 
+import com.banque2.modele.PojoCompte;
+import com.banque2.modele.PojoPreautorisation;
+import com.banque2.services.ServiceDaoApi;
+import com.banque2.services.ServiceDaoCompte;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ObjectNode;
-import org.codehaus.jackson.type.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.banque2.services.ServiceDaoApi;
+
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -35,6 +36,9 @@ public class GestionnaireAPI {
     @Autowired
 	private ServiceDaoApi serviceDaoApi;
 
+    @Autowired
+    private ServiceDaoCompte serviceDaoCompte;
+
     @RequestMapping(method = RequestMethod.GET)
     public String listTroopers() {
         return "salut";
@@ -44,25 +48,45 @@ public class GestionnaireAPI {
     @RequestMapping(value = "/preauth", method = RequestMethod.POST, headers={"key=1234"})
     public ResponseEntity<String> creerPreauth(@RequestBody  String body ) throws IOException {
 
+        // CREATION MAPPER POUR ACCEDER AUX DONNEES
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootNode = mapper.readTree(body);
-        JsonNode idNode = rootNode.path("credit_id");
 
-        /* CRÉATION DE LA PRÉAUTORIZATION ICI*/
+        //CREATION REPONSE
+        ObjectNode preauthNode = mapper.createObjectNode();
 
-        ObjectNode preauth = mapper.createObjectNode();
-        if (CREATION == 1) {
-            preauth.put("preauth_id", i);
-            preauth.put("preauth_status", "CREATED");
-            preauth.put("preauth_expiration", new Date(Calendar.getInstance().getTimeInMillis() + (15 * 60000)).toString());
-            preauth.put("detail_transaction", "Preautorisation creee avec succes");
+
+        try {
+            //CREATION POJO preautorisation
+            PojoPreautorisation preauth = new PojoPreautorisation();
+
+            //ASSIGNATION DES PARAMÈTRES JSON -> POJO
+            preauth.setCredit_id(rootNode.path("credit_id").getTextValue());
+            preauth.setCredit_expiration(rootNode.path("credit_expiration").getTextValue());
+            preauth.setCredit_nom(rootNode.path("credit_nom").getTextValue());
+            preauth.setCredit_prenom(rootNode.path("credit_prenom").getTextValue());
+            preauth.setCredit_cvs(rootNode.path("credit_cvs").getIntValue());
+            preauth.setSource_id(rootNode.path("source_id").getTextValue());
+            preauth.setMontant(rootNode.path("montant").getDoubleValue());
+            preauth.setPreauth_id(i);
+
+            serviceDaoApi.createPreautorisation(preauth);
+
+            //ENVOI REPONSE
+            preauthNode.put("preauth_id", i);
+            preauthNode.put("preauth_status", "CREATED");
+            preauthNode.put("preauth_expiration", new Date(Calendar.getInstance().getTimeInMillis() + (15 * 60000)).toString());
+            preauthNode.put("detail_transaction", "Preautorisation creee avec succes");
             i++;
-            return ResponseEntity.ok().header("salut", "réponse").body(preauth.toString());
-        } else {
-            preauth.put("preauth_status", "FAILURE");
-            preauth.put("detail_transaction", "La preautorisation n'a pu etre creee");
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).header("status", "pas bon").body(preauth.toString());
+            return ResponseEntity.ok().header("salut", "réponse").body(preauthNode.toString());
         }
+        catch (Exception e){
+            // REPONSE EN CAS D'ECHEC
+            preauthNode.put("preauth_status", "FAILURE");
+            preauthNode.put("detail_transaction", "La preautorisation n'a pu etre creee");
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).header("status", "pas bon").body(preauthNode.toString());
+        }
+
     }
 
 
@@ -96,27 +120,44 @@ public class GestionnaireAPI {
     public ResponseEntity<String> creerVirement(@RequestBody  String body ) throws IOException {
 
 
-        Map<String, Object> map = new HashMap<String, Object>();
+        // CREATION MAPPER POUR ACCEDER AUX DONNEES
         ObjectMapper mapper = new ObjectMapper();
-        // convert JSON string to Map
-        map = mapper.readValue(body, new TypeReference<Map<String, String>>() {});
+        JsonNode rootNode = mapper.readTree(body);
 
-        /* CRÉATION DE LA PRÉAUTORIZATION ICI*/
-        ObjectNode virement = mapper.createObjectNode();
-        if (CREATION == 1) {
+        //CREATION REPONSE
+        ObjectNode compteNode = mapper.createObjectNode();
 
-            virement.put("preauth_id", i);
-            virement.put("preauth_status", "CREATED");
-            virement.put("preauth_expiration", new Date(Calendar.getInstance().getTimeInMillis() + (15 * 60000)).toString());
-            virement.put("detail_transaction", "Preautorisation creee avec succes");
-            i++;
-            return ResponseEntity.ok().header("salut", "réponse").body(virement.toString());
-        } else {
-            virement.put("preauth_status", "FAILURE");
-            virement.put("detail_transaction", "La preautorisation n'a pu etre creee");
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).header("status", "pas bon").body(virement.toString());
+
+        try {
+            //CREATION POJO preautorisation
+            PojoCompte compte = new PojoCompte();
+
+            //ASSIGNATION DES PARAMÈTRES JSON -> POJO
+            compte.setIdCompte(rootNode.path("compte_dest_ID").getIntValue());
+            compte.setSolde(rootNode.path("montant").getDoubleValue());
+
+
+            serviceDaoCompte.ajoutMontant(
+                    compte.getIdCompte(),
+                    compte.getSolde());
+
+            //ENVOI REPONSE
+
+            compteNode.put("transaction_status", "SUCCEED");
+            compteNode.put("timestamp", new Date(Calendar.getInstance().getTimeInMillis()).toString());
+            compteNode.put("detail_transaction", "virement fait avec succès");
+
+            return ResponseEntity.ok().header("salut", "réponse").body(compteNode.toString());
         }
+        catch (Exception e){
+            // REPONSE EN CAS D'ECHEC
+            compteNode.put("transaction_status", "FAILURE");
+            compteNode.put("detail_transaction", "Le virement n'a pu etre fait");
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).header("status", "pas bon").body(compteNode.toString());
+        }
+
     }
+
 
 
 
