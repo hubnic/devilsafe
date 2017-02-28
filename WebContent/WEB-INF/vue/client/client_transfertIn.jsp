@@ -4,6 +4,7 @@
 <title>Transfert In</title>
 <link rel="stylesheet" href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.min.css" />">
 <link rel="stylesheet" href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.css" />">
+<script src="<c:url value="/librairie/js/valideAccount.js" />"></script>
 <script src="<c:url value="/librairie/jquery/jquery-3.1.1.min.js" />"></script>
 <script src="<c:url value="/librairie/bootstrap-3.3.7/js/bootstrap.min.js" />"></script>
 </head>
@@ -39,7 +40,8 @@
 								<label for="compteOut">Emetteur</label> <select
 									class="form-control"
 									id="compteOut"
-									name="cpmpteOut">
+									name="cpmpteOut"
+									onchange="checkAccount();">
 									<option>Choisir compte emetteur</option>
 									<c:forEach items="${comptes}" var="comptes">
 									<option>${comptes.type} ${comptes.idBanque}${comptes.idCompte} ${comptes.solde}$ </option>
@@ -52,12 +54,14 @@
 								<label for="compteIn">Compte receveur</label> <select
 									class="form-control"
 									id="compteIn"
-									name="compteIn">
+									name="compteIn"
+									onchange="checkAccount();">
 									<option>Choisir compte receveur</option>
 									<c:forEach items="${comptes}" var="comptes">
 									<option>${comptes.type} ${comptes.idBanque}${comptes.idCompte} ${comptes.solde}$ </option>
 									</c:forEach>
 								</select>
+								<span id="confirmMessage" class="confirmMessage"></span>
 							</div>
 							<h3>3. Inscrire le montant désiré</h3>
 							<div class="form-group">
