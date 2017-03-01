@@ -70,6 +70,19 @@
 									<div class="form-group row">
 										<label
 											for="example-email-input"
+											class="col-2 col-form-label">Identifant :</label>
+										<div class="col-10">
+											<input
+												class="form-control"
+												type="text"
+												value="${client.identifiant}"
+												id="nom"
+												readonly>
+										</div>
+									</div>
+									<div class="form-group row">
+										<label
+											for="example-email-input"
 											class="col-2 col-form-label">Nom :</label>
 										<div class="col-10">
 											<input
@@ -93,7 +106,10 @@
 												readonly>
 										</div>
 									</div>
-									<div class="form-group row">
+								</div>
+								<div class="col-sm-1"></div>
+								<div class="col-sm-4">
+								<div class="form-group row">
 										<label
 											for="tel"
 											class="col-2 col-form-label">Telephone</label>
@@ -106,14 +122,6 @@
 												readonly>
 										</div>
 									</div>
-								</div>
-								<div class="col-sm-1"></div>
-								<div class="col-sm-4">
-									<form
-										method="post"
-										id="changePwd"
-										action="<c:url value="/changePwd" />"
-										role="form">
 										<div class="form-group row">
 											<label
 												for="courriel"
@@ -140,14 +148,6 @@
 													readonly>
 											</div>
 										</div>
-										<div class="form-group row">
-											<div class="offset-sm-2 col-sm-10">
-												<button
-													type="submit"
-													class="btn btn-warning">Modifier</button>
-											</div>
-										</div>
-									</form>
 								</div>
 							</div>
 						</div>
@@ -158,6 +158,7 @@
 						</h3>
 				
 						<c:forEach items="${comptes}" var="comptes">
+					
 					
 					<div class="container">
 						<div class="panel-group" id="accordion">
@@ -171,7 +172,6 @@
 												<th>Nom du compte</th>
 												<th>Solde</th>
 												<th>Voir</th>
-												<th>Creer Carte</th>
 												<th>Clôturer</th>
 											</tr>
 										</thead>
@@ -186,16 +186,6 @@
 													href="#${comptes.idCompte}"> <span
 														class="glyphicon glyphicon-eye-open"></span>
 												</a></td>
-												<td class="col-xs-2">
-												<form method="post" id="addCreditCard ${comptes.idCompte}" action="<c:url value="/addCreditCard" />"role="form">
-													<input type="hidden" class="form-control" id="idClient" name="idClient" value="${client.identifiant}" readonly>
-													<input type="hidden" class="form-control" id="idCompte" name="idCompte" value="${comptes.idCompte}" readonly>
-													<button onclick="confirmAddCC(${comptes.idCompte})"> 
-													<span class="glyphicon glyphicon-credit-card"></span>
-													</button>
-													<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-												</form>
-											</td>
 											<td class="col-xs-2">
 												<form method="post" id="delAccount ${comptes.idCompte}" action="<c:url value="/delAccount" />"role="form">
 													<input type="hidden" class="form-control" id="idClient" name="idClient" value="${client.identifiant}" readonly>
@@ -240,10 +230,8 @@
 							</div>		
 							</div>					
 						</c:forEach>
-						<h3>
-							Ajouter un compte <span
-								class="glyphicon glyphicon-plus"></span>
-						</h3>
+						<hr>
+						<h3><span class="glyphicon glyphicon-plus"></span>	Ajouter un compte </h3>
 					
 						<form
 							method="post"
@@ -260,8 +248,8 @@
 									name="typeCompte"
 									required>
 									<option>Choisir compte</option>
-									<option>Debit</option>
-									<option>Credit</option>
+									<option>DEBIT</option>
+									<option>CREDIT</option>
 								</select>
 							</div>
 							<h3>2. Inscrire le montant de base</h3>

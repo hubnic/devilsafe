@@ -84,7 +84,7 @@
 									<input
 										class="form-control"
 										type="text"
-										value="Dup"
+										value="Dupont"
 										id="nom"
 										name="nom"
 										required>
@@ -107,7 +107,7 @@
 							<div class="form-group row">
 								<label for="date" class="col-2 col-form-label">Date de naissance :</label>
 								<div class="col-10">
-									<input class="form-control" type="date" id="date" name="date" required>
+									<input class="form-control" type="date" id="date" name="date" value="2017-03-01" required>
 								</div>
 							</div>
 							<div class="form-group row">
@@ -130,7 +130,7 @@
 									<input
 										class="form-control"
 										type="email"
-										value="jdup@j.com"
+										value="membre@banque2.com"
 										id="courriel"
 										name="courriel"
 										required>
@@ -139,6 +139,21 @@
 						</div>
 						<div class="col-sm-1"></div>
 						<div class="col-sm-4">
+						<div class="form-group row">
+								<label
+									for="solde"
+									class="col-2 col-form-label">Solde du compte DEBIT</label>
+								<div class="col-10">
+									<input
+										class="form-control"
+										type="number"
+										value="1500"
+										id="solde"
+										name="solde"
+										required>
+								</div>
+							</div>
+							<hr>
 							<div class="form-group row">
 								<label
 									for="pass1"
@@ -147,7 +162,7 @@
 									<input
 										class="form-control"
 										type="password"
-										value="12345"
+										value="qwe123**"
 										id="pass1"
 										name="pass1"
 										onkeyup="checkPass();"
@@ -162,7 +177,7 @@
 									<input
 										class="form-control"
 										type="password"
-										value="12345"
+										value="qwe123**"
 										id="pass2"
 										name="pass2"
 										onkeyup="checkPass();"

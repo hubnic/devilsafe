@@ -126,4 +126,21 @@ public class ServiceAuthentification {
 		String updatePass = "UPDATE clients SET mdp=? WHERE identifiant=?";
 		jdbcTemplate.update(updatePass, hashMDP(mdp) , id);
 	}
+	
+	public boolean checkAdminPIN(String id, String secureKey){
+		String checkAdminPIN = "SELECT * FROM administrateurs WHERE identifiant = ? AND secureKey = ?";
+		try{
+			List<Map<String, Object>> validePin = jdbcTemplate.queryForList(checkAdminPIN,id,secureKey);
+			
+			if(!validePin.isEmpty()){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+	}
 }

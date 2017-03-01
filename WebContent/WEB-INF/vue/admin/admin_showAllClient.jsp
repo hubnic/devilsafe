@@ -5,7 +5,7 @@
 	uri="http://java.sun.com/jsp/jstl/core"%>
 <html lang="fr">
 <head>
-<title>Membre Client</title>
+<title>Liste Membres</title>
 <link rel="stylesheet" href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.min.css" />">
 <link rel="stylesheet" href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.css" />">
 <script src="<c:url value="/librairie/js/valideLogin.js" />"></script>

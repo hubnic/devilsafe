@@ -1,8 +1,13 @@
 package com.banque2.controleur;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,28 +35,90 @@ public class GestionnairePostAdmin {
 		@RequestMapping(value = {"/secureAdmin"}, method = RequestMethod.POST)
 		public ModelAndView postSecureLogin(	
 				@RequestParam("idt") String id, 
-				@RequestParam("secureKey") int secureKey){
+				@RequestParam("secureKey") String secureKey){
 
 			System.out.println("idt : " +id + " SecureKey : " + secureKey );
 			ModelAndView vueModele;
 			
 			// Proceder a la validation du pin de securite
-			boolean validation = true;
-			
-			if(validation){
+			if(serviceSecurite.checkAdminPIN(SecurityContextHolder.getContext().getAuthentication().getName(),secureKey)){
+				System.out.println("Le PIN EST VALIDE");   
+				List<GrantedAuthority> droit = new ArrayList<>();
+		            droit.add(new SimpleGrantedAuthority("ROLE_ADMIN_AUTH"));
+		            
+				Authentication adminAuthentifie = new UsernamePasswordAuthenticationToken(
+						SecurityContextHolder.getContext().getAuthentication().getName(), serviceSecurite.hashMDP(secureKey),droit);
+				
+				SecurityContextHolder.getContext().setAuthentication(adminAuthentifie);
+						        		        
 				vueModele = new ModelAndView();
 				vueModele.setViewName("/admin/admin_home");
-				vueModele.addObject("succes", "TRUE");
+				
 				
 			}else {
 				vueModele = new ModelAndView();
-				vueModele.setViewName("/secureAdmin");
-				vueModele.addObject("echec", "FALSE");
+				vueModele.setViewName("/admin/admin_auth");
+				vueModele.addObject("username", SecurityContextHolder.getContext().getAuthentication().getName());
+				vueModele.addObject("succes", false);
+				vueModele.addObject("description", "Erreur lors de la validation de votre PIN de securite.");
 			}
 			
 			return vueModele;
 		}
 	
+
+		//ADMINISTRATEUR
+			@RequestMapping(value = {"/newClient"}, method = RequestMethod.POST)
+			public ModelAndView posNewClient(	
+					@RequestParam("nom") String nom, 
+					@RequestParam("prenom") String prenom,
+					@RequestParam("date") String date,
+					@RequestParam("telephone") String telephone,
+					@RequestParam("adresse") String adresse,
+					@RequestParam("courriel") String courriel,
+					@RequestParam("solde") double solde,
+					@RequestParam("pass1") String pass1,
+					@RequestParam("pass2") String pass2){
+
+				System.out.println(nom +" "+ prenom +" "+date +" "+pass1 +" "+pass2);
+				ModelAndView vueModele;
+				
+				vueModele = new ModelAndView();
+				
+				
+				if(valideNewIntervenant(nom,prenom,pass1,pass2)){
+					
+					PojoClient newClient = new PojoClient();
+					newClient.setNom(nom);
+					newClient.setPrenom(prenom);
+					newClient.setDateNaissance(date.toString());
+					newClient.setTelephone(telephone);
+					newClient.setAdresse(adresse);
+					newClient.setCourriel(courriel);
+					newClient.setMdp(serviceSecurite.hashMDP(pass1));
+					
+					if(serviceDaoAdministrateur.createClient(newClient, solde)){
+						vueModele.setViewName("/admin/admin_showAllClient");
+						vueModele.addObject("succes", true);
+						vueModele.addObject("description", "Le Client : " + newClient.getNom() +" "+ newClient.getPrenom() +" a ete crée avec succes");
+						ArrayList<PojoClient> clients = (ArrayList<PojoClient>) serviceDaoAdministrateur.getAllClient();
+						vueModele.addObject("clients", clients);
+					}else {
+						vueModele.setViewName("/admin/admin_newClient");
+						vueModele.addObject("succes", false);
+						vueModele.addObject("client",newClient);
+						vueModele.addObject("description", "Echec lors de l'exécution de la requête");
+					}
+					
+				}else {
+					vueModele.setViewName("/admin/admin_newClient");
+					vueModele.addObject("succes", false);
+					vueModele.addObject("description", "Echec lors de la création du compte administrateur, "
+							+ "les mots de passe ne concordent pas ou il ne respecte pas le REGEX");
+				}
+				
+				return vueModele;
+			}
 	
 	//ADMINISTRATEUR
 	@RequestMapping(value = {"/addAdmin"}, method = RequestMethod.POST)
@@ -61,12 +128,13 @@ public class GestionnairePostAdmin {
 			@RequestParam("pass1") String pass1,
 			@RequestParam("pass2") String pass2){
 
+		
 		System.out.println(nom +" "+ prenom  +" "+pass1 +" "+pass2);
 		ModelAndView vueModele;
 		
 		vueModele = new ModelAndView();
 		vueModele.setViewName("/admin/admin_addAdmin");
-		
+		serviceDaoAdministrateur.test();
 		if(valideNewIntervenant(nom,prenom,pass1,pass2)){
 			PojoAdministrateur newAdmin = new PojoAdministrateur();
 			newAdmin.setNom(nom);
@@ -93,57 +161,6 @@ public class GestionnairePostAdmin {
 	
 	
 	
-	//ADMINISTRATEUR
-		@RequestMapping(value = {"/newClient"}, method = RequestMethod.POST)
-		public ModelAndView posNewClient(	
-				@RequestParam("nom") String nom, 
-				@RequestParam("prenom") String prenom,
-				@RequestParam("date") String date,
-				@RequestParam("telephone") String telephone,
-				@RequestParam("adresse") String adresse,
-				@RequestParam("courriel") String courriel,
-				@RequestParam("pass1") String pass1,
-				@RequestParam("pass2") String pass2){
-
-			System.out.println(nom +" "+ prenom +" "+date +" "+pass1 +" "+pass2);
-			ModelAndView vueModele;
-			
-			vueModele = new ModelAndView();
-			
-			
-			if(valideNewIntervenant(nom,prenom,pass1,pass2)){
-				
-				PojoClient newClient = new PojoClient();
-				newClient.setNom(nom);
-				newClient.setPrenom(prenom);
-				newClient.setDateNaissance(date.toString());
-				newClient.setTelephone(telephone);
-				newClient.setAdresse(adresse);
-				newClient.setCourriel(courriel);
-				newClient.setMdp(serviceSecurite.hashMDP(pass1));
-				
-				if(serviceDaoAdministrateur.createClient(newClient)){
-					vueModele.setViewName("/admin/admin_showAllClient");
-					vueModele.addObject("succes", true);
-					vueModele.addObject("description", "Le Client : " + newClient.getNom() +" "+ newClient.getPrenom() +" a ete crée avec succes");
-					ArrayList<PojoClient> clients = (ArrayList<PojoClient>) serviceDaoAdministrateur.getAllClient();
-					vueModele.addObject("clients", clients);
-				}else {
-					vueModele.setViewName("/admin/admin_newClient");
-					vueModele.addObject("succes", false);
-					vueModele.addObject("client",newClient);
-					vueModele.addObject("description", "Echec lors de l'exécution de la requête");
-				}
-				
-			}else {
-				vueModele.setViewName("/admin/admin_newClient");
-				vueModele.addObject("succes", false);
-				vueModele.addObject("description", "Echec lors de la création du compte administrateur, "
-						+ "les mots de passe ne concordent pas ou il ne respecte pas le REGEX");
-			}
-			
-			return vueModele;
-		}
 		
 		private boolean valideNewIntervenant(String nom, String prenom, String pass1, String pass2){
 			
@@ -242,7 +259,7 @@ public class GestionnairePostAdmin {
 				}
 				
 				private boolean verifierSaisieCompte(int id, String typeCompte, double montant){
-					if(id > 0 && (typeCompte.equals("Credit") || typeCompte.equals("Debit")) && montant >=0){
+					if(id > 0 && (typeCompte.equals("CREDIT") || typeCompte.equals("DEBIT")) && montant >=0){
 						return true;
 					}
 					else {
@@ -302,32 +319,7 @@ public class GestionnairePostAdmin {
 				}
 		
 		
-				//ADMINISTRATEUR
-				@RequestMapping(value = {"/updateProfilAdmin"}, method = RequestMethod.POST)
-				public ModelAndView postUpdateProfilAdmin(	
-						@RequestParam("idClient") int id,
-						@RequestParam("idCompte") int idCompte){
-					
-					System.out.println("Post delAccount : "+ id +" "+idCompte);
-					
-					ModelAndView vueModele = new ModelAndView();
-					vueModele.setViewName("/admin/admin_showAccount");
-					
-					if(serviceDaoAdministrateur.deleteAccount(idCompte)){
-						
-							vueModele.addObject("supres", true);
-							vueModele.addObject("description", "Le compte ("+idCompte + ") a été supprimé avec succès.");
-					}
-					else{
-						vueModele.addObject("supres", false);
-						vueModele.addObject("description", "Le compte ("+idCompte + ") n'a pu être supprimé.");
-					}		
-					
-					vueModele.addObject("client",serviceDaoAdministrateur.getClient(id));
-					vueModele.addObject("comptes",serviceDaoAdministrateur.getAllComptesClient(id));
-					
-					return vueModele;
-				}
+				
 				
 				
 				//ADMINISTRATEUR

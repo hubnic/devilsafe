@@ -6,13 +6,8 @@
 <html lang="fr">
 <head>
 <title>Login Admin</title>
-<link
-	rel="stylesheet"
-	href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.min.css" />">
-<link
-	rel="stylesheet"
-	href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.css" />">
-<script src="<c:url value="/librairie/js/valideLogin.js" />"></script>
+<link rel="stylesheet" href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.min.css" />">
+<link rel="stylesheet" href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.css" />">
 <script src="<c:url value="/librairie/jquery/jquery-3.1.1.min.js" />"></script>
 <script
 	src="<c:url value="/librairie/bootstrap-3.3.7/js/bootstrap.min.js" />"></script>
@@ -66,6 +61,7 @@
 						type="password"
 						class="form-control"
 						id="secureKey"
+						type="number"
 						name="secureKey"
 						placeholder="Saisir votre clé de sécurité"
 						value="1234567"
@@ -84,15 +80,15 @@
 				</div>
 			</div>
 		</form>
-		<c:if test="${param.error != null}">
-			<div class="alert alert-danger">
-				<p>Problème d'authentification.</p>
-			</div>
-		</c:if>
-		<c:if test="${param.logout != null}">
-			<div class="alert alert-success">
-				<p>Deconnexion avec succès.</p>
-			</div>
+		<c:if test="${succes == true}">
+							<div class="alert alert-success">
+								<p>${description}</p>
+							</div>
+						</c:if>
+						<c:if test="${succes == false}">
+							<div class="alert alert-danger">
+								<p>${description}</p>
+							</div>
 		</c:if>
 	</div>
 	<footer class="container-fluid text-center">

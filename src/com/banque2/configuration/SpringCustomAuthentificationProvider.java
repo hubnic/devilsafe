@@ -12,8 +12,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
-
-import com.banque2.controleur.GestionnaireGet;
 import com.banque2.services.ServiceAuthentification;
 
 @Component

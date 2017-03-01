@@ -75,6 +75,7 @@
 				<form
 					method="post"
 					id="addAdmin"
+					onsubmit="confirmAddAdmin()"
 					action="<c:url value="/addAdmin" />"
 					role="form">
 					<div class="col-sm-5">
@@ -117,7 +118,7 @@
 								<input
 									class="form-control"
 									type="password"
-									value="12345"
+									value="qwe123**"
 									id="pass1"
 									name="pass1"
 									onkeyup="checkPass();"
@@ -133,7 +134,7 @@
 								<input
 									class="form-control"
 									type="password"
-									value="12345"
+									value="qwe123**"
 									id="pass2"
 									name="pass2"
 									onkeyup="checkPass();"
@@ -144,7 +145,7 @@
 						<div class="form-group row">
 							<div class="offset-sm-2 col-sm-10">
 								<button
-									onclick="confirmAddAdmin()"
+									type="submit"
 									class="btn btn-primary">Créer compte Administrateur</button>
 							</div>
 						</div>

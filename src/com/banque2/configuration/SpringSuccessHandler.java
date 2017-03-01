@@ -54,7 +54,9 @@ public class SpringSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 			url = "/apercu";	
 		}else if (checkIfAdmin(roles)) {
 			url = "/secureAdmin";
-		} else {
+		}else if (checkIfAdminAuth(roles)) {
+			url = "/homeAdmin";
+		}else {
 			url = "/denied";
 		}
 
@@ -70,6 +72,12 @@ public class SpringSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
 	private boolean checkIfAdmin(List<String> roles) {
 		if (roles.contains("ROLE_ADMIN")) {
+			return true;
+		}
+		return false;
+	}
+	private boolean checkIfAdminAuth(List<String> roles) {
+		if (roles.contains("ROLE_ADMIN_AUTH")) {
 			return true;
 		}
 		return false;

@@ -2,6 +2,11 @@ package com.banque2.services;
 
 
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,6 +31,8 @@ public class ServiceDaoAdministrateur {
 	
 	
 private JdbcTemplate jdbcTemplate;
+private PojoCompte templateCredit = new PojoCompte();
+private PojoCompte templateDebit = new PojoCompte();
 	
 	public ServiceDaoAdministrateur(DataSource dataSource) {
 		jdbcTemplate = new JdbcTemplate(dataSource);
@@ -48,24 +55,68 @@ private JdbcTemplate jdbcTemplate;
 		
 	}
 	
-	public boolean createClient(PojoClient client) {
+	public void test(){
+		String addAdministrateur = "INSERT INTO administrateurs (nom, prenom, mdp,secureKey) VALUES ('nom', 'prenom', 'ere', 121)";
+		
+		Connection connec;
+		try {
+			
+			connec = jdbcTemplate.getDataSource().getConnection();
+			
+			PreparedStatement st = connec.prepareStatement(addAdministrateur);
+			st.executeUpdate(addAdministrateur,Statement.RETURN_GENERATED_KEYS);
+			ResultSet result = st.getGeneratedKeys();
+			if ( result.next() ) {
+			    System.out.println("Valeur : "+result.getInt(1));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	
+	public boolean createClient(PojoClient client, double solde) {
 		String addClient = "INSERT INTO clients (nom, prenom,courriel,dateNaissance,telephone,adresse,mdp) "
 				+ "VALUES (?, ?, ?, ?, ?, ?, ?)";
-
-		try{
-				jdbcTemplate.update(addClient, 
-						client.getNom(), 
-						client.getPrenom(),
-						client.getCourriel(),
-						client.getDateNaissance(), 
-						client.getTelephone(),
-						client.getAdresse(),
-						client.getMdp());
-				return true;	
-			}catch(Exception e){
-				e.printStackTrace();
+		
+		templateCredit.setType("CREDIT");
+		templateCredit.setSolde(0);
+		
+		templateDebit.setType("DEBIT");
+		templateDebit.setSolde(solde);
+		
+		try {
+			
+			Connection connec = jdbcTemplate.getDataSource().getConnection();
+			
+			PreparedStatement st = connec.prepareStatement(addClient,Statement.RETURN_GENERATED_KEYS);
+			st.setString(1, client.getNom());
+			st.setString(2, client.getPrenom());
+			st.setString(3, client.getCourriel());
+			st.setString(4, client.getDateNaissance());
+			st.setString(5, client.getTelephone());
+			st.setString(6, client.getAdresse());
+			st.setString(7, client.getMdp());
+			st.executeUpdate();
+			ResultSet result = st.getGeneratedKeys();
+			if (result.next()) {
+			    System.out.println("Valeur : "+result.getInt(1));
+			    int idClient = result.getInt(1);
+			    System.out.println("Id du Client crée : "+result.getInt(1));
+			    templateCredit.setIdClient(idClient);
+			    templateDebit.setIdClient(idClient);
+			    createCompteClient(templateCredit);
+			    createCompteClient(templateDebit);
+			    return true;
+			}else{
 				return false;
 			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
 		
 	}
 	
@@ -93,19 +144,31 @@ private JdbcTemplate jdbcTemplate;
 	
 	public boolean createCompteClient(PojoCompte compte) {
 		
-		String addClient = "INSERT INTO compte (type, solde, idClient) "
-				+ "VALUES (?, ?, ?)";
-
-		try{
-				jdbcTemplate.update(addClient, 
-						compte.getType(),
-						compte.getSolde(),
-						compte.getIdClient());
-				return true;	
-			}catch(Exception e){
-				e.printStackTrace();
+		String addCompteClient = "INSERT INTO compte (type, solde, idClient) VALUES (?, ?, ?)";
+		try {
+			Connection connec = jdbcTemplate.getDataSource().getConnection();
+			PreparedStatement st = connec.prepareStatement(addCompteClient,Statement.RETURN_GENERATED_KEYS);
+			st.setString(1, compte.getType());
+			st.setDouble(2, compte.getSolde());
+			st.setInt(3, compte.getIdClient());
+			st.executeUpdate();
+			ResultSet result = st.getGeneratedKeys();
+			
+			if (result.next()) {
+			    System.out.println("Id du compte crée : "+result.getInt(1));
+			    int idCompte = result.getInt(1);
+				createCreditCard(compte.getIdClient(), idCompte);
+				return true;
+			}else{
 				return false;
 			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		
+	
 		
 	}
 	
@@ -221,7 +284,7 @@ private JdbcTemplate jdbcTemplate;
 	}
 	
 	public List<PojoClient> getAllClient() {
-		String sql = "SELECT * FROM clients";
+		String sql = "SELECT * FROM clients ORDER BY identifiant";
 		try{
 			List<PojoClient> result = jdbcTemplate.query(sql,new MappingClient());
 			if(result.isEmpty()){
