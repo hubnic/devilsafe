@@ -117,7 +117,7 @@ public class GestionnairePostClient {
 	}
 	
 	private boolean valideMMCompte(String[] cE, String[] cR){
-		if(!cE[0].equals(cR[0])){
+		if(cE[0].equals(cR[0])){
 			return false;
 		}else{
 			return true;

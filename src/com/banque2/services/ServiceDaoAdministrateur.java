@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -418,8 +419,7 @@ private PojoCompte templateDebit = new PojoCompte();
 	
 	public boolean createCreditCard(int idClient,int idCompte){
 		PojoClient client = getClient(idClient);
-		Date date = new Date();
-		System.out.println("Voici la date :"+date.getYear()+"/"+ date.getMonth() +"/"+ date.getDay());
+				
 		String insertCC = 
 				"INSERT INTO carte (numCarte, dateExp, crypto, nom, prenom, idCompte) "
 				+ "VALUES (?, ?, ?, ?, ?, ?)";
@@ -427,7 +427,7 @@ private PojoCompte templateDebit = new PojoCompte();
 		try{
 			jdbcTemplate.update(insertCC, 
 					creerCarteLuhn(), 
-					"2018/02/01",
+					"2021/04",
 					new Random().nextInt(999), 
 					client.getNom(),
 					client.getPrenom(), 

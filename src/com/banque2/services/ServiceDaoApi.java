@@ -1,10 +1,18 @@
 package com.banque2.services;
 
+import com.banque2.mappingModele.MappingCarte;
 import com.banque2.mappingModele.MappingPreautorisation;
+import com.banque2.modele.PojoCarte;
 import com.banque2.modele.PojoPreautorisation;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 public class ServiceDaoApi {
@@ -79,6 +87,36 @@ private JdbcTemplate jdbcTemplate;
 		}
 	}
 	
+	public boolean checkIfCCexit(PojoCarte carte) {
+		String checkCC = 
+				"SELECT *"
+				+" FROM carte"
+				+" WHERE  numCarte = ?"
+				+" AND UPPER(nom) = UPPER(?)"
+				+" AND UPPER(prenom) = UPPER(?)"
+				+" AND dateExp = ?"
+				+" AND crypto = ?";
+		try {
+			Connection connec = jdbcTemplate.getDataSource().getConnection();
+			PreparedStatement st = connec.prepareStatement(checkCC);
+			st.setString(1, Integer.toString(carte.getNumCarte()));
+			st.setString(2, carte.getNom());
+			st.setString(3, carte.getPrenom());
+			st.setString(4, carte.getDateExp());
+			st.setInt(5, carte.getCrypto());
+			
+			
+			ResultSet result = st.executeQuery();
+			if (result.next()) {
+				return true;
+			}else{
+				return false;
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
 	
-	
+}
 }

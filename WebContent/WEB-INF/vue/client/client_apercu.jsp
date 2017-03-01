@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <html>
 <head>
 <title>Apercu Details</title>
@@ -68,6 +69,7 @@
 											<thead>
 												<tr>
 													<th>Date</th>
+													<th>#Transaction</th>
 													<th>Nom transaction</th>
 													<th>Montant $</th>
 												</tr>
@@ -75,6 +77,7 @@
 											<tbody>
 											<c:forEach items="${comptes.transactions}" var="transactions">
 												<tr>
+													<td>${transactions.idTransaction}</td>
 													<td>${transactions.date}</td>
 													<td>${transactions.description}</td>
 													<td>${transactions.montant}</td>
@@ -84,6 +87,7 @@
 										</table>
 									</div>
 								</div>
+								
 							</div>
 							</div>		
 							</div>					

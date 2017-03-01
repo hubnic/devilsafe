@@ -26,6 +26,7 @@ public class SpringSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 	protected void handle(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
 			throws IOException {
 		// SESSION EXPIRE APRES 5 MIN
+
 		request.getSession().setMaxInactiveInterval(300);
 	    String targetUrl = determineTargetUrl(authentication);
 	    

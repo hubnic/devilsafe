@@ -33,6 +33,14 @@ public class SpringSecuriteUserConfiguration extends WebSecurityConfigurerAdapte
  
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+    	
+    //GESTION DES SESSIONS
+    	   //PROPRIETES DE SPRING PERMETTTANT DE CONFIGURER LE MAX DE SESSION 
+	      http.sessionManagement().sessionFixation().migrateSession();
+	 	  //http.sessionManagement().maximumSessions(1);
+	      http.sessionManagement().invalidSessionUrl("/portail");
+	      http.sessionManagement().maximumSessions(1);
+	      
     //DROITS SELON LES PAGES
       http.authorizeRequests()
         .antMatchers("/").access("hasRole('USER')")
@@ -57,10 +65,7 @@ public class SpringSecuriteUserConfiguration extends WebSecurityConfigurerAdapte
         .usernameParameter("idt").passwordParameter("pswd")
         .and().csrf()
         .and().exceptionHandling().accessDeniedPage("/portail");
-	      //PROPRIETES DE SPRING PERMETTTANT DE CONFIGURER LE MAX DE SESSION 
-	      http.sessionManagement().sessionFixation().migrateSession();
-	  	  http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
-	 	  http.sessionManagement().maximumSessions(1);
+	   
 
     }
     public void configure(WebSecurity web) throws Exception {
