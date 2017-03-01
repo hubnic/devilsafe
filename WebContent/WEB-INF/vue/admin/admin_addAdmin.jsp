@@ -74,7 +74,7 @@
 						</c:if>
 				<form
 					method="post"
-					id="addAdmin"
+					id="formAddAdmin"
 					action="<c:url value="/addAdmin" />"
 					role="form">
 					<div class="col-sm-5">

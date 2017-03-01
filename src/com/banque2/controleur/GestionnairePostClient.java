@@ -62,4 +62,16 @@ public class GestionnairePostClient {
 		return vueModele;
 	}
 	
+	//ADMINISTRATEUR
+	@RequestMapping(value = {"/transfertIn"}, method = RequestMethod.POST)
+	public ModelAndView postTransfertIn(	
+			@RequestParam("compteIn") String compteIn,
+			@RequestParam("compteOut") String compteOut,
+			@RequestParam("montant") String montant){
+
+		System.out.println(compteIn + " "+compteIn +" "+montant);
+		
+		return null;
+	}
 }
+

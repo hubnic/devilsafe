@@ -20,7 +20,7 @@ function confirmAddAdmin()
 
 	var retour = confirm("Est-vous sur de procéder à l'ajout de l'administrateur :" + "\n" +nom + "\n" +prenom +" ?"  );
 	if (retour == true) {
-	  document.getElementById("addAdmin").submit();
+	  document.getElementById("formAddAdmin").submit();
 	}
 }
 

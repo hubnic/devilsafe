@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.min.css" />">
 <link rel="stylesheet" href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.css" />">
 <script src="<c:url value="/librairie/js/valideAccount.js" />"></script>
+<script src="<c:url value="/librairie/js/confirmClient.js" />"></script>
 <script src="<c:url value="/librairie/jquery/jquery-3.1.1.min.js" />"></script>
 <script src="<c:url value="/librairie/bootstrap-3.3.7/js/bootstrap.min.js" />"></script>
 </head>
@@ -31,16 +32,17 @@
 								class="glyphicon glyphicon-usd"></span>
 						</h3>
 						<form
+							onsubmit="confirmTransfertIn()"
 							method="post"
 							id="formTransfertIn"
 							action="<c:url value="/transfertIn" />"
 							role="form">
 							<h3>1. Choisir le compte emetteur</h3>
 							<div class="form-group">
-								<label for="compteOut">Emetteur</label> <select
+								<label for="compteOut">Compte Emetteur</label> <select
 									class="form-control"
 									id="compteOut"
-									name="cpmpteOut"
+									name="compteOut"
 									onchange="checkAccount();">
 									<option>Choisir compte emetteur</option>
 									<c:forEach items="${comptes}" var="comptes">
@@ -58,7 +60,7 @@
 									onchange="checkAccount();">
 									<option>Choisir compte receveur</option>
 									<c:forEach items="${comptes}" var="comptes">
-									<option>${comptes.type} ${comptes.idBanque}${comptes.idCompte} ${comptes.solde}$ </option>
+									<option>${comptes.type} ${comptes.idBanque} ${comptes.idCompte} ${comptes.solde}$ </option>
 									</c:forEach>
 								</select>
 								<span id="confirmMessage" class="confirmMessage"></span>
@@ -70,17 +72,19 @@
 									class="form-control"
 									id="montant"
 									name="montant"
-									placeholder="256">
+									placeholder="100">
 							</div>
-							<h3>4. Valider le transfert en inscrivant votre mot de passe</h3>
-							<div class="form-group">
-								<label for="pwd">Password:</label> <input
-									type="password"
-									class="form-control"
-									id="pwd"
-									name="pwd"
-									value="1234567">
+								<c:if test="${succes == true}">
+							<div class="alert alert-success">
+								<p>${description}</p>
 							</div>
+						</c:if>
+						<c:if test="${succes == false}">
+							<div class="alert alert-danger">
+								<p>${description}</p>
+							</div>
+						</c:if>
+							<br><hr>
 							<button
 								type="submit"
 								class="btn btn-danger">Effectuer le transfert</button>
@@ -89,7 +93,6 @@
 								name="${_csrf.parameterName}"
 								value="${_csrf.token}" />
 						</form>
-						<hr>
 					</div>
   </div>
 </div>

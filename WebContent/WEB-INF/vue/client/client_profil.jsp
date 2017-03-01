@@ -171,7 +171,7 @@
 									</div>
 									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 								</div>
-											<c:if test="${succes == true}">
+						<c:if test="${succes == true}">
 							<div class="alert alert-success">
 								<p>${description}</p>
 							</div>
