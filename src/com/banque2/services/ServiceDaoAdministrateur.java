@@ -52,30 +52,9 @@ private PojoCompte templateDebit = new PojoCompte();
 				e.printStackTrace();
 				return false;
 			}
-		
 	}
 	
-	public void test(){
-		String addAdministrateur = "INSERT INTO administrateurs (nom, prenom, mdp,secureKey) VALUES ('nom', 'prenom', 'ere', 121)";
 		
-		Connection connec;
-		try {
-			
-			connec = jdbcTemplate.getDataSource().getConnection();
-			
-			PreparedStatement st = connec.prepareStatement(addAdministrateur);
-			st.executeUpdate(addAdministrateur,Statement.RETURN_GENERATED_KEYS);
-			ResultSet result = st.getGeneratedKeys();
-			if ( result.next() ) {
-			    System.out.println("Valeur : "+result.getInt(1));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	
-	
 	public boolean createClient(PojoClient client, double solde) {
 		String addClient = "INSERT INTO clients (nom, prenom,courriel,dateNaissance,telephone,adresse,mdp) "
 				+ "VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -458,6 +437,24 @@ private PojoCompte templateDebit = new PojoCompte();
 					idCompte);
 			return true;	
 		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public boolean checkIfCCpossible(int idClient){
+			String checkifCCexiste = "SELECT * FROM compte WHERE type = 'CREDIT' AND idClient = " + idClient;
+		
+		try{
+			List<PojoCompte> result = jdbcTemplate.query(checkifCCexiste,new MappingCompte());
+			if(result.isEmpty()){
+				return true;
+			}
+			else{
+				return false;
+			}	
+		}
+		catch(Exception e){
 			e.printStackTrace();
 			return false;
 		}

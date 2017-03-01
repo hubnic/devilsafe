@@ -134,7 +134,7 @@ public class GestionnairePostAdmin {
 		
 		vueModele = new ModelAndView();
 		vueModele.setViewName("/admin/admin_addAdmin");
-		serviceDaoAdministrateur.test();
+
 		if(valideNewIntervenant(nom,prenom,pass1,pass2)){
 			PojoAdministrateur newAdmin = new PojoAdministrateur();
 			newAdmin.setNom(nom);
@@ -149,7 +149,6 @@ public class GestionnairePostAdmin {
 				vueModele.addObject("succes", false);
 				vueModele.addObject("description", "Echec lors de l'exécution de la requête");
 			}
-			
 		}else {
 			vueModele.addObject("succes", false);
 			vueModele.addObject("description", "Echec lors de la création du compte administrateur, "
@@ -165,7 +164,6 @@ public class GestionnairePostAdmin {
 		private boolean valideNewIntervenant(String nom, String prenom, String pass1, String pass2){
 			
 			if(nom!=null && prenom != null && pass1 != null && pass2 != null && pass1.equals(pass2)){
-				System.out.println(regex);
 				if(pass1.matches(regex)){
 					return true;
 				}else{
@@ -234,7 +232,6 @@ public class GestionnairePostAdmin {
 					
 					if(verifierSaisieCompte(id,typeCompte, montant)){
 						PojoCompte compte = new PojoCompte();
-						
 						compte.setIdClient(id);
 						compte.setType(typeCompte);
 						compte.setSolde(montant);
@@ -258,9 +255,15 @@ public class GestionnairePostAdmin {
 					return vueModele;
 				}
 				
-				private boolean verifierSaisieCompte(int id, String typeCompte, double montant){
-					if(id > 0 && (typeCompte.equals("CREDIT") || typeCompte.equals("DEBIT")) && montant >=0){
+				private boolean verifierSaisieCompte(int idClient, String typeCompte, double montant){
+					
+					if(idClient >= 0 && (typeCompte.equals("CREDIT") || typeCompte.equals("DEBIT")) && montant >=0){
+						if(typeCompte.equals("CREDIT")){
+							System.out.println(serviceDaoAdministrateur.checkIfCCpossible(idClient));
+							return serviceDaoAdministrateur.checkIfCCpossible(idClient); 
+						}else{
 						return true;
+						}
 					}
 					else {
 						return false;

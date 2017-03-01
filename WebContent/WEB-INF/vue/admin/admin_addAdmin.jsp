@@ -75,7 +75,6 @@
 				<form
 					method="post"
 					id="addAdmin"
-					onsubmit="confirmAddAdmin()"
 					action="<c:url value="/addAdmin" />"
 					role="form">
 					<div class="col-sm-5">
@@ -87,7 +86,7 @@
 								<input
 									class="form-control"
 									type="text"
-									value="Dup"
+									value="Administrateur"
 									id="nom"
 									name = "nom"
 									required>
@@ -101,7 +100,7 @@
 								<input
 									class="form-control"
 									type="text"
-									value="Jean"
+									value="Administrateur"
 									id="prenom"
 									name ="prenom"
 									required>
