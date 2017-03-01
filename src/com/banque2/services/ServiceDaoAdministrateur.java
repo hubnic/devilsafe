@@ -146,9 +146,6 @@ private PojoCompte templateDebit = new PojoCompte();
 			e.printStackTrace();
 			return false;
 		}
-		
-	
-		
 	}
 	
 	

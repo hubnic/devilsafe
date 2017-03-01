@@ -32,7 +32,6 @@
 								class="glyphicon glyphicon-usd"></span>
 						</h3>
 						<form
-							onsubmit="confirmTransfertIn()"
 							method="post"
 							id="formTransfertIn"
 							action="<c:url value="/transfertIn" />"
@@ -46,7 +45,7 @@
 									onchange="checkAccount();">
 									<option>Choisir compte emetteur</option>
 									<c:forEach items="${comptes}" var="comptes">
-									<option>${comptes.type} ${comptes.idBanque}${comptes.idCompte} ${comptes.solde}$ </option>
+									<option>${comptes.type} ${comptes.idBanque} ${comptes.idCompte} ${comptes.solde} $ </option>
 									</c:forEach>
 								</select>
 							</div>
@@ -60,7 +59,7 @@
 									onchange="checkAccount();">
 									<option>Choisir compte receveur</option>
 									<c:forEach items="${comptes}" var="comptes">
-									<option>${comptes.type} ${comptes.idBanque} ${comptes.idCompte} ${comptes.solde}$ </option>
+									<option>${comptes.type} ${comptes.idBanque} ${comptes.idCompte} ${comptes.solde} $ </option>
 									</c:forEach>
 								</select>
 								<span id="confirmMessage" class="confirmMessage"></span>

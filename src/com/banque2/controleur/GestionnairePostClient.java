@@ -65,13 +65,74 @@ public class GestionnairePostClient {
 	//ADMINISTRATEUR
 	@RequestMapping(value = {"/transfertIn"}, method = RequestMethod.POST)
 	public ModelAndView postTransfertIn(	
-			@RequestParam("compteIn") String compteIn,
-			@RequestParam("compteOut") String compteOut,
+			@RequestParam("compteOut") String compteEmetteur,
+			@RequestParam("compteIn") String compteReceveur,
 			@RequestParam("montant") String montant){
 
-		System.out.println(compteIn + " "+compteIn +" "+montant);
+		//System.out.println(compteEmetteur + " "+compteReceveur +" "+montant);
 		
-		return null;
+		String[] cEmetteur = compteEmetteur.split(" ");
+		String[] cReveveur = compteReceveur.split(" ");
+		
+		
+		ModelAndView vueModele = new ModelAndView();
+		vueModele.setViewName("/client/client_transfertIn");
+		
+		if(valideCompte(cEmetteur,cReveveur)){
+			if(valideMMCompte(cEmetteur,cReveveur) ){
+				if(valideSoustraction(cEmetteur,montant)){
+					System.out.println("Compte emetteur : "+cEmetteur[0]  + " " +cEmetteur[1] + " " +cEmetteur[2]+ " " +cEmetteur[3] + " " +cEmetteur[4]);
+					System.out.println("Compte receveur : "+ " " +cReveveur[0] + " " +cReveveur[1]+ " " +cReveveur[2] + " " +cReveveur[3] + " " +cReveveur[4]);
+					int transaction = serviceDaoClient.createTransfertCompteIn(Integer.parseInt(cEmetteur[2]), Integer.parseInt(cReveveur[2]), Double.parseDouble(montant));
+					vueModele.addObject("succes", true);
+					vueModele.addObject("description", "Le virement a ete effecture avec succes est le numéro de transation est : ["+transaction+"]");
+				}
+				else{
+					vueModele.addObject("succes", false);
+					vueModele.addObject("description", "Virement impossible, le montant du virement supérieur au Solde disponible du compte : ["+cEmetteur[1] +cEmetteur[2]+"]");
+				}
+				
+				
+			}else{
+				vueModele.addObject("succes", false);
+				vueModele.addObject("description", "Vous ne pouvez pas faire ce virement, les comptes sont identiques.");
+			}
+			
+		}else{
+			vueModele.addObject("succes", false);
+			vueModele.addObject("description", "Vous ne pouvez pas faire un virement depuis un compte crédit.");
+		}
+		
+		vueModele.addObject("comptes", serviceDaoClient.getAllComptesClientForTransfert(Integer.parseInt(SecurityContextHolder.getContext().getAuthentication().getName())));	
+		
+		return vueModele;
+	}
+	
+	private boolean valideCompte(String[] compteOut, String[] CompteIn){
+		if(compteOut[0].equals("CREDIT")){
+			return false;
+		}else{
+			return true;
+		}
+	}
+	
+	private boolean valideMMCompte(String[] cE, String[] cR){
+		if(!cE[0].equals(cR[0])){
+			return false;
+		}else{
+			return true;
+		}
+	}
+	
+	private boolean valideSoustraction(String[] cE, String montant){
+		double montantCompteOut = Double.parseDouble(cE[3]);
+		double montantT = Double.parseDouble(montant);
+		if(montantCompteOut-montantT > 0){
+			System.out.println("OK LA SOUSTRATION EST VALIDE");
+			return true;
+		}else{
+			return false;
+		}
 	}
 }
 

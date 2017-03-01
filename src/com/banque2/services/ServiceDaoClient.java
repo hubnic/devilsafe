@@ -1,5 +1,10 @@
 package com.banque2.services;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,6 +87,7 @@ public List<PojoCompte> getAllComptesClientForTransfert(int idClient){
 		return null;
 	}
 }
+
 private ArrayList<PojoCompte> getAllTransactionByCompte(ArrayList<PojoCompte> l){
 	String getAllTransactions = "SELECT * FROM transaction WHERE idCompteClient = ";
 	
@@ -98,6 +104,97 @@ private ArrayList<PojoCompte> getAllTransactionByCompte(ArrayList<PojoCompte> l)
 
 	return l;
 	
+}
+
+
+public int createTransfertCompteIn(int idCompteEmetteur, int idCompteReceveur, double montant) {
+
+		
+		// retrait fond en 1
+		// ajout fond en 2
+		// Creation de la transaction
+	
+		retraitFondCompte(idCompteEmetteur, montant);
+		ajouterFondCompte(idCompteReceveur, montant);
+		int idTransaction = createTransactionTransfertIn(idCompteEmetteur, idCompteReceveur, -montant,"Virement vers compte "+ idCompteReceveur);
+		createTransactionTransfertIn(idCompteReceveur, idCompteEmetteur, montant,"Virement en provenace du compte "+ idCompteEmetteur);
+		if(idTransaction != -1){
+			return idTransaction;
+		}
+		else{
+			return -1;
+		}		
+}
+
+private int createTransactionTransfertIn(int idCompteOut, int idCompteIn, double montant, String description) {
+	
+	String transaction =
+	"INSERT INTO transaction (idCompteClient, idCompteDestinataire, montant, description)"
+	+" VALUES ( ?, ?, ?, ?)";
+	
+	// compteOut CompteIn Montant DEsc
+	try {
+		Connection connec = jdbcTemplate.getDataSource().getConnection();
+		PreparedStatement st = connec.prepareStatement(transaction,Statement.RETURN_GENERATED_KEYS);
+		st.setInt(1, idCompteOut);
+		st.setInt(2, idCompteIn);
+		st.setDouble(3, montant);
+		st.setString(4, description);
+		st.executeUpdate();
+		
+		ResultSet result = st.getGeneratedKeys();
+		if (result.next()) {
+		    System.out.println("L'id de la transaction a été crée : "+ result.getInt(1));
+		    int idtransaction = result.getInt(1);
+			return idtransaction;
+		}else{
+			return -1;
+		}
+		
+	} catch (SQLException e) {
+		e.printStackTrace();
+		return -1;
+	}
+}
+
+private boolean ajouterFondCompte(int idCompte, double montant) {
+	String ajouterFondCompte =	
+	"UPDATE compte"
+	+" SET Solde = (Solde + ?)"
+	+" WHERE idCompte = ?";
+	
+	try{
+		Connection connec = jdbcTemplate.getDataSource().getConnection();
+		PreparedStatement st = connec.prepareStatement(ajouterFondCompte);
+		st.setDouble(1, montant);
+		st.setInt(2, idCompte);
+		st.executeUpdate();
+		return true;
+	}catch(Exception e){
+		
+		return false;
+	}
+
+}
+
+private boolean retraitFondCompte(int idCompte, double montant) {
+	String retaitFondCompte =	
+			"UPDATE compte"
+			+" SET Solde = (Solde - ?)"
+			+" WHERE idCompte = ?";
+			
+			try{
+				Connection connec = jdbcTemplate.getDataSource().getConnection();
+				PreparedStatement st = connec.prepareStatement(retaitFondCompte);
+				st.setDouble(1, montant);
+				st.setInt(2, idCompte);
+				st.executeUpdate();
+				
+				return true;
+			}catch(Exception e){
+				
+				return false;
+			}
 }
 
 
