@@ -7,10 +7,10 @@ public class PojoCompte {
 	private int idCompte;
 	private String idBanque;
 	private String type;
-	private double solde;
+	private float solde;
 	private int idClient;
 	private List<PojoTransaction> transactions;
-	
+	private List<PojoPreautorisation> preautorisation;
 	
 
 	public PojoCompte() {}
@@ -27,10 +27,10 @@ public class PojoCompte {
 		this.type = type;
 	}
 
-	public double getSolde() {
+	public float getSolde() {
 		return solde;
 	}
-	public void setSolde(double solde) {
+	public void setSolde(float solde) {
 		this.solde = solde;
 	}
 	public int getIdClient() {
@@ -48,10 +48,18 @@ public class PojoCompte {
 	public void setIdBanque(String idBanque) {
 		this.idBanque = idBanque;
 	}
+
+	public List<PojoPreautorisation> getPreautorisation() {
+		return preautorisation;
+	}
+	public void setPreautorisation(List<PojoPreautorisation> preautorisation) {
+		this.preautorisation = preautorisation;
+	}
 	@Override
 	public String toString() {
 		return "PojoCompte [idCompte=" + idCompte + ", idBanque=" + idBanque + ", type=" + type + ", solde=" + solde
-				+ ", idClient=" + idClient + ", transactions=" + transactions + "]";
+				+ ", idClient=" + idClient + ", transactions=" + transactions + ", preautorisation=" + preautorisation
+				+ "]";
 	}
 	public List<PojoTransaction> getTransactions() {
 		return transactions;

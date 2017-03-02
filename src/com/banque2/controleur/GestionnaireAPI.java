@@ -215,7 +215,7 @@ public class GestionnaireAPI {
 
             //ASSIGNATION DES PARAMÈTRES JSON -> POJO
             compte.setIdCompte(rootNode.path("compte_dest_ID").getIntValue());
-            compte.setSolde(rootNode.path("montant").getDoubleValue());
+            compte.setSolde((float)rootNode.path("montant").getDoubleValue());
 
 
             serviceDaoCompte.ajoutMontant(

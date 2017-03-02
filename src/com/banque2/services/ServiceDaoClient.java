@@ -15,10 +15,12 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import com.banque2.mappingModele.MappingAdministrateur;
 import com.banque2.mappingModele.MappingClient;
 import com.banque2.mappingModele.MappingCompte;
+import com.banque2.mappingModele.MappingPreautorisation;
 import com.banque2.mappingModele.MappingTransaction;
 import com.banque2.modele.PojoAdministrateur;
 import com.banque2.modele.PojoClient;
 import com.banque2.modele.PojoCompte;
+import com.banque2.modele.PojoPreautorisation;
 import com.banque2.modele.PojoTransaction;
 
 public class ServiceDaoClient {
@@ -56,7 +58,8 @@ public List<PojoCompte> getAllComptesClient(int idClient){
 	try{
 		ArrayList<PojoCompte> result = (ArrayList<PojoCompte>) jdbcTemplate.query(getAllComptes,new MappingCompte());
 		result = this.getAllTransactionByCompte(result);
-		System.out.println(result.get(0));
+		result = this.getAllPreautorisation(result);
+
 		if(result.isEmpty()){
 			return null;
 		}
@@ -70,12 +73,10 @@ public List<PojoCompte> getAllComptesClient(int idClient){
 }
 
 public List<PojoCompte> getAllComptesClientForTransfert(int idClient){
-	
-	System.out.println("Execution de la requete pour client "+idClient);
 	String getAllComptes = "SELECT * FROM compte where idClient ="+idClient;		
 	try{
 		ArrayList<PojoCompte> result = (ArrayList<PojoCompte>) jdbcTemplate.query(getAllComptes,new MappingCompte());
-		System.out.println(result.get(0));
+
 		if(result.isEmpty()){
 			return null;
 		}
@@ -99,6 +100,24 @@ private ArrayList<PojoCompte> getAllTransactionByCompte(ArrayList<PojoCompte> l)
     	
     	System.out.println("Size de la liste de transaction : "+result.size());
     	l.get(i).setTransactions(result);
+    	System.out.println("La transaction contenues dans la liste : "+l.get(i).getTransactions().toString());
+	}
+
+	return l;
+	
+}
+
+private ArrayList<PojoCompte> getAllPreautorisation(ArrayList<PojoCompte> l){
+	String getAllPreautorisation = "SELECT * FROM preautorisation WHERE idCompteClient = ";
+	
+    for(int i=0; i<l.size();i++){
+    	
+    	List<PojoPreautorisation> result = jdbcTemplate.query(
+    			getAllPreautorisation+l.get(i).getIdCompte(),
+    			new MappingPreautorisation());
+    	
+    	System.out.println("Size de la liste de transaction : "+result.size());
+    	l.get(i).setPreautorisation(result);
     	System.out.println("La transaction contenues dans la liste : "+l.get(i).getTransactions().toString());
 	}
 
@@ -189,11 +208,38 @@ private boolean retraitFondCompte(int idCompte, double montant) {
 				st.setDouble(1, montant);
 				st.setInt(2, idCompte);
 				st.executeUpdate();
-				
 				return true;
 			}catch(Exception e){
 				
 				return false;
+			}
+}
+
+public PojoCompte getCompteCredit(int idClient) {
+	PojoCompte tmpCC = new PojoCompte();
+	String getCompteCC =	
+			"SELECT *"
+			+" FROM compte"
+			+" WHERE type = 'CREDIT'"
+			+" AND idClient = ?";
+			
+			try{
+				Connection connec = jdbcTemplate.getDataSource().getConnection();
+				PreparedStatement st = connec.prepareStatement(getCompteCC);
+				st.setInt(1, idClient);
+				ResultSet result = st.executeQuery();
+				if (result.next()) {
+					tmpCC.setIdCompte(result.getInt(1));
+					tmpCC.setIdBanque(result.getString(2));
+					tmpCC.setType(result.getString(3));
+					tmpCC.setSolde(result.getFloat(4));
+					System.out.println(result.getFloat(4));
+					return tmpCC;
+				}else{
+					return null;
+				}
+			}catch(Exception e){
+				return null;
 			}
 }
 

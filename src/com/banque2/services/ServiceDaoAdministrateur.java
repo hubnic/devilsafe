@@ -56,7 +56,7 @@ private PojoCompte templateDebit = new PojoCompte();
 	}
 	
 		
-	public boolean createClient(PojoClient client, double solde) {
+	public boolean createClient(PojoClient client, float solde) {
 		String addClient = "INSERT INTO clients (nom, prenom,courriel,dateNaissance,telephone,adresse,mdp) "
 				+ "VALUES (?, ?, ?, ?, ?, ?, ?)";
 		

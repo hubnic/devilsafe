@@ -69,7 +69,6 @@ public class GestionnairePostClient {
 			@RequestParam("compteIn") String compteReceveur,
 			@RequestParam("montant") String montant){
 
-		//System.out.println(compteEmetteur + " "+compteReceveur +" "+montant);
 		
 		String[] cEmetteur = compteEmetteur.split(" ");
 		String[] cReveveur = compteReceveur.split(" ");
@@ -78,7 +77,7 @@ public class GestionnairePostClient {
 		ModelAndView vueModele = new ModelAndView();
 		vueModele.setViewName("/client/client_transfertIn");
 		
-		if(valideCompte(cEmetteur,cReveveur)){
+		if(valideCompteifCredit(cEmetteur)){
 			if(valideMMCompte(cEmetteur,cReveveur) ){
 				if(valideSoustraction(cEmetteur,montant)){
 					System.out.println("Compte emetteur : "+cEmetteur[0]  + " " +cEmetteur[1] + " " +cEmetteur[2]+ " " +cEmetteur[3] + " " +cEmetteur[4]);
@@ -108,8 +107,8 @@ public class GestionnairePostClient {
 		return vueModele;
 	}
 	
-	private boolean valideCompte(String[] compteOut, String[] CompteIn){
-		if(compteOut[0].equals("CREDIT")){
+	private boolean valideCompteifCredit(String[] cE){
+		if(cE[0].equals("CREDIT")){
 			return false;
 		}else{
 			return true;
@@ -117,7 +116,7 @@ public class GestionnairePostClient {
 	}
 	
 	private boolean valideMMCompte(String[] cE, String[] cR){
-		if(cE[0].equals(cR[0])){
+		if(cE[2].equals(cR[2])){
 			return false;
 		}else{
 			return true;

@@ -42,6 +42,7 @@ public class GestionnaireGetClient {
 	
 	@RequestMapping(value = {"/credit"}, method = RequestMethod.GET)
 	public String getCredit(ModelMap listeElement) {
+		listeElement.addAttribute("compteCredit", serviceDaoClient.getCompteCredit(Integer.parseInt(SecurityContextHolder.getContext().getAuthentication().getName())));
 		listeElement.addAttribute("comptes", serviceDaoClient.getAllComptesClientForTransfert(Integer.parseInt(SecurityContextHolder.getContext().getAuthentication().getName())));	
 		return "/client/client_credit";
 	}

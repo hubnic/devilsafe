@@ -76,7 +76,7 @@ public class GestionnairePostAdmin {
 					@RequestParam("telephone") String telephone,
 					@RequestParam("adresse") String adresse,
 					@RequestParam("courriel") String courriel,
-					@RequestParam("solde") double solde,
+					@RequestParam("solde") float solde,
 					@RequestParam("pass1") String pass1,
 					@RequestParam("pass2") String pass2){
 
@@ -223,7 +223,7 @@ public class GestionnairePostAdmin {
 				public ModelAndView postAddAccountClient(	
 						@RequestParam("idClient") int id,
 						@RequestParam("typeCompte") String typeCompte,
-						@RequestParam("montant") double montant
+						@RequestParam("montant") float montant
 						){
 					System.out.println("Post adddAccount : "+ id +" "+typeCompte +" "+montant);
 					

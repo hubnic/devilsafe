@@ -85,7 +85,7 @@
 						</c:if>
 							<br><hr>
 							<button
-								type="submit"
+								onclick="confirmTransfertIn()"
 								class="btn btn-danger">Effectuer le transfert</button>
 							<input
 								type="hidden"

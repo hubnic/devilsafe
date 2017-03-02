@@ -39,7 +39,7 @@
 											type="text"
 											class="form-control"
 											id="compteName"
-											value="${accountName}"
+											value="${compteCredit.type}"
 											name="idCompte"
 											readonly>
 									</div>
@@ -48,7 +48,7 @@
 											type="text"
 											class="form-control"
 											id="idCompte"
-											value="${accountId}"
+											value="${compteCredit.idBanque} ${compteCredit.idCompte}"
 											name="idCompte"
 											readonly>
 									</div>
@@ -57,7 +57,7 @@
 											type="number"
 											class="form-control"
 											id="montant"
-											value="${montant}"
+											value="${compteCredit.solde}"
 											name="montant"
 											readonly>
 									</div>
@@ -91,18 +91,10 @@
 												placeholder="Indiquer le montant désiré"
 												required>
 										</div>
-										<h4>3. Veuillez valider le remboursement en inscrivant
-											votre mot de passe</h4>
-										<div class="form-group">
-											<label for="pwd">Password:</label> <input
-												type="password"
-												class="form-control"
-												id="pwd"
-												required>
-										</div>
+										
 										<button
 											type="submit"
-											class="btn btn-primary">Effectuer le remboursement</button>
+											class="btn btn-primary">Rembourser Carte Credit</button>
 										<input
 											type="hidden"
 											name="${_csrf.parameterName}"
