@@ -21,3 +21,16 @@ function confirmTransfertIn()
 		}
 }
 
+function confirmRembourseCC()
+{
+		var compteOut = document.getElementById("compteOut").value;
+		var montant = document.getElementById("montant").value;
+	
+		var retour = confirm("Voulez-vous procéder au remboursement de votre carte de credit selon les informations suivantes : \n" 
+				+ "Compte emetteur : "+ compteOut +"\n"
+				+ "Pour un montant de "+ montant +"$ \n"+"?");
+		if (retour == true) {
+		  document.getElementById("formRemboursementCC").submit();
+		}
+}
+

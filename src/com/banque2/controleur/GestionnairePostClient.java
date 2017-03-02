@@ -82,7 +82,7 @@ public class GestionnairePostClient {
 				if(valideSoustraction(cEmetteur,montant)){
 					System.out.println("Compte emetteur : "+cEmetteur[0]  + " " +cEmetteur[1] + " " +cEmetteur[2]+ " " +cEmetteur[3] + " " +cEmetteur[4]);
 					System.out.println("Compte receveur : "+ " " +cReveveur[0] + " " +cReveveur[1]+ " " +cReveveur[2] + " " +cReveveur[3] + " " +cReveveur[4]);
-					int transaction = serviceDaoClient.createTransfertCompteIn(Integer.parseInt(cEmetteur[2]), Integer.parseInt(cReveveur[2]), Double.parseDouble(montant));
+					int transaction = serviceDaoClient.createTransfertCompteIn(Integer.parseInt(cEmetteur[2]), Integer.parseInt(cReveveur[2]), Float.parseFloat(montant));
 					vueModele.addObject("succes", true);
 					vueModele.addObject("description", "Le virement a ete effecture avec succes est le numéro de transation est : ["+transaction+"]");
 				}
@@ -109,8 +109,8 @@ public class GestionnairePostClient {
 
 	
 	private boolean valideSoustraction(String[] cE, String montant){
-		double montantCompteOut = Double.parseDouble(cE[3]);
-		double montantT = Double.parseDouble(montant);
+		float montantCompteOut = Float.parseFloat(cE[3]);
+		float montantT = Float.parseFloat(montant);
 		if(montantCompteOut-montantT > 0){
 			System.out.println("OK LA SOUSTRATION EST VALIDE");
 			return true;
@@ -125,11 +125,11 @@ public class GestionnairePostClient {
 		@RequestMapping(value = {"/remboursementCC"}, method = RequestMethod.POST)
 		public ModelAndView postRemboursementCC(	
 				@RequestParam("compteOut") String compteEmetteur,
-				@RequestParam("montant") float montant,
+				@RequestParam("montant") float montantRemboursement,
 				@RequestParam("idCC") int idCC,
 				@RequestParam("montantCredit") float montantCredit){
 			
-			System.out.println("Controleur RemboursementCC : "+compteEmetteur + " " +montant + " "+montantCredit);
+			System.out.println("Controleur RemboursementCC : "+compteEmetteur + " " +montantRemboursement + " "+montantCredit);
 
 			String[] cEmetteur = compteEmetteur.split(" ");
 			
@@ -137,13 +137,27 @@ public class GestionnairePostClient {
 			vueModele.setViewName("/client/client_credit");
 			
 			if(valideCompteifCredit(cEmetteur)){
-
-				System.out.println("Compte emetteur : "+cEmetteur[0]  + " " +cEmetteur[1] + " " +cEmetteur[2]+ " " +cEmetteur[3] + " " +cEmetteur[4]);
-				int transaction = serviceDaoClient.rembourserCC(Integer.parseInt(cEmetteur[2]), idCC, montant);
-				vueModele.addObject("succes", true);
-				vueModele.addObject("description", "Le virement a ete effecture avec succes est le numéro de transation est : ["+transaction+"]");
-					
+				if(valideRemboursementCredit(cEmetteur, montantRemboursement)){
+					System.out.println("Compte emetteur : "+cEmetteur[0]  + " " +cEmetteur[1] + " " +cEmetteur[2]+ " " +cEmetteur[3] + " " +cEmetteur[4]);
+					int transaction = serviceDaoClient.rembourserCC(Integer.parseInt(cEmetteur[2]), idCC, montantRemboursement);
+					if(transaction>0){
+						vueModele.addObject("succes", true);
+						vueModele.addObject("description", "Le virement a ete effecture avec succes est le numéro de transation est : ["+transaction+"]");
+					}
+					else{
+						vueModele.addObject("succes", false);
+						vueModele.addObject("description", "Erreur lors de l'execution du transfert....");
 				
+					}
+					
+
+				}
+				else{
+					vueModele.addObject("succes", false);
+					vueModele.addObject("description", "Vous ne disposez pas suffisament de fond dans votre comptre pour effectuer ce remboursement.");
+			
+				}
+			
 			}else{
 				vueModele.addObject("succes", false);
 				vueModele.addObject("description", "Vous ne pouvez pas faire un virement depuis un compte crédit.");
@@ -168,6 +182,14 @@ public class GestionnairePostClient {
 				return false;
 			}else{
 				return true;
+			}
+		}
+		
+		private boolean valideRemboursementCredit(String[] cE, float montantRemboursement){
+			if(Float.parseFloat(cE[3])-montantRemboursement>=0){
+				return true;
+			}else{
+				return false;
 			}
 		}
 }

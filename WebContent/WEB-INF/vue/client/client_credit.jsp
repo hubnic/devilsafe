@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.min.css" />">
 <link rel="stylesheet" href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.css" />">
 <script src="<c:url value="/librairie/jquery/jquery-3.1.1.min.js" />"></script>
+<script src="<c:url value="/librairie/js/confirmClient.js" />"></script>
 <script src="<c:url value="/librairie/bootstrap-3.3.7/js/bootstrap.min.js" />"></script>
 </head>
 <body>
@@ -115,7 +116,7 @@
 									</c:if>
 									<br>
 										<button
-											type="submit"
+											onclick="confirmRembourseCC()"
 											class="btn btn-primary">Rembourser Carte Credit</button>
 									</form>
 								</div>

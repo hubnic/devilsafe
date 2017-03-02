@@ -130,7 +130,7 @@ public List<PojoCompte> getAllComptesClientForTransfert(int idClient){
 
 
 
-public int createTransfertCompteIn(int idCompteEmetteur, int idCompteReceveur, double montant) {
+public int createTransfertCompteIn(int idCompteEmetteur, int idCompteReceveur, float montant) {
 
 		// retrait fond en 1
 		// ajout fond en 2
@@ -148,7 +148,7 @@ public int createTransfertCompteIn(int idCompteEmetteur, int idCompteReceveur, d
 		}		
 }
 
-public int rembourserCC(int idCompteEmetteur, int idCompteReceveur, double montantRemboursement) {
+public int rembourserCC(int idCompteEmetteur, int idCompteReceveur, float montantRemboursement) {
 
 	// retrait fond en 1
 	// retrait fond en 2
@@ -167,7 +167,7 @@ public int rembourserCC(int idCompteEmetteur, int idCompteReceveur, double monta
 }
 
 
-private int createTransaction(int idCompteOut, int idCompteIn, double montant, String description) {
+private int createTransaction(int idCompteOut, int idCompteIn, float montant, String description) {
 	
 	String transaction =
 	"INSERT INTO transaction (idCompteClient, idCompteDestinataire, montant, description)"
@@ -179,7 +179,7 @@ private int createTransaction(int idCompteOut, int idCompteIn, double montant, S
 		PreparedStatement st = connec.prepareStatement(transaction,Statement.RETURN_GENERATED_KEYS);
 		st.setInt(1, idCompteOut);
 		st.setInt(2, idCompteIn);
-		st.setDouble(3, montant);
+		st.setFloat(3, montant);
 		st.setString(4, description);
 		st.executeUpdate();
 		
@@ -198,7 +198,7 @@ private int createTransaction(int idCompteOut, int idCompteIn, double montant, S
 	}
 }
 
-private boolean ajouterFondCompte(int idCompte, double montant) {
+private boolean ajouterFondCompte(int idCompte, float montant) {
 	String ajouterFondCompte =	
 	"UPDATE compte"
 	+" SET Solde = (Solde + ?)"
@@ -207,7 +207,7 @@ private boolean ajouterFondCompte(int idCompte, double montant) {
 	try{
 		Connection connec = jdbcTemplate.getDataSource().getConnection();
 		PreparedStatement st = connec.prepareStatement(ajouterFondCompte);
-		st.setDouble(1, montant);
+		st.setFloat(1, montant);
 		st.setInt(2, idCompte);
 		st.executeUpdate();
 		return true;
@@ -218,7 +218,7 @@ private boolean ajouterFondCompte(int idCompte, double montant) {
 
 }
 
-private boolean retraitFondCompte(int idCompte, double montant) {
+private boolean retraitFondCompte(int idCompte, float montant) {
 	String retaitFondCompte =	
 			"UPDATE compte"
 			+" SET Solde = (Solde - ?)"
@@ -227,7 +227,7 @@ private boolean retraitFondCompte(int idCompte, double montant) {
 			try{
 				Connection connec = jdbcTemplate.getDataSource().getConnection();
 				PreparedStatement st = connec.prepareStatement(retaitFondCompte);
-				st.setDouble(1, montant);
+				st.setFloat(1, montant);
 				st.setInt(2, idCompte);
 				st.executeUpdate();
 				return true;
