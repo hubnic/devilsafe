@@ -128,15 +128,14 @@ private ArrayList<PojoCompte> getAllPreautorisation(ArrayList<PojoCompte> l){
 
 public int createTransfertCompteIn(int idCompteEmetteur, int idCompteReceveur, double montant) {
 
-		
 		// retrait fond en 1
 		// ajout fond en 2
 		// Creation de la transaction
 	
 		retraitFondCompte(idCompteEmetteur, montant);
 		ajouterFondCompte(idCompteReceveur, montant);
-		int idTransaction = createTransactionTransfertIn(idCompteEmetteur, idCompteReceveur, -montant,"Virement vers compte "+ idCompteReceveur);
-		createTransactionTransfertIn(idCompteReceveur, idCompteEmetteur, montant,"Virement en provenace du compte "+ idCompteEmetteur);
+		int idTransaction = createTransaction(idCompteEmetteur, idCompteReceveur, -montant,"Virement vers compte "+ idCompteReceveur);
+		createTransaction(idCompteReceveur, idCompteEmetteur, montant,"Virement en provenace du compte "+ idCompteEmetteur);
 		if(idTransaction != -1){
 			return idTransaction;
 		}
@@ -145,7 +144,26 @@ public int createTransfertCompteIn(int idCompteEmetteur, int idCompteReceveur, d
 		}		
 }
 
-private int createTransactionTransfertIn(int idCompteOut, int idCompteIn, double montant, String description) {
+public int rembourserCC(int idCompteEmetteur, int idCompteReceveur, double montantRemboursement) {
+
+	// retrait fond en 1
+	// retrait fond en 2
+	// Creation de la transaction
+
+	retraitFondCompte(idCompteEmetteur, montantRemboursement);
+	retraitFondCompte(idCompteReceveur, montantRemboursement);
+	int idTransaction = createTransaction(idCompteEmetteur, idCompteReceveur, -montantRemboursement,"Rembourser du compte credit : "+ idCompteReceveur);
+	createTransaction(idCompteReceveur, idCompteEmetteur, -montantRemboursement,"Remboursement du compte credit effectué par le compte "+ idCompteEmetteur);
+	if(idTransaction != -1){
+		return idTransaction;
+	}
+	else{
+		return -1;
+	}		
+}
+
+
+private int createTransaction(int idCompteOut, int idCompteIn, double montant, String description) {
 	
 	String transaction =
 	"INSERT INTO transaction (idCompteClient, idCompteDestinataire, montant, description)"

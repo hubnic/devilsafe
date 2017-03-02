@@ -63,20 +63,24 @@
 									</div>
 								</div>
 								<div class="col-sm-8">
-									<form>
+										<form
+										method="post"
+										id="formRemboursementCC"
+										action="<c:url value="/remboursementCC" />"
+										role="form">
 										<hr>
 										<h4>1. Veuillez choisir le compte emetteur pour le remboursement</h4>
 										<hr>
 										<div class="form-group">
 											<label
-												for="compteOut">Emetteur</label> <select
+												for="compteOut">Choisir le compte emetteur</label> <select
 												class="form-control"
 												id="compteOut"
 												name="compteOut"
 												required>
 												<option>Choisir Compte</option>
 												<c:forEach items="${comptes}" var="comptes">
-												<option>${comptes.type} ${comptes.idBanque}${comptes.idCompte} ${comptes.solde}$ </option>
+												<option>${comptes.type} ${comptes.idBanque} ${comptes.idCompte} ${comptes.solde} $ </option>
 												</c:forEach>
 											</select>
 										</div>
@@ -84,7 +88,7 @@
 										<h4>2. Inscrire le montant désiré</h4>
 										<div class="form-group">
 											<input
-												type="number"
+												type=number step=0.01
 												class="form-control"
 												id="montant"
 												name="montant"
@@ -92,13 +96,27 @@
 												required>
 										</div>
 										
-										<button
-											type="submit"
-											class="btn btn-primary">Rembourser Carte Credit</button>
+										<input type="hidden" name="montantCredit" value="${compteCredit.solde}" />
+										<input type="hidden" name="idCC" value="${compteCredit.idCompte}" />
+									
 										<input
 											type="hidden"
 											name="${_csrf.parameterName}"
 											value="${_csrf.token}" />
+										<c:if test="${succes == true}">
+										<div class="alert alert-success">
+											<p>${description}</p>
+										</div>
+										</c:if>
+										<c:if test="${succes == false}">
+										<div class="alert alert-danger">
+											<p>${description}</p>
+										</div>
+									</c:if>
+									<br>
+										<button
+											type="submit"
+											class="btn btn-primary">Rembourser Carte Credit</button>
 									</form>
 								</div>
 							</div>

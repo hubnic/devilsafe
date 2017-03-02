@@ -106,22 +106,7 @@ public class GestionnairePostClient {
 		
 		return vueModele;
 	}
-	
-	private boolean valideCompteifCredit(String[] cE){
-		if(cE[0].equals("CREDIT")){
-			return false;
-		}else{
-			return true;
-		}
-	}
-	
-	private boolean valideMMCompte(String[] cE, String[] cR){
-		if(cE[2].equals(cR[2])){
-			return false;
-		}else{
-			return true;
-		}
-	}
+
 	
 	private boolean valideSoustraction(String[] cE, String montant){
 		double montantCompteOut = Double.parseDouble(cE[3]);
@@ -133,5 +118,57 @@ public class GestionnairePostClient {
 			return false;
 		}
 	}
+	
+	
+	
+	//ADMINISTRATEUR
+		@RequestMapping(value = {"/remboursementCC"}, method = RequestMethod.POST)
+		public ModelAndView postRemboursementCC(	
+				@RequestParam("compteOut") String compteEmetteur,
+				@RequestParam("montant") float montant,
+				@RequestParam("idCC") int idCC,
+				@RequestParam("montantCredit") float montantCredit){
+			
+			System.out.println("Controleur RemboursementCC : "+compteEmetteur + " " +montant + " "+montantCredit);
+
+			String[] cEmetteur = compteEmetteur.split(" ");
+			
+			ModelAndView vueModele = new ModelAndView();
+			vueModele.setViewName("/client/client_credit");
+			
+			if(valideCompteifCredit(cEmetteur)){
+
+				System.out.println("Compte emetteur : "+cEmetteur[0]  + " " +cEmetteur[1] + " " +cEmetteur[2]+ " " +cEmetteur[3] + " " +cEmetteur[4]);
+				int transaction = serviceDaoClient.rembourserCC(Integer.parseInt(cEmetteur[2]), idCC, montant);
+				vueModele.addObject("succes", true);
+				vueModele.addObject("description", "Le virement a ete effecture avec succes est le numéro de transation est : ["+transaction+"]");
+					
+				
+			}else{
+				vueModele.addObject("succes", false);
+				vueModele.addObject("description", "Vous ne pouvez pas faire un virement depuis un compte crédit.");
+			}
+			
+			vueModele.addObject("compteCredit", serviceDaoClient.getCompteCredit(Integer.parseInt(SecurityContextHolder.getContext().getAuthentication().getName())));
+			vueModele.addObject("comptes", serviceDaoClient.getAllComptesClientForTransfert(Integer.parseInt(SecurityContextHolder.getContext().getAuthentication().getName())));	
+			
+			return vueModele;
+		}
+		
+		private boolean valideCompteifCredit(String[] cE){
+			if(cE[0].equals("CREDIT")){
+				return false;
+			}else{
+				return true;
+			}
+		}
+		
+		private boolean valideMMCompte(String[] cE, String[] cR){
+			if(cE[2].equals(cR[2])){
+				return false;
+			}else{
+				return true;
+			}
+		}
 }
 

@@ -255,11 +255,11 @@
 							<h3>2. Inscrire le montant de base</h3>
 							<div class="form-group">
 								<input
-									type="number"
+									type=number step=0.01
 									class="form-control"
 									id="montant"
 									name="montant"
-									placeholder="256"
+									placeholder="500.00"
 									required>
 							</div>
 							<input

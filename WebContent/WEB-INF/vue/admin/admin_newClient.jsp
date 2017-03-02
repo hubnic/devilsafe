@@ -146,8 +146,8 @@
 								<div class="col-10">
 									<input
 										class="form-control"
-										type="number"
-										value="1500"
+										type=number step=0.01
+										value="1500.00"
 										id="solde"
 										name="solde"
 										required>

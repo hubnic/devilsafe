@@ -67,7 +67,7 @@
 							<h3>3. Inscrire le montant désiré</h3>
 							<div class="form-group">
 								<input
-									type="number"
+									type=number step=0.01
 									class="form-control"
 									id="montant"
 									name="montant"
