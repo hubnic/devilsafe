@@ -68,8 +68,8 @@
 										<table class="table table-striped">
 											<thead>
 												<tr>
-													<th>Date</th>
 													<th>#Transaction</th>
+													<th>Date</th>
 													<th>Nom transaction</th>
 													<th>Montant $</th>
 												</tr>
@@ -87,7 +87,6 @@
 										</table>
 									</div>
 								</div>
-								
 							</div>
 							</div>		
 							</div>					

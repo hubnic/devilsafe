@@ -18,7 +18,7 @@ public class GestionnaireGetClient {
 
 	@RequestMapping(value = {"/apercu"}, method = RequestMethod.GET)
 	public String getApercu(ModelMap listeElement) {	
-			listeElement.addAttribute("comptes",serviceDaoClient.getAllComptesClient(Integer.parseInt(SecurityContextHolder.getContext().getAuthentication().getName())));
+		listeElement.addAttribute("comptes",serviceDaoClient.getAllComptesClient(Integer.parseInt(SecurityContextHolder.getContext().getAuthentication().getName())));
 		return "/client/client_apercu";
 	}
 	

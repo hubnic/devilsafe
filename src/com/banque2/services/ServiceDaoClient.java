@@ -58,7 +58,7 @@ public List<PojoCompte> getAllComptesClient(int idClient){
 	try{
 		ArrayList<PojoCompte> result = (ArrayList<PojoCompte>) jdbcTemplate.query(getAllComptes,new MappingCompte());
 		result = this.getAllTransactionByCompte(result);
-		result = this.getAllPreautorisation(result);
+		//result = this.getAllPreautorisation(result);
 
 		if(result.isEmpty()){
 			return null;
@@ -71,24 +71,6 @@ public List<PojoCompte> getAllComptesClient(int idClient){
 		return null;
 	}
 }
-
-public List<PojoCompte> getAllComptesClientForTransfert(int idClient){
-	String getAllComptes = "SELECT * FROM compte where idClient ="+idClient;		
-	try{
-		ArrayList<PojoCompte> result = (ArrayList<PojoCompte>) jdbcTemplate.query(getAllComptes,new MappingCompte());
-
-		if(result.isEmpty()){
-			return null;
-		}
-		else{
-			return result;
-		}	
-	}
-	catch(Exception e){
-		return null;
-	}
-}
-
 private ArrayList<PojoCompte> getAllTransactionByCompte(ArrayList<PojoCompte> l){
 	String getAllTransactions = "SELECT * FROM transaction WHERE idCompteClient = ";
 	
@@ -124,6 +106,28 @@ private ArrayList<PojoCompte> getAllPreautorisation(ArrayList<PojoCompte> l){
 	return l;
 	
 }
+
+
+
+
+
+public List<PojoCompte> getAllComptesClientForTransfert(int idClient){
+	String getAllComptes = "SELECT * FROM compte where idClient ="+idClient;		
+	try{
+		ArrayList<PojoCompte> result = (ArrayList<PojoCompte>) jdbcTemplate.query(getAllComptes,new MappingCompte());
+
+		if(result.isEmpty()){
+			return null;
+		}
+		else{
+			return result;
+		}	
+	}
+	catch(Exception e){
+		return null;
+	}
+}
+
 
 
 public int createTransfertCompteIn(int idCompteEmetteur, int idCompteReceveur, double montant) {
