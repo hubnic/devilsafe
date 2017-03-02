@@ -91,8 +91,8 @@
 											<input
 												type=number step=0.01
 												class="form-control"
-												id="montant"
-												name="montant"
+												id="montantRemboursement"
+												name="montantRemboursement"
 												placeholder="Indiquer le montant désiré"
 												required>
 										</div>

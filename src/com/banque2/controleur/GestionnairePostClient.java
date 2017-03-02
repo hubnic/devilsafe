@@ -125,7 +125,7 @@ public class GestionnairePostClient {
 		@RequestMapping(value = {"/remboursementCC"}, method = RequestMethod.POST)
 		public ModelAndView postRemboursementCC(	
 				@RequestParam("compteOut") String compteEmetteur,
-				@RequestParam("montant") float montantRemboursement,
+				@RequestParam("montantRemboursement") float montantRemboursement,
 				@RequestParam("idCC") int idCC,
 				@RequestParam("montantCredit") float montantCredit){
 			

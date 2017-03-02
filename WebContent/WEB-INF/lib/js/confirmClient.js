@@ -24,7 +24,7 @@ function confirmTransfertIn()
 function confirmRembourseCC()
 {
 		var compteOut = document.getElementById("compteOut").value;
-		var montant = document.getElementById("montant").value;
+		var montant = document.getElementById("montantRemboursement").value;
 	
 		var retour = confirm("Voulez-vous procéder au remboursement de votre carte de credit selon les informations suivantes : \n" 
 				+ "Compte emetteur : "+ compteOut +"\n"
