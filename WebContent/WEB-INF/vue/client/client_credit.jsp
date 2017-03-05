@@ -55,7 +55,7 @@
 									</div>
 									<div class="form-group">
 										<label for="usr">Montant à rembourser ($) :</label> <input
-											type="number"
+											type="number" step=0.01
 											class="form-control"
 											id="montant"
 											value="${compteCredit.solde}"
@@ -89,11 +89,11 @@
 										<h4>2. Inscrire le montant désiré</h4>
 										<div class="form-group">
 											<input
-												type=number step=0.01
+												type=number min=100 max="${compteCredit.solde}" step=0.01
 												class="form-control"
 												id="montantRemboursement"
 												name="montantRemboursement"
-												placeholder="Indiquer le montant désiré"
+												placeholder="0.00"
 												required>
 										</div>
 										

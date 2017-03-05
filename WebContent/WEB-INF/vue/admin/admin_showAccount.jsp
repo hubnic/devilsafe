@@ -52,6 +52,58 @@
 				<ul class="nav nav-pills nav-stacked">
 					<li><a href="<c:url value="/newAdmin"/>">Créer compte Administrateur</a></li>
 				</ul>
+				<br><hr>
+					<form
+							method="post"
+							id="formAddAccountClient"
+							name ="addAccountClient"
+							action="<c:url value="/addAccountClient" />"
+							role="form">
+							<h3>Ajouter un compte bancaire</h3>
+							<hr>
+							<div class="form-group">
+								<label for="typeCompte">1. Choisir le type de compte</label> <select
+									class="form-control"
+									id="typeCompte"
+									name="typeCompte"
+									required>
+									<option>Choisir compte</option>
+									<option>DEBIT</option>
+									<option>CREDIT</option>
+								</select>
+							</div>
+							<h3>2. Inscrire le montant de base</h3>
+							<div class="form-group">
+								<input
+									type=number step=0.01
+									class="form-control"
+									id="montant"
+									name="montant"
+									placeholder="500.00"
+									required>
+							</div>
+							<input
+								type="hidden"
+								name="idClient"
+								value="${client.identifiant}" />
+							<button
+								onclick="confirmAddAccount()"
+								class="btn btn-danger">Ajouter le compte</button>
+							<input
+								type="hidden"
+								name="${_csrf.parameterName}"
+								value="${_csrf.token}" />
+						</form>
+    	<c:if test="${succes == true}">
+			<div class="alert alert-success">
+				<p>${description}</p>
+			</div>
+	</c:if>
+	<c:if test="${succes == false}">
+			<div class="alert alert-danger">
+				<p>${description}</p>
+			</div>
+	</c:if>
     </div>
     
     
@@ -152,11 +204,9 @@
 							</div>
 						</div>
 						<br>
-						<hr>
-						<h3>
-							Voici les comptes <span class="glyphicon glyphicon-usd"></span>
-						</h3>
-				
+	<hr>
+						<h3><span class="glyphicon glyphicon-usd"></span> Etat financier de : ${client.nom} ${client.prenom}  </h3>
+						<br>
 						<c:forEach items="${comptes}" var="comptes">
 					
 					
@@ -231,64 +281,12 @@
 							</div>					
 						</c:forEach>
 						<hr>
-						<h3><span class="glyphicon glyphicon-plus"></span>	Ajouter un compte </h3>
-					
-						<form
-							method="post"
-							id="addAccountClient"
-							name ="addAccountClient"
-							action="<c:url value="/addAccountClient" />"
-							role="form">
-							<h3>1. Choisir le type de compte à ajouter</h3>
-							<hr>
-							<div class="form-group">
-								<label for="typeCompte">Choisir le type de compte</label> <select
-									class="form-control"
-									id="typeCompte"
-									name="typeCompte"
-									required>
-									<option>Choisir compte</option>
-									<option>DEBIT</option>
-									<option>CREDIT</option>
-								</select>
-							</div>
-							<h3>2. Inscrire le montant de base</h3>
-							<div class="form-group">
-								<input
-									type=number step=0.01
-									class="form-control"
-									id="montant"
-									name="montant"
-									placeholder="500.00"
-									required>
-							</div>
-							<input
-								type="hidden"
-								name="idClient"
-								value="${client.identifiant}" />
-							<button
-								onclick="confirmAddAccount()"
-								class="btn btn-danger">Ajouter le compte</button>
-							<input
-								type="hidden"
-								name="${_csrf.parameterName}"
-								value="${_csrf.token}" />
-						</form>
 					</div>
     </div>
     
     
     <div class="col-sm-2 sidenav">
-    	<c:if test="${succes == true}">
-			<div class="alert alert-success">
-				<p>${description}</p>
-			</div>
-	</c:if>
-			<c:if test="${succes == false}">
-			<div class="alert alert-danger">
-				<p>${description}</p>
-			</div>
-	</c:if>
+    
     </div>
     
   </div>

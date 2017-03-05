@@ -49,7 +49,8 @@
 						name="idt"
 						value="${username}"
 						placeholder="Saisir votre identifiant"
-						required>
+						required
+						readonly>
 				</div>
 			</div>
 			<div class="form-group row">
@@ -64,7 +65,6 @@
 						type="number"
 						name="secureKey"
 						placeholder="Saisir votre clé de sécurité"
-						value="1234567"
 						required>
 				</div>
 			</div>

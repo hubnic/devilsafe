@@ -35,8 +35,19 @@ public class SpringSecuriteUserConfiguration extends WebSecurityConfigurerAdapte
     protected void configure(HttpSecurity http) throws Exception {
     	
     //GESTION DES SESSIONS
+    	http.sessionManagement().sessionFixation().migrateSession();
+    	 http
+         .headers()
+             .contentTypeOptions()
+             .and()
+             .xssProtection()
+             .and()
+             .cacheControl()
+             .and()
+             .httpStrictTransportSecurity()
+             .and()
+             .frameOptions();
     	   //PROPRIETES DE SPRING PERMETTTANT DE CONFIGURER LE MAX DE SESSION 
-	      http.sessionManagement().sessionFixation().migrateSession();
 	 	  //http.sessionManagement().maximumSessions(1);
 	      http.sessionManagement().invalidSessionUrl("/portail");
 	      http.sessionManagement().maximumSessions(1);

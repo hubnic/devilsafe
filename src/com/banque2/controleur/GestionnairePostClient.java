@@ -82,7 +82,14 @@ public class GestionnairePostClient {
 				if(valideSoustraction(cEmetteur,montant)){
 					System.out.println("Compte emetteur : "+cEmetteur[0]  + " " +cEmetteur[1] + " " +cEmetteur[2]+ " " +cEmetteur[3] + " " +cEmetteur[4]);
 					System.out.println("Compte receveur : "+ " " +cReveveur[0] + " " +cReveveur[1]+ " " +cReveveur[2] + " " +cReveveur[3] + " " +cReveveur[4]);
-					int transaction = serviceDaoClient.createTransfertCompteIn(Integer.parseInt(cEmetteur[2]), Integer.parseInt(cReveveur[2]), Float.parseFloat(montant));
+					int transaction;
+					if(cReveveur[0].equals("CREDIT")){
+						transaction = serviceDaoClient.rembourserCC(Integer.parseInt(cEmetteur[2]), Integer.parseInt(cReveveur[2]), Float.parseFloat(montant));
+					}
+					else{
+						transaction = serviceDaoClient.createTransfertCompteIn(Integer.parseInt(cEmetteur[2]), Integer.parseInt(cReveveur[2]), Float.parseFloat(montant));
+					}
+					
 					vueModele.addObject("succes", true);
 					vueModele.addObject("description", "Le virement a ete effecture avec succes est le numéro de transation est : ["+transaction+"]");
 				}

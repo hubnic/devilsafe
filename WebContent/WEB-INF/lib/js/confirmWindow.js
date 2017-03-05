@@ -31,7 +31,7 @@ function confirmAddAccount()
 
 	var retour = confirm("Est-vous sur de procéder à l'ajout du compte :" + "\n" +typeCompte + "\n" +montant +" ?"  );
 	if (retour == true) {
-	  document.getElementById("addAccountClient").submit();
+	  document.getElementById("formAddAccountClient").submit();
 	}
 }
 
