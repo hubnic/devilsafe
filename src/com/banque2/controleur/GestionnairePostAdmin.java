@@ -125,6 +125,7 @@ public class GestionnairePostAdmin {
 	public ModelAndView postAddAdmin(	
 			@RequestParam("nom") String nom, 
 			@RequestParam("prenom") String prenom,
+			@RequestParam("courriel") String courriel,
 			@RequestParam("pass1") String pass1,
 			@RequestParam("pass2") String pass2){
 
@@ -139,6 +140,7 @@ public class GestionnairePostAdmin {
 			PojoAdministrateur newAdmin = new PojoAdministrateur();
 			newAdmin.setNom(nom);
 			newAdmin.setPrenom(prenom);
+			newAdmin.setCourriel(courriel);
 			newAdmin.setMdp(serviceSecurite.hashMDP(pass1));
 			newAdmin.setKey(new Random().nextInt(9999));
 			

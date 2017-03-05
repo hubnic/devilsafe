@@ -40,12 +40,13 @@ private PojoCompte templateDebit = new PojoCompte();
 	}
 
 	public boolean createAdmin(PojoAdministrateur administrateur) {
-		String addAdministrateur = "INSERT INTO administrateurs (nom, prenom, mdp,secureKey) VALUES (?, ?, ?, ?)";
+		String addAdministrateur = "INSERT INTO administrateurs (nom, prenom,courriel, mdp,secureKey) VALUES (?, ?, ?, ?, ?)";
 
 		try{
 				jdbcTemplate.update(addAdministrateur, 
 						administrateur.getNom(), 
 						administrateur.getPrenom(),
+						administrateur.getCourriel(),
 						administrateur.getMdp(), 
 						administrateur.getKey());
 				return true;	

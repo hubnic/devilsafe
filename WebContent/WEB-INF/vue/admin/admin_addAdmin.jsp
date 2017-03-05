@@ -106,6 +106,20 @@
 									required>
 							</div>
 						</div>
+						<div class="form-group row">
+							<label
+								for="courriel"
+								class="col-2 col-form-label">Courriel :</label>
+							<div class="col-10">
+								<input
+									class="form-control"
+									type="email"
+									value="@banque2.ca"
+									id="courriel"
+									name ="courriel"
+									required>
+							</div>
+						</div>
 					</div>
 					<div class="col-sm-1"></div>
 					<div class="col-sm-4">

@@ -18,6 +18,7 @@ public final class MappingAdministrateur implements RowMapper<PojoAdministrateur
         administrateur.setIdentifiant(resultSet.getInt("identifiant"));
         administrateur.setNom(resultSet.getString("nom"));
         administrateur.setPrenom(resultSet.getString("prenom"));
+        administrateur.setCourriel(resultSet.getString("courriel"));
         return administrateur;
     }
 	
