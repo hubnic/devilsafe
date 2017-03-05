@@ -2,7 +2,7 @@ package com.banque2.modele;
 
 public class PojoCarte {
 	
-	private int numCarte;
+	private String numCarte;
 	private String dateExp;
 	private int crypto;
 	private String prenom;
@@ -18,11 +18,11 @@ public class PojoCarte {
 				+ ", nom=" + nom + ", idCompte=" + idCompte + "]";
 	}
 
-	public int getNumCarte() {
+	public String getNumCarte() {
 		return numCarte;
 	}
 
-	public void setNumCarte(int numCarte) {
+	public void setNumCarte(String numCarte) {
 		this.numCarte = numCarte;
 	}
 

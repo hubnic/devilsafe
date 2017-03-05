@@ -4,6 +4,7 @@ package com.banque2.controleur;
  * Created by tinic on 2/20/17.
  */
 
+import com.banque2.modele.PojoCarte;
 import com.banque2.modele.PojoCompte;
 import com.banque2.modele.PojoPreautorisation;
 import com.banque2.services.ServiceDaoApi;
@@ -66,27 +67,53 @@ public class GestionnaireAPI {
             } else {
                 try {
                     PojoPreautorisation preauth = new PojoPreautorisation();
+                    PojoCarte carte = new PojoCarte();
 
                     //ASSIGNATION DES PARAMÈTRES JSON -> POJO
+                    //assignation du numéro de carte de crédit
                     preauth.setCredit_id(rootNode.path("credit_id").getTextValue());
+                    carte.setNumCarte(preauth.getCredit_id());
+
+                    //assignation de la date d'expiration
                     preauth.setCredit_expiration(rootNode.path("credit_expiration").getTextValue());
+                    carte.setDateExp(preauth.getCredit_expiration());
+
+                    //assignation du nom de la carte de crédit
                     preauth.setCredit_nom(rootNode.path("credit_nom").getTextValue());
+                    carte.setNom(preauth.getCredit_nom());
+
+                    //assignation du prénom de la carte
                     preauth.setCredit_prenom(rootNode.path("credit_prenom").getTextValue());
+                    carte.setPrenom(preauth.getCredit_prenom());
+
+                    //assignation numero cvs
                     preauth.setCredit_cvs(rootNode.path("credit_cvs").getIntValue());
+                    carte.setCrypto(preauth.getCredit_cvs());
+
                     preauth.setSource_id(rootNode.path("source_id").getTextValue());
                     preauth.setMontant(rootNode.path("montant").getDoubleValue());
                     preauth.setPreauth_id(i);
                     preauth.setPreauthStatus("CREATED");
 
                     serviceDaoApi.createPreautorisation(preauth);
+                    if ( serviceDaoApi.checkIfCCexit(carte)){
 
-                    //ENVOI REPONSE
-                    preauthNode.put("preauth_id", i);
-                    preauthNode.put("preauth_status", "CREATED");
-                    preauthNode.put("preauth_expiration", new Date(Calendar.getInstance().getTimeInMillis() + (15 * 60000)).toString());
-                    preauthNode.put("detail_transaction", "Preautorisation creee avec succes");
-                    i++;
-                    return ResponseEntity.ok().header("salut", "réponse").body(preauthNode.toString());
+                        //ICI ON AJOUTE LE MONTANT AU CREDIT
+
+                        //ENVOI REPONSE
+                        preauthNode.put("preauth_id", i);
+                        preauthNode.put("preauth_status", "CREATED");
+                        preauthNode.put("preauth_expiration", new Date(Calendar.getInstance().getTimeInMillis() + (15 * 60000)).toString());
+                        preauthNode.put("detail_transaction", "Preautorisation creee avec succes");
+                        i++;
+                        return ResponseEntity.ok().header("salut", "réponse").body(preauthNode.toString());
+                    }
+                    else{
+                        preauthNode.put("preauth_status", "FAILURE");
+                        preauthNode.put("detail_transaction", "La carte de credit n'existe pas");
+                        i++;
+                        return ResponseEntity.ok().header("salut", "réponse").body(preauthNode.toString());
+                    }
                 }
                  catch(Exception e){
                     // REPONSE EN CAS D'ECHEC

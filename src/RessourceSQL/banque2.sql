@@ -163,6 +163,7 @@ CREATE TABLE IF NOT EXISTS `preautorisation` (
   `credit_cvs` varchar(3) NOT NULL,
   `source_id` varchar(100) NOT NULL,
   `montant` double NOT NULL,
+  `preauth_status` varchar(25) NOT NULL,
   PRIMARY KEY (`preauth_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 

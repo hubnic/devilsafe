@@ -1,18 +1,15 @@
 package com.banque2.services;
 
-import com.banque2.mappingModele.MappingCarte;
 import com.banque2.mappingModele.MappingPreautorisation;
 import com.banque2.modele.PojoCarte;
 import com.banque2.modele.PojoPreautorisation;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 
 public class ServiceDaoApi {
@@ -99,7 +96,7 @@ private JdbcTemplate jdbcTemplate;
 		try {
 			Connection connec = jdbcTemplate.getDataSource().getConnection();
 			PreparedStatement st = connec.prepareStatement(checkCC);
-			st.setString(1, Integer.toString(carte.getNumCarte()));
+			st.setString(1, carte.getNumCarte());
 			st.setString(2, carte.getNom());
 			st.setString(3, carte.getPrenom());
 			st.setString(4, carte.getDateExp());
