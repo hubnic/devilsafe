@@ -96,6 +96,12 @@ private JdbcTemplate jdbcTemplate;
 		try {
 			Connection connec = jdbcTemplate.getDataSource().getConnection();
 			PreparedStatement st = connec.prepareStatement(checkCC);
+
+			System.out.print(carte.getNumCarte()+"\n");
+			System.out.print(carte.getNom()+"\n");
+			System.out.print(carte.getPrenom()+"\n");
+			System.out.print(carte.getDateExp()+"\n");
+			System.out.print(carte.getCrypto()+"\n");
 			st.setString(1, carte.getNumCarte());
 			st.setString(2, carte.getNom());
 			st.setString(3, carte.getPrenom());
@@ -104,6 +110,7 @@ private JdbcTemplate jdbcTemplate;
 			
 			
 			ResultSet result = st.executeQuery();
+
 			if (result.next()) {
 				return true;
 			}else{

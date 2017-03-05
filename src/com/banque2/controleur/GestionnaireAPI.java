@@ -95,9 +95,10 @@ public class GestionnaireAPI {
                     preauth.setPreauth_id(i);
                     preauth.setPreauthStatus("CREATED");
 
-                    serviceDaoApi.createPreautorisation(preauth);
-                    if ( serviceDaoApi.checkIfCCexit(carte)){
 
+                    if (serviceDaoApi.checkIfCCexit(carte)){
+                        //on créée la préautorisation
+                        serviceDaoApi.createPreautorisation(preauth);
                         //ICI ON AJOUTE LE MONTANT AU CREDIT
 
                         //ENVOI REPONSE
@@ -111,7 +112,6 @@ public class GestionnaireAPI {
                     else{
                         preauthNode.put("preauth_status", "FAILURE");
                         preauthNode.put("detail_transaction", "La carte de credit n'existe pas");
-                        i++;
                         return ResponseEntity.ok().header("salut", "réponse").body(preauthNode.toString());
                     }
                 }
