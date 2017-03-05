@@ -58,7 +58,7 @@
 							id="formAddAccountClient"
 							name ="addAccountClient"
 							action="<c:url value="/addAccountClient" />"
-							role="form">
+							>
 							<h3>Ajouter un compte bancaire</h3>
 							<hr>
 							<div class="form-group">

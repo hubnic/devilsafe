@@ -26,12 +26,17 @@ function confirmAddAdmin()
 
 function confirmAddAccount()
 {
-	var typeCompte = document.getElementById("typeCompte").value;
+	var typeCompte = document.getElementById("typeCompte");
 	var montant = document.getElementById("montant").value;
-
-	var retour = confirm("Est-vous sur de procéder à l'ajout du compte :" + "\n" +typeCompte + "\n" +montant +" ?"  );
+	var compte = typeCompte.options[typeCompte.selectedIndex].innerHTML
+	
+	var retour = confirm("Est-vous sur de procéder à l'ajout du compte :" + "\n" +compte + "\n" +montant  +" ?"  );
 	if (retour == true) {
+		alert(retour);
 	  document.getElementById("formAddAccountClient").submit();
+	}else{
+		alert(retour);
+		document.getElementById("formAddAccountClient").doNotSubmit();
 	}
 }
 

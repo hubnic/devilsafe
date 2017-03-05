@@ -69,4 +69,10 @@ public class GestionnaireGetAdmin {
 	}
 	
 	
+	
+	@RequestMapping(value = {"/addAccountClient"}, method = RequestMethod.GET)
+	public String getAdminAddAccountClient(ModelMap listeElement) {
+		listeElement.addAttribute("clients", (ArrayList<PojoClient>) serviceDaoAdministrateur.getAllClient());
+		return "/admin/admin_showAllClient";
+	}
 }
