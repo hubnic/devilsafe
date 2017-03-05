@@ -1,5 +1,8 @@
 package com.banque2.controleur;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -60,6 +63,15 @@ public class GestionnairePostClient {
 		
 		vueModele.addObject("client", serviceDaoClient.getProfilClient(Integer.parseInt(SecurityContextHolder.getContext().getAuthentication().getName())));
 		return vueModele;
+	}
+	
+	//ADMINISTRATEUR
+	@RequestMapping(value = {"/relevePdf"}, method = RequestMethod.POST)
+	public ModelAndView postRelevePdf(
+			@RequestParam("idCompte") int idCompte){
+
+		return new ModelAndView("/client/client_relevepdf","compte",serviceDaoClient.getInfosComptePDF(idCompte));
+			
 	}
 	
 	//ADMINISTRATEUR

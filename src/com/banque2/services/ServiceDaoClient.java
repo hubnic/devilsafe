@@ -6,7 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -265,5 +267,29 @@ public PojoCompte getCompteCredit(int idClient) {
 			}
 }
 
+
+public PojoCompte getInfosComptePDF(int idCompte){
+	String getAllComptes = "SELECT * FROM compte where idCompte =" +idCompte;		
+	try{
+		PojoCompte compte = (PojoCompte) jdbcTemplate.query(getAllComptes,new MappingCompte()).get(0);
+		compte = getAllTransactionPDF(compte);
+		
+		return compte;
+	}
+	catch(Exception e){
+		return null;
+	}
+}
+
+private PojoCompte getAllTransactionPDF(PojoCompte compte){
+	String getAllTransactions = "SELECT * FROM transaction WHERE idCompteClient = ";
+	    	
+    List<PojoTransaction> result = jdbcTemplate.query(getAllTransactions+compte.getIdCompte(),new MappingTransaction());
+   
+    compte.setTransactions(result);
+
+	return compte;
+	
+}
 
 }

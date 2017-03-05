@@ -118,7 +118,6 @@
 			<version>1.6.3</version>
 		</dependency>
 
-
 	</dependencies>
 	<build>
 		<sourceDirectory>src</sourceDirectory>
