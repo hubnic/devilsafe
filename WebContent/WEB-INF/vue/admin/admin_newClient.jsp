@@ -130,7 +130,7 @@
 									<input
 										class="form-control"
 										type="email"
-										value="membre@banque2.com"
+										value="membre@banque2.ca"
 										id="courriel"
 										name="courriel"
 										required>

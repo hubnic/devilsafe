@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  127.0.0.1
--- Généré le :  Dim 05 Mars 2017 à 22:00
+-- Généré le :  Dim 05 Mars 2017 à 22:40
 -- Version du serveur :  5.7.14
 -- Version de PHP :  5.6.25
 
@@ -37,10 +37,10 @@ CREATE TABLE IF NOT EXISTS `administrateurs` (
   `mdp` varchar(200) CHARACTER SET latin1 NOT NULL,
   `secureKey` int(11) NOT NULL,
   `prefixe` varchar(1) CHARACTER SET latin1 NOT NULL DEFAULT 'a',
-  `recovery` int(5) NOT NULL,
+  `recovery` int(5) DEFAULT NULL,
   PRIMARY KEY (`identifiant`),
   KEY `identifiant` (`identifiant`)
-) ENGINE=InnoDB AUTO_INCREMENT=1068 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1069 DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `administrateurs`
@@ -51,7 +51,8 @@ INSERT INTO `administrateurs` (`identifiant`, `nom`, `prenom`, `courriel`, `mdp`
 (1064, 'Administrateur', 'Administrateur', 'administrateur@banque2.ca', 'ydGRrbQfVocNmt63PWSIjuHVB5/6LJI+xz3Sl6pSLo1AAhpTKjG2PcVgCHYcdKOg', 4111, 'a', 0),
 (1065, 'Administrateur', 'Administrateur', 'administrateur@banque2.ca', 'zR0+QAvbDtD8hj6f5Es2Ul7Shi2ndEhDtoC+93n4z3cAxpjW3O1X2Dfq+BY+Wmkh', 3851, 'a', 0),
 (1066, 'admin2', 'moi', 'administrateur@banque2.ca', '+Dwwcm4IV7TqtjtVIVR6DtfSdFvMdAK86QB6zxH4zuYG4rlCMkb87ZTihnm8+QhD', 3130, 'a', 0),
-(1067, 'Administrateur', 'Administrateur', 'administrateur@banque2.ca', '9FVnSQjpHm2qSfAXW1xVoPqJk45PhS/ej/GG/YlpX6zZlnABxMdFbKnHBRDhV39C', 3693, 'a', 0);
+(1067, 'Administrateur', 'Administrateur', 'administrateur@banque2.ca', '9FVnSQjpHm2qSfAXW1xVoPqJk45PhS/ej/GG/YlpX6zZlnABxMdFbKnHBRDhV39C', 3693, 'a', 0),
+(1068, 'Administrateur123', 'Administrateur123', 'admin@banque2.ca', 'Wbdk50Lk3xtAlTlDTNXSO5WFnCwWSzUx9C6MsqxKb4Y/Ix2YTgtdmURL+aSWfTak', 3518, 'a', NULL);
 
 -- --------------------------------------------------------
 
@@ -85,12 +86,14 @@ INSERT INTO `carte` (`numCarte`, `dateExp`, `crypto`, `nom`, `prenom`, `idCompte
 ('6666334981645019', '2021/04', 484, 'bachou', 'lyessou', 6047),
 ('666648147628235', '2018/02', 35, 'Dupont', 'Jean', 6005),
 ('6666514988682962', '2021/04', 977, 'bachou', 'lyessou', 6048),
+('6666619825512684', '2021/04', 491, 'Dupont123', 'Jean123', 6049),
 ('666672319559253', '2018/02', 845, 'Dupont', 'Jean', 6011),
 ('6666742621243658', '2021/04', 473, 'New', 'client', 6020),
 ('6666810239756822', '2021/04', 690, 'bachou', 'lyessou', 6030),
 ('6666836142097970', '2018/02', 84, 'Dupont', 'Jean', 6007),
 ('6666842778965275', '2021/04', 769, 'Dupont', 'Jean', 6023),
 ('6666918583353599', '2018/02', 781, 'Dup', 'Jean', 6003),
+('6666934691551686', '2021/04', 191, 'Dupont123', 'Jean123', 6050),
 ('6666943657236893', '2018/02', 901, 'Dupont', 'Jean', 6008);
 
 -- --------------------------------------------------------
@@ -110,10 +113,10 @@ CREATE TABLE IF NOT EXISTS `clients` (
   `adresse` varchar(600) CHARACTER SET latin1 NOT NULL,
   `mdp` varchar(200) CHARACTER SET latin1 NOT NULL,
   `prefixe` varchar(1) CHARACTER SET latin1 NOT NULL DEFAULT 'c',
-  `recovery` int(5) NOT NULL,
+  `recovery` int(5) DEFAULT NULL,
   PRIMARY KEY (`identifiant`),
   KEY `identifiant` (`identifiant`)
-) ENGINE=InnoDB AUTO_INCREMENT=9034 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9035 DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `clients`
@@ -124,7 +127,8 @@ INSERT INTO `clients` (`identifiant`, `nom`, `prenom`, `courriel`, `dateNaissanc
 (9025, 'Dupont', 'Jean', 'membre@banque2.com', '2017-03-01', '512-234-4567', '12 rue v Montreal', 'ToXmtoFMPziuhBsDgLUrMQNeRPu8Z/VeQrn+GWQ6kRg7x6VX+1cTyGv0x2YBDH9v', 'c', 0),
 (9029, 'New', 'client', 'membre@banque2.com', '2017-03-01', '512-234-4567', '12 rue v Montreal', 'l31++5m1s0d1kHxWsiyZWOsJfgRYlbI3/iAiwlhRwIqfotyglWq07ORhS5FLSp1S', 'c', 0),
 (9030, 'New', 'client', 'membre@banque2.com', '2017-03-01', '512-234-4567', '12 rue v Montreal', '+2C0ugoyzsOKmTnQEDMiU3V2Pi5yFwnBIsB/J2tDEjajlJOQ9MjlrlppDYzjmk0+', 'c', 0),
-(9031, 'Dupont', 'Jean', 'membre@banque2.com', '2017-03-01', '512-234-4567', '12 rue v Montreal', 'pV1DKzao+OKo8F2zbY9gGHJEUCryqcmjEWNu6mv1UR6LCz9ePn/7ZUMee2VkhDY9', 'c', 0);
+(9031, 'Dupont', 'Jean', 'membre@banque2.com', '2017-03-01', '512-234-4567', '12 rue v Montreal', 'pV1DKzao+OKo8F2zbY9gGHJEUCryqcmjEWNu6mv1UR6LCz9ePn/7ZUMee2VkhDY9', 'c', 0),
+(9034, 'Dupont123', 'Jean123', 'membre@banque2.ca', '2017-03-01', '512-234-4567', '12 rue v Montreal', 'DZwOMZR6MHb3tu4BSbdbXap/k+a0pEbPy+gLKhYfOzOdyBVyWVP7Ofuv+4PkcfX1', 'c', NULL);
 
 -- --------------------------------------------------------
 
@@ -140,7 +144,7 @@ CREATE TABLE IF NOT EXISTS `compte` (
   `Solde` double NOT NULL,
   `idClient` int(11) NOT NULL,
   PRIMARY KEY (`idCompte`)
-) ENGINE=InnoDB AUTO_INCREMENT=6049 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6051 DEFAULT CHARSET=utf8;
 
 --
 -- Contenu de la table `compte`
@@ -163,7 +167,9 @@ INSERT INTO `compte` (`idCompte`, `idBanque`, `type`, `Solde`, `idClient`) VALUE
 (6030, '666-', 'CREDIT', 99, 9033),
 (6031, '666-', 'DEBIT', 250, 9033),
 (6047, '666-', 'DEBIT', 123, 9033),
-(6048, '666-', 'DEBIT', 23423, 9033);
+(6048, '666-', 'DEBIT', 23423, 9033),
+(6049, '666-', 'CREDIT', 0, 9034),
+(6050, '666-', 'DEBIT', 1500, 9034);
 
 -- --------------------------------------------------------
 
