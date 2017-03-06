@@ -20,11 +20,13 @@ import com.banque2.mappingModele.MappingAdministrateur;
 import com.banque2.mappingModele.MappingCarte;
 import com.banque2.mappingModele.MappingClient;
 import com.banque2.mappingModele.MappingCompte;
+import com.banque2.mappingModele.MappingPreautorisation;
 import com.banque2.mappingModele.MappingTransaction;
 import com.banque2.modele.PojoAdministrateur;
 import com.banque2.modele.PojoCarte;
 import com.banque2.modele.PojoClient;
 import com.banque2.modele.PojoCompte;
+import com.banque2.modele.PojoPreautorisation;
 import com.banque2.modele.PojoTransaction;
 
 
@@ -364,6 +366,7 @@ private PojoCompte templateDebit = new PojoCompte();
 		try{
 			ArrayList<PojoCompte> result = (ArrayList<PojoCompte>) jdbcTemplate.query(getAllComptes,new MappingCompte());
 			result = this.getAllTransactionByCompte(result);
+			result = this.getAllPreautorisation(result);
 			
 			if(result.isEmpty()){
 				return null;
@@ -398,6 +401,39 @@ private PojoCompte templateDebit = new PojoCompte();
 
 		return l;
 		
+	}
+	
+	private ArrayList<PojoCompte> getAllPreautorisation(ArrayList<PojoCompte> l){
+		String getIdCarte = "SELECT numCarte FROM carte WHERE idCompte = ?" ;
+		String getPreauth = "SELECT * FROM preautorisation WHERE credit_id = " ;
+		String carte;
+	    for(int i=0; i<l.size();i++){
+	    	if(l.get(i).getType().equals("CREDIT")){
+	    		System.out.println("CECI EST UN COMPTE CREDIT ");
+	    		System.out.println(l.get(i).getIdCompte());
+	    		    		
+	    		try{
+	    		
+	    			Connection connec = jdbcTemplate.getDataSource().getConnection();
+	        		PreparedStatement st = connec.prepareStatement(getIdCarte);
+	        		st.setInt(1, l.get(i).getIdCompte());
+	        		
+	        		ResultSet result = st.executeQuery();
+	        		
+	        		if(result.next()){
+	        			carte = result.getString(1);
+	          		    System.out.println(carte);
+	          			List<PojoPreautorisation> preauth = jdbcTemplate.query(getPreauth+carte,new MappingPreautorisation());
+	          			l.get(i).setPreautorisation(preauth);
+	          			System.out.println(preauth.size());
+	        		}
+	    		}catch(Exception e){
+	    			e.printStackTrace();
+	    		}
+	    	}
+		}
+
+		return l;
 	}
 	
 	public boolean checkIfCardIsAlreadyPresent(int idCompte){

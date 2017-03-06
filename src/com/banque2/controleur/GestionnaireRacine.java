@@ -30,6 +30,11 @@ public class GestionnaireRacine {
 			return "portail";
 		}
 
+		@RequestMapping(value = {"/api/doc"}, method = RequestMethod.GET)
+		public String getApi() {
+			return "doc_api";
+		}
+		
 		@RequestMapping(value="/deconnexion", method = RequestMethod.GET)
 		public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
 			 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
