@@ -187,6 +187,7 @@ CREATE TABLE IF NOT EXISTS `preautorisation` (
   `credit_cvs` varchar(3) NOT NULL,
   `source_id` varchar(100) NOT NULL,
   `montant` double NOT NULL,
+  `preauth_status` varchar(15) NOT NULL,
   PRIMARY KEY (`preauth_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
@@ -194,8 +195,11 @@ CREATE TABLE IF NOT EXISTS `preautorisation` (
 -- Contenu de la table `preautorisation`
 --
 
-INSERT INTO `preautorisation` (`preauth_id`, `credit_id`, `credit_expiration`, `credit_nom`, `credit_prenom`, `credit_cvs`, `source_id`, `montant`) VALUES
-(1, '6666148320307027', '2018/02', 'Dupe', 'Jean', '123', 'TEST', 20);
+INSERT INTO `preautorisation` (`preauth_id`, `credit_id`, `credit_expiration`, `credit_nom`, `credit_prenom`, `credit_cvs`, `source_id`, `montant`, `preauth_status`) VALUES
+(1, '6666148320307027', '2018/02', 'Dupe', 'Jean', '123', 'TEST', 20, 'CANCELED'),
+(3, '6666148320307027', '2018/02', 'Dupe', 'Jean', '123', 'TEST', 345, 'CREATED'),
+(5, '6666148320307027', '2018/02', 'Dupe', 'Jean', '123', 'TEST', 24.45, 'CANCELED'),
+(6, '6666148320307027', '2018/02', 'Dupe', 'Jean', '123', 'TEST', 24.80, 'EXECUTED');
 
 -- --------------------------------------------------------
 
