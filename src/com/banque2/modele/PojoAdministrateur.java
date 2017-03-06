@@ -6,6 +6,7 @@ public class PojoAdministrateur {
 		private int identifiant;
 		private String nom;
 		private String prenom;
+		private String courriel;
 		private String mdp;
 		private int key;
 		
@@ -26,9 +27,20 @@ public class PojoAdministrateur {
 			return identifiant;
 		}
 
+
+
+		public String getCourriel() {
+			return courriel;
+		}
+
+		public void setCourriel(String courriel) {
+			this.courriel = courriel;
+		}
+
 		@Override
 		public String toString() {
-			return "PojoAdministrateur [identifiant=" + identifiant + ", nom=" + nom + ", prenom=" + prenom + ", mdp=" + mdp + "]";
+			return "PojoAdministrateur [identifiant=" + identifiant + ", nom=" + nom + ", prenom=" + prenom
+					+ ", courriel=" + courriel + ", mdp=" + mdp + ", key=" + key + "]";
 		}
 
 		public void setIdentifiant(int id) {
