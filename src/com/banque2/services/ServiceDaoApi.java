@@ -121,6 +121,5 @@ private JdbcTemplate jdbcTemplate;
 			e.printStackTrace();
 			return false;
 		}
-	
-}
+	}
 }

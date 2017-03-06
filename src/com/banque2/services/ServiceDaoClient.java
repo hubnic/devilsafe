@@ -1,34 +1,22 @@
 package com.banque2.services;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.sql.DataSource;
-
+import com.banque2.mappingModele.*;
+import com.banque2.modele.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import com.banque2.mappingModele.MappingAdministrateur;
-import com.banque2.mappingModele.MappingClient;
-import com.banque2.mappingModele.MappingCompte;
-import com.banque2.mappingModele.MappingPreautorisation;
-import com.banque2.mappingModele.MappingTransaction;
-import com.banque2.modele.PojoAdministrateur;
-import com.banque2.modele.PojoClient;
-import com.banque2.modele.PojoCompte;
-import com.banque2.modele.PojoPreautorisation;
-import com.banque2.modele.PojoTransaction;
+import javax.sql.DataSource;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ServiceDaoClient {
 	
 	private JdbcTemplate jdbcTemplate;
-	
+
+	@Autowired
+	private ServiceDaoCompte serviceDaoCompte;
+
 	public ServiceDaoClient(DataSource dataSource) {
 		jdbcTemplate = new JdbcTemplate(dataSource);
 	}
@@ -114,7 +102,7 @@ private ArrayList<PojoCompte> getAllPreautorisation(ArrayList<PojoCompte> l){
 
 
 public List<PojoCompte> getAllComptesClientForTransfert(int idClient){
-	String getAllComptes = "SELECT * FROM compte where idClient ="+idClient;		
+	String getAllComptes = "SELECT * FROM compte where idClient ="+idClient;
 	try{
 		ArrayList<PojoCompte> result = (ArrayList<PojoCompte>) jdbcTemplate.query(getAllComptes,new MappingCompte());
 
@@ -123,7 +111,7 @@ public List<PojoCompte> getAllComptesClientForTransfert(int idClient){
 		}
 		else{
 			return result;
-		}	
+		}
 	}
 	catch(Exception e){
 		return null;
@@ -150,6 +138,40 @@ public int createTransfertCompteIn(int idCompteEmetteur, int idCompteReceveur, f
 		}		
 }
 
+	public int creerPreauth(PojoPreautorisation preauth, PojoCarte carte) {
+
+		String getCompteId = "SELECT * FROM carte WHERE numCarte = "+carte.getNumCarte();
+		//System.out.print("PAS DE CARTE");
+
+		try{
+			List<PojoCarte> result = jdbcTemplate.query(getCompteId ,new MappingCarte());
+
+			//System.out.print("PREAUTH AJOUT COMPTE: "+result.get(0).getIdCompte());
+			if(result.isEmpty()){
+				return -1;
+			}
+			else{
+				int compteid = result.get(0).getIdCompte();
+
+
+				ajouterFondCompte(compteid, (float)preauth.getMontant());
+
+				System.out.print("transaction AJOUT COMPTE src: "+preauth.getSource_id()+"\n");
+				System.out.print("PREAUTH AJOUT comptedstid: "+compteid+"\n");
+				System.out.print("PREAUTH AJOUT comptedstid: "+(float)preauth.getMontant()+"\n");
+				int idTransaction = createTransaction(Integer.parseInt(preauth.getSource_id()), compteid, (float)preauth.getMontant(),"Preautorisation de "+ preauth.getMontant()+ " pour le compte "+compteid);
+				return idTransaction;
+			}
+		}
+		catch(Exception e){
+			return -1;
+		}
+		// retrait fond en 1
+		// ajout fond en 2
+		// Creation de la transaction
+
+	}
+
 public int rembourserCC(int idCompteEmetteur, int idCompteReceveur, float montantRemboursement) {
 
 	// retrait fond en 1
@@ -159,7 +181,7 @@ public int rembourserCC(int idCompteEmetteur, int idCompteReceveur, float montan
 	retraitFondCompte(idCompteEmetteur, montantRemboursement);
 	retraitFondCompte(idCompteReceveur, montantRemboursement);
 	int idTransaction = createTransaction(idCompteEmetteur, idCompteReceveur, -montantRemboursement,"Rembourser du compte credit : "+ idCompteReceveur);
-	createTransaction(idCompteReceveur, idCompteEmetteur, -montantRemboursement,"Remboursement du compte credit effectué par le compte "+ idCompteEmetteur);
+	createTransaction(idCompteReceveur, idCompteEmetteur, -montantRemboursement,"Remboursement du compte credit effectuï¿½ par le compte "+ idCompteEmetteur);
 	if(idTransaction != -1){
 		return idTransaction;
 	}
@@ -187,7 +209,7 @@ private int createTransaction(int idCompteOut, int idCompteIn, float montant, St
 		
 		ResultSet result = st.getGeneratedKeys();
 		if (result.next()) {
-		    System.out.println("L'id de la transaction a été crée : "+ result.getInt(1));
+		    System.out.println("L'id de la transaction a ete cree : "+ result.getInt(1));
 		    int idtransaction = result.getInt(1);
 			return idtransaction;
 		}else{

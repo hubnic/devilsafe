@@ -8,6 +8,7 @@ import com.banque2.modele.PojoCarte;
 import com.banque2.modele.PojoCompte;
 import com.banque2.modele.PojoPreautorisation;
 import com.banque2.services.ServiceDaoApi;
+import com.banque2.services.ServiceDaoClient;
 import com.banque2.services.ServiceDaoCompte;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -40,6 +41,9 @@ public class GestionnaireAPI {
     @Autowired
     private ServiceDaoCompte serviceDaoCompte;
 
+    @Autowired
+    private ServiceDaoClient serviceDaoClient;
+
     @RequestMapping(method = RequestMethod.GET)
     public String listTroopers() {
         return "salut";
@@ -55,9 +59,6 @@ public class GestionnaireAPI {
 
         //CREATION REPONSE
         ObjectNode preauthNode = mapper.createObjectNode();
-
-
-
 
             if (serviceDaoApi.getPreautorisation(i) != null) {
                 preauthNode.put("preauth_id", i);preauthNode.put("preauth_status", "FAILURE" );
@@ -100,7 +101,7 @@ public class GestionnaireAPI {
                         //on créée la préautorisation
                         serviceDaoApi.createPreautorisation(preauth);
                         //ICI ON AJOUTE LE MONTANT AU CREDIT
-
+                        serviceDaoClient.creerPreauth(preauth, carte);
                         //ENVOI REPONSE
                         preauthNode.put("preauth_id", i);
                         preauthNode.put("preauth_status", "CREATED");
