@@ -4,7 +4,6 @@
 <title>Transfert In</title>
 <link rel="stylesheet" href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.min.css" />">
 <link rel="stylesheet" href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.css" />">
-<script src="<c:url value="/librairie/js/valideAccount.js" />"></script>
 <script src="<c:url value="/librairie/js/confirmClient.js" />"></script>
 <script src="<c:url value="/librairie/jquery/jquery-3.1.1.min.js" />"></script>
 <script src="<c:url value="/librairie/bootstrap-3.3.7/js/bootstrap.min.js" />"></script>
@@ -33,6 +32,7 @@
 						</h3>
 						<form
 							method="post"
+							onsubmit="return check();"
 							id="formTransfertIn"
 							action="<c:url value="/transfertIn" />"
 							role="form">
@@ -85,7 +85,6 @@
 						</c:if>
 							<br><hr>
 							<button
-								onclick="confirmTransfertIn()"
 								class="btn btn-danger">Effectuer le transfert</button>
 							<input
 								type="hidden"

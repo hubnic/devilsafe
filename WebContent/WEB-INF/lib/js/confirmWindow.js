@@ -1,3 +1,8 @@
+function check(){
+	return checkPass() && confirmAddClient();
+}
+
+
 function confirmAddClient()
 {
 	var nom = document.getElementById("nom").value;
@@ -8,9 +13,11 @@ function confirmAddClient()
 	var courriel = document.getElementById("courriel").value;
 
 	var retour = confirm("Est-vous sur de procéder à l'ajout du client : s" + "\n" +nom + "\n" +prenom + "\n" +date + "\n" +telephone + "\n" +adresse + "\n" +courriel+" ?"  );
-	if (retour == true) {
+	
+	return retour;
+	/*if (retour == true) {
 	  document.getElementById("newClient").submit();
-	}
+	}*/
 }
 
 function confirmAddAdmin()
@@ -72,4 +79,32 @@ function confirmChangePassAdmin()
 	}
 }
 
+function checkPass()
+{
+    var pass1 = document.getElementById('pass1');
+    var pass2 = document.getElementById('pass2');
+    var message = document.getElementById('confirmMessage');
+    var badColor = "#ff6666";
+    message.style.color = badColor;
+    
+    if(pass1.value.length <8){
+        pass1.parentElement.parentElement.className = "form-group row has-error";
+    	message.innerHTML = "Le mot de passe doit contenir au moins 8 caracteres"  
+    	return false;
+    }
+    
+    if(pass1.value !== pass2.value){
+        pass2.parentElement.parentElement.className = "form-group row has-error";
+        message.innerHTML = "Vous devez saisir un mot de passe identique"
+    	return false;
+    }
+    
+    if(pass1.value.length >=8 && pass1.value == pass2.value){
+        pass1.parentElement.parentElement.className = "form-group row has-success";
+        pass2.parentElement.parentElement.className = "form-group row has-success";
+        message.innerHTML = ""
+    }
+    return true;
+
+}
 
