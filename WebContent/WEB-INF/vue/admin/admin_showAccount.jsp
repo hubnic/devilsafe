@@ -261,6 +261,7 @@
 										<table class="table table-striped">
 											<thead>
 												<tr>
+													<th>#Transaction</th>
 													<th>Date</th>
 													<th>Nom transaction</th>
 													<th>Montant $</th>
@@ -269,10 +270,19 @@
 											<tbody>
 											<c:forEach items="${comptes.transactions}" var="transactions">
 												<tr>
+													<td>${transactions.idTransaction}</td>
 													<td>${transactions.date}</td>
 													<td>${transactions.description}</td>
 													<td>${transactions.montant}</td>
 												</tr>
+											</c:forEach>
+											<c:forEach items="${comptes.preautorisation}" var="preautorisation">
+													<tr>
+														<td>${preautorisation.preauth_id}</td>
+														<td>Date</td>
+														<td>PREAUTH : ${preautorisation.source_id}</td>
+														<td>${preautorisation.montant}</td>
+													</tr>
 											</c:forEach>
 											</tbody>
 										</table>
