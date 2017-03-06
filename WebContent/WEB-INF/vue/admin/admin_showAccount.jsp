@@ -239,11 +239,11 @@
 														class="glyphicon glyphicon-eye-open"></span>
 												</a></td>
 											<td class="col-xs-2">
-												<form method="post" id="delAccount ${comptes.idCompte}" action="<c:url value="/delAccount" />"role="form">
+												<form onsubmit="return confirmDelAccount(${comptes.idCompte});" method="post" id="delAccount ${comptes.idCompte}" action="<c:url value="/delAccount" />"role="form">
 													<input type="hidden" class="form-control" id="idClient" name="idClient" value="${client.identifiant}" readonly>
 													<input type="hidden" class="form-control" id="idCompte" name="idCompte" value="${comptes.idCompte}" readonly>
 													<input type="hidden" class="form-control" id="typeCompte" name="typeCompte" value="${comptes.type}" readonly>
-													<button onclick="confirmDelAccount(${comptes.idCompte})"> 
+													<button> 
 													<span class="glyphicon glyphicon-trash"></span>
 													</button>
 													<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />

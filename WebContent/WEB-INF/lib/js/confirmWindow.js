@@ -55,18 +55,13 @@ function confirmAddCC(id)
 
 function confirmDelAccount(id)
 {
-	var retour = confirm("Est-vous sur de supprimer le compte 666-"+id+" ?" );
-	if (retour == true) {
-	  document.getElementById("delAccount"+id).submit();
-	}
+	return confirm("Est-vous sur de supprimer le compte 666-"+id+" ?" );
 }
 
 function confirmDelClient(id)
 {
-	var retour = confirm("Est-vous sur de supprimer l'utilisateur : "+id+" ?" );
-	if (retour == true) {
-	  document.getElementById("delClient"+id).submit();
-	}
+	return confirm("Est-vous sur de supprimer l'utilisateur : "+id+" ?" );
+
 }
 
 
