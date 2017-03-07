@@ -21,10 +21,7 @@ function confirmAddAdmin()
 	var nom = document.getElementById("nom").value;
 	var prenom = document.getElementById("prenom").value;
 
-	var retour = confirm("Est-vous sur de procéder à l'ajout de l'administrateur :" + "\n" +nom + "\n" +prenom +" ?"  );
-	if (retour == true) {
-	  document.getElementById("formAddAdmin").submit();
-	}
+	return confirm("Est-vous sur de procéder à l'ajout de l'administrateur :" + "\n" +nom + "\n" +prenom +" ?"  );
 }
 
 function confirmAddAccount()
