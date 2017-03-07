@@ -12,12 +12,8 @@ function confirmAddClient()
 	var adresse = document.getElementById("adresse").value;
 	var courriel = document.getElementById("courriel").value;
 
-	var retour = confirm("Est-vous sur de procéder à l'ajout du client : s" + "\n" +nom + "\n" +prenom + "\n" +date + "\n" +telephone + "\n" +adresse + "\n" +courriel+" ?"  );
-	
-	return retour;
-	/*if (retour == true) {
-	  document.getElementById("newClient").submit();
-	}*/
+	return confirm("Est-vous sur de procéder à l'ajout du client : s" + "\n" +nom + "\n" +prenom + "\n" +date + "\n" +telephone + "\n" +adresse + "\n" +courriel+" ?"  );
+
 }
 
 function confirmAddAdmin()
@@ -37,20 +33,7 @@ function confirmAddAccount()
 	var montant = document.getElementById("montant").value;
 	var compte = typeCompte.options[typeCompte.selectedIndex].innerHTML
 	
-	var retour = confirm("Est-vous sur de procéder à l'ajout du compte :" + "\n" +compte + "\n" +montant  +" ?"  );
-	if (retour == true) {
-		return true;
-	}else{
-		return false;
-	}
-}
-
-function confirmAddCC(id)
-{
-	var retour = confirm("Est-vous sur d'ajouter la carte de crédit au compte 666-"+id+" ?"  );
-	if (retour == true) {
-	  document.getElementById("addCreditCard"+id).submit();
-	}
+	return confirm("Est-vous sur de procéder à l'ajout du compte :" + "\n" +compte + "\n" +montant  +" ?"  );
 }
 
 function confirmDelAccount(id)
@@ -64,14 +47,9 @@ function confirmDelClient(id)
 
 }
 
-
-
 function confirmChangePassAdmin()
 {
-	var retour = confirm("Est-vous sur de vouloir modifier votre mot de passe ?");
-	if (retour == true) {
-	  document.getElementById("changePwdAdmin").submit();
-	}
+	return confirm("Est-vous sur de vouloir modifier votre mot de passe ?");
 }
 
 function checkPass()

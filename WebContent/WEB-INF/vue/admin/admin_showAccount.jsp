@@ -54,6 +54,7 @@
 				</ul>
 				<br><hr>
 					<form
+							onsubmit="return confirmAddAccount();"
 							method="post"
 							id="formAddAccountClient"
 							name ="addAccountClient"
@@ -87,7 +88,6 @@
 								name="idClient"
 								value="${client.identifiant}" />
 							<button
-								onclick="confirmAddAccount()"
 								class="btn btn-danger">Ajouter le compte</button>
 							<input
 								type="hidden"

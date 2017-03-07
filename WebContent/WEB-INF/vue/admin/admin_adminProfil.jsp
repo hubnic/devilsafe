@@ -109,6 +109,7 @@
 							<h4>Modifier votre mot de passe</h4>
 							<hr>
 							<form
+								onsubmit="return confirmChangePassAdmin();"
 								method="post"
 								id="changePwdAdmin"
 								action="<c:url value="/changePwdAdmin" />"
@@ -154,8 +155,7 @@
 								</div>
 								<div class="form-group row">
 									<div class="offset-sm-2 col-sm-10">
-										<button onclick="confirmChangePassAdmin()"
-										class="btn btn-warning">Changer mot de passe</button>
+										<button class="btn btn-warning">Changer mot de passe</button>
 									</div>
 								</div>
 								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
