@@ -30,9 +30,9 @@ public class SpringMvcResolver extends WebMvcConfigurerAdapter {
 		public DriverManagerDataSource dataSource() {
 		    DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
 		    driverManagerDataSource.setDriverClassName("com.mysql.jdbc.Driver");
-		    driverManagerDataSource.setUrl("jdbc:mysql://localhost:3306/banque2");
-		    driverManagerDataSource.setUsername("root");
-		    driverManagerDataSource.setPassword("qwerty");
+		    driverManagerDataSource.setUrl("jdbc:mysql://us-cdbr-iron-east-03.cleardb.net:3306/heroku_2ea2dde16e81c62");
+		    driverManagerDataSource.setUsername("b3851ccc9becd8");
+		    driverManagerDataSource.setPassword("41593512");
 		    return driverManagerDataSource;
 		}
 	    

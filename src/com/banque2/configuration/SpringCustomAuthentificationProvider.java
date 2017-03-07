@@ -28,11 +28,8 @@ public class SpringCustomAuthentificationProvider implements AuthenticationProvi
 	        String login = authentication.getName();
 	        String mdp = authentication.getCredentials().toString();
 	        
-	        System.out.println("Voici les informations de l'utilisateur : "+ login +" MDP : "+mdp );
-	        
 	        if(login!=null && mdp!=null){
 	        	String[] auth = serviceAuthentification.authentification(login, mdp);
-		        System.out.println("Voici Le resultat du serVice D'authentification "+auth[0]);
 		        //valider les informations
 		        if (auth[0].equals("true")) {
 		        	
