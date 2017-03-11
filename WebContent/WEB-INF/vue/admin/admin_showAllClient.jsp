@@ -100,9 +100,9 @@
 												</form>
 												</td>
 												<td class="col-xs-1">
-												<form method="post" id="delClient ${clients.identifiant}" action="<c:url value="/delClient" />"role="form">
+												<form method="post" onsubmit="return confirmDelClient(${clients.identifiant});" id="delClient ${clients.identifiant}" action="<c:url value="/delClient" />"role="form">
 													<input type="hidden" class="form-control" id="idClient" name="idClient" value="${clients.identifiant}" readonly>
-													<button onclick="confirmDelClient(${clients.identifiant})"> 
+													<button> 
 													<span class="glyphicon glyphicon-trash"></span>
 													</button>
 													<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />

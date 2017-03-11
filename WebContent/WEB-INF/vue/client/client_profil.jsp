@@ -122,6 +122,7 @@
 							<form
 								method="post"
 								id="changePwdClient"
+								onsubmit="return confirmChangePass();"
 								action="<c:url value="/changePwdClient" />"
 								role="form">
 								<div class="form-group row">
@@ -166,7 +167,6 @@
 								<div class="form-group row">
 									<div class="offset-sm-2 col-sm-10">
 										<button
-											onclick="confirmChangePass()"
 											class="btn btn-warning">Changer mot de passe</button>
 									</div>
 									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />

@@ -48,7 +48,7 @@ public List<PojoCompte> getAllComptesClient(int idClient){
 	try{
 		ArrayList<PojoCompte> result = (ArrayList<PojoCompte>) jdbcTemplate.query(getAllComptes,new MappingCompte());
 		result = this.getAllTransactionByCompte(result);
-		//result = this.getAllPreautorisation(result);
+		result = this.getAllPreautorisation(result);
 
 		if(result.isEmpty()){
 			return null;
@@ -80,22 +80,38 @@ private ArrayList<PojoCompte> getAllTransactionByCompte(ArrayList<PojoCompte> l)
 }
 
 private ArrayList<PojoCompte> getAllPreautorisation(ArrayList<PojoCompte> l){
-	String getAllPreautorisation = "SELECT * FROM preautorisation WHERE idCompteClient = ";
-	
+	String getIdCarte = "SELECT numCarte FROM carte WHERE idCompte = ?" ;
+	String getPreauth = "SELECT * FROM preautorisation WHERE credit_id = " ;
+	String carte;
     for(int i=0; i<l.size();i++){
-    	
-    	List<PojoPreautorisation> result = jdbcTemplate.query(
-    			getAllPreautorisation+l.get(i).getIdCompte(),
-    			new MappingPreautorisation());
-    	
-    	System.out.println("Size de la liste de transaction : "+result.size());
-    	l.get(i).setPreautorisation(result);
-    	System.out.println("La transaction contenues dans la liste : "+l.get(i).getTransactions().toString());
+    	if(l.get(i).getType().equals("CREDIT")){
+    		System.out.println("CECI EST UN COMPTE CREDIT ");
+    		System.out.println(l.get(i).getIdCompte());
+    		    		
+    		try{
+    		
+    			Connection connec = jdbcTemplate.getDataSource().getConnection();
+        		PreparedStatement st = connec.prepareStatement(getIdCarte);
+        		st.setInt(1, l.get(i).getIdCompte());
+        		
+        		ResultSet result = st.executeQuery();
+        		
+        		if(result.next()){
+        			carte = result.getString(1);
+          		    System.out.println(carte);
+          			List<PojoPreautorisation> preauth = jdbcTemplate.query(getPreauth+carte,new MappingPreautorisation());
+          			l.get(i).setPreautorisation(preauth);
+          			System.out.println(preauth.size());
+        		}
+    		}catch(Exception e){
+    			e.printStackTrace();
+    		}
+    	}
 	}
 
 	return l;
-	
 }
+
 
 
 

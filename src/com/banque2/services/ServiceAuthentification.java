@@ -66,7 +66,6 @@ public class ServiceAuthentification {
 			auth[0]="false";
 		}
 		
-		System.out.println(auth[0]);
 		return auth;
 	}
 	

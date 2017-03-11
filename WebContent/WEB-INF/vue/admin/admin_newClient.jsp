@@ -8,7 +8,6 @@
 <title>Ajouter Client</title>
 <link rel="stylesheet" href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.min.css" />">
 <link rel="stylesheet" href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.css" />">
-<script src="<c:url value="/librairie/js/valideLogin.js" />"></script>
 <script src="<c:url value="/librairie/js/confirmWindow.js" />"></script>
 <script src="<c:url value="/librairie/jquery/jquery-3.1.1.min.js" />"></script>
 <script
@@ -74,7 +73,7 @@
 								<p>${description}</p>
 							</div>
 						</c:if>
-				<form method="post" id="newClient" action="<c:url value="/newClient" />" role="form">
+				<form method="post" id="newClient" action="<c:url value="/newClient" />" role="form" onsubmit="return check();">
 					<div class="col-sm-5">
 							<div class="form-group row">
 								<label
@@ -188,7 +187,7 @@
 							
 						<div class="form-group row">
 							<div class="offset-sm-2 col-sm-10">
-								<button onclick="confirmAddClient()" class="btn btn-primary">Créer compte client</button>
+								<button class="btn btn-primary">Créer compte client</button>
 							</div>
 						</div>
 						</div>

@@ -66,6 +66,7 @@
 								<div class="col-sm-8">
 										<form
 										method="post"
+										onsubmit="return confirmRembourseCC();"
 										id="formRemboursementCC"
 										action="<c:url value="/remboursementCC" />"
 										role="form">
@@ -116,7 +117,6 @@
 									</c:if>
 									<br>
 										<button
-											onclick="confirmRembourseCC()"
 											class="btn btn-primary">Rembourser Carte Credit</button>
 									</form>
 								</div>

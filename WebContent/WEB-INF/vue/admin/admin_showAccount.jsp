@@ -54,6 +54,7 @@
 				</ul>
 				<br><hr>
 					<form
+							onsubmit="return confirmAddAccount();"
 							method="post"
 							id="formAddAccountClient"
 							name ="addAccountClient"
@@ -87,7 +88,6 @@
 								name="idClient"
 								value="${client.identifiant}" />
 							<button
-								onclick="confirmAddAccount()"
 								class="btn btn-danger">Ajouter le compte</button>
 							<input
 								type="hidden"
@@ -239,11 +239,11 @@
 														class="glyphicon glyphicon-eye-open"></span>
 												</a></td>
 											<td class="col-xs-2">
-												<form method="post" id="delAccount ${comptes.idCompte}" action="<c:url value="/delAccount" />"role="form">
+												<form onsubmit="return confirmDelAccount(${comptes.idCompte});" method="post" id="delAccount ${comptes.idCompte}" action="<c:url value="/delAccount" />"role="form">
 													<input type="hidden" class="form-control" id="idClient" name="idClient" value="${client.identifiant}" readonly>
 													<input type="hidden" class="form-control" id="idCompte" name="idCompte" value="${comptes.idCompte}" readonly>
 													<input type="hidden" class="form-control" id="typeCompte" name="typeCompte" value="${comptes.type}" readonly>
-													<button onclick="confirmDelAccount(${comptes.idCompte})"> 
+													<button> 
 													<span class="glyphicon glyphicon-trash"></span>
 													</button>
 													<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
@@ -261,6 +261,7 @@
 										<table class="table table-striped">
 											<thead>
 												<tr>
+													<th>#Transaction</th>
 													<th>Date</th>
 													<th>Nom transaction</th>
 													<th>Montant $</th>
@@ -269,10 +270,19 @@
 											<tbody>
 											<c:forEach items="${comptes.transactions}" var="transactions">
 												<tr>
+													<td>${transactions.idTransaction}</td>
 													<td>${transactions.date}</td>
 													<td>${transactions.description}</td>
 													<td>${transactions.montant}</td>
 												</tr>
+											</c:forEach>
+											<c:forEach items="${comptes.preautorisation}" var="preautorisation">
+													<tr>
+														<td>${preautorisation.preauth_id}</td>
+														<td>Date</td>
+														<td>PREAUTH : ${preautorisation.source_id}</td>
+														<td>${preautorisation.montant}</td>
+													</tr>
 											</c:forEach>
 											</tbody>
 										</table>
