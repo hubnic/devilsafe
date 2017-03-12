@@ -1,5 +1,8 @@
 package com.banque2.modele;
 
+
+import java.time.LocalDateTime;
+
 /**
  * Created by tinic on 2/26/17.
  */
@@ -14,6 +17,7 @@ public class PojoPreautorisation {
     private double montant;
     private int preauth_id;
     private String preauth_status;
+    private LocalDateTime preauth_date;
 
     public PojoPreautorisation() {}
 
@@ -87,6 +91,14 @@ public class PojoPreautorisation {
 
     public void setPreauthStatus(String status) {
         this.preauth_status = status;
+    }
+
+    public LocalDateTime getPreauth_date() {
+        return preauth_date;
+    }
+
+    public void setPreauth_date(LocalDateTime preauth_date) {
+        this.preauth_date = preauth_date;
     }
 
     @Override

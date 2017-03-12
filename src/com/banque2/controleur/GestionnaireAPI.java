@@ -19,6 +19,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -99,13 +103,13 @@ public class GestionnaireAPI {
 
                     if (serviceDaoApi.checkIfCCexit(carte)){
                         //on créée la préautorisation
-                        serviceDaoApi.createPreautorisation(preauth);
+                        int preauthId=serviceDaoApi.createPreautorisation(preauth);
                         //ICI ON AJOUTE LE MONTANT AU CREDIT
                         serviceDaoClient.creerPreauth(preauth, carte);
                         //ENVOI REPONSE
-                        preauthNode.put("preauth_id", i);
+                        preauthNode.put("preauth_id", preauthId);
                         preauthNode.put("preauth_status", "CREATED");
-                        preauthNode.put("preauth_expiration", new Date(Calendar.getInstance().getTimeInMillis() + (15 * 60000)).toString());
+                        preauthNode.put("preauth_expiration", new Date(Calendar.getInstance().getTimeInMillis() + (20 * 60000)).toString());
                         preauthNode.put("detail_transaction", "Preautorisation creee avec succes");
                         i++;
                         return ResponseEntity.ok().header("salut", "réponse").body(preauthNode.toString());
@@ -132,6 +136,12 @@ public class GestionnaireAPI {
     @RequestMapping(value = "/preauth/{id}", method = RequestMethod.PATCH, headers={"key=1234"})
     public ResponseEntity<String> ModifierPreauth(@PathVariable("id") int id, @RequestBody String body2 ) throws IOException, InterruptedException {
 
+        //PREAUTH RÉFÉRENCE BD
+        PojoPreautorisation preauth_bd = serviceDaoApi.getPreautorisation(id);
+
+        System.out.print("je suis sorti du get1");
+        System.out.print(preauth_bd.getPreauth_id());
+        System.out.print("je suis sorti du get2");
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootNode = mapper.readTree(body2);
 
@@ -153,45 +163,56 @@ public class GestionnaireAPI {
         preauth_modif.setPreauthStatus(rootNode.path("preauth_status").getTextValue());
 
 
-        if(serviceDaoApi.getPreautorisation(id)!=null){
-            if(serviceDaoApi.getPreautorisation(id).getPreauthStatus().equals("CREATED")){
-                if(preauth_modif.getPreauthStatus().equals("CREATED")){
-                    try {
-                        preauth_modif_node.put("preauth_status", "CREATED");
-                        preauth_modif_node.put("preauth_expiration", serviceDaoApi.getPreautorisation(id).getCredit_expiration());
-                        preauth_modif_node.put("detail_transaction", "La preautorisation est deja cree");
-                        return ResponseEntity.status(HttpStatus.CREATED).header("salut", "réponse").body(preauth_modif_node.toString());
-                    }catch(Exception e){
-                        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).header("salut", "ERROR").body(preauth_modif_node.toString());
+        if(preauth_bd!=null){
+            if(preauth_bd.getPreauthStatus().equals("CREATED")){
+                if(!isPreauthExpired(preauth_bd)) {
+                    if (preauth_modif.getPreauthStatus().equals("CREATED")) {
+                        try {
+                            preauth_modif_node.put("preauth_status", "CREATED");
+                            preauth_modif_node.put("preauth_expiration", serviceDaoApi.getPreautorisation(id).getCredit_expiration());
+                            preauth_modif_node.put("detail_transaction", "La preautorisation est deja cree");
+                            return ResponseEntity.status(HttpStatus.CREATED).header("salut", "réponse").body(preauth_modif_node.toString());
+                        } catch (Exception e) {
+                            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).header("salut", "ERROR").body(preauth_modif_node.toString());
+                        }
+                    } else if (preauth_modif.getPreauthStatus().equals("CANCELED")) {
+                        try {
+                            preauth_modif.setPreauthStatus("CANCELED");
+                            serviceDaoApi.modifierPreautorizationStatus(preauth_modif);
+                            preauth_modif_node.put("preauth_status", "CANCELED");
+                            preauth_modif_node.put("preauth_expiration", serviceDaoApi.getPreautorisation(id).getCredit_expiration());
+                            preauth_modif_node.put("detail_transaction", "La preautorisation a ete cancelee");
+                            return ResponseEntity.status(HttpStatus.OK).header("salut", "CANCELED").body(preauth_modif_node.toString());
+                        } catch (Exception e) {
+                            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).header("salut", "ERROR").body(preauth_modif_node.toString());
+                        }
+                    } else if (preauth_modif.getPreauthStatus().equals("EXECUTED")) {
+                        try {
+                            preauth_modif.setPreauthStatus("EXECUTED");
+                            serviceDaoApi.modifierPreautorizationStatus(preauth_modif);
+                            preauth_modif_node.put("preauth_status", "EXECUTED");
+                            preauth_modif_node.put("preauth_expiration", serviceDaoApi.getPreautorisation(id).getCredit_expiration());
+                            preauth_modif_node.put("detail_transaction", "La preautorisation a ete execute");
+                            return ResponseEntity.status(HttpStatus.ACCEPTED).header("salut", "EXECUTED").body(preauth_modif_node.toString());
+                        } catch (Exception e) {
+                            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).header("salut", "ERROR").body(preauth_modif_node.toString());
+                        }
+                    } else {
+                        return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).header("BD", "PAS DE STATUS1").body(preauth_modif_node.toString());
                     }
                 }
-                else if(preauth_modif.getPreauthStatus().equals("CANCELED")){
+                else{
                     try {
                         preauth_modif.setPreauthStatus("CANCELED");
                         serviceDaoApi.modifierPreautorizationStatus(preauth_modif);
                         preauth_modif_node.put("preauth_status", "CANCELED");
-                        preauth_modif_node.put("preauth_expiration", serviceDaoApi.getPreautorisation(id).getCredit_expiration());
-                        preauth_modif_node.put("detail_transaction", "La preautorisation a ete cancelee");
+                        preauth_modif_node.put("preauth_expiration", serviceDaoApi.getPreautorisation(id).getPreauth_date().plusMinutes(20).toString());
+                        preauth_modif_node.put("detail_transaction", "La preautorisation est expirée");
                         return ResponseEntity.status(HttpStatus.OK).header("salut", "CANCELED").body(preauth_modif_node.toString());
-                    }catch(Exception e){
+                    } catch (Exception e) {
                         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).header("salut", "ERROR").body(preauth_modif_node.toString());
                     }
-                }
-                else if(preauth_modif.getPreauthStatus().equals("EXECUTED")){
-                    try {
-                        preauth_modif.setPreauthStatus("EXECUTED");
-                        serviceDaoApi.modifierPreautorizationStatus(preauth_modif);
-                        preauth_modif_node.put("preauth_status","EXECUTED");
-                        preauth_modif_node.put("preauth_expiration", serviceDaoApi.getPreautorisation(id).getCredit_expiration());
-                        preauth_modif_node.put("detail_transaction", "La preautorisation a ete execute");
-                        return ResponseEntity.status(HttpStatus.ACCEPTED).header("salut", "EXECUTED").body(preauth_modif_node.toString());
-                    }catch(Exception e){
-                        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).header("salut", "ERROR").body(preauth_modif_node.toString());
                     }
-                }
-                else{
-                    return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).header("BD", "PAS DE STATUS1").body(preauth_modif_node.toString());
-                }
             }
             else if(serviceDaoApi.getPreautorisation(id).getPreauthStatus().equals("CANCELED")){
 
@@ -265,6 +286,18 @@ public class GestionnaireAPI {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).header("status", "pas bon").body(compteNode.toString());
         }
 
+    }
+
+    private boolean isPreauthExpired(PojoPreautorisation preauth){
+
+        ZonedDateTime oldtime = preauth.getPreauth_date().atZone(ZoneOffset.UTC);
+        LocalDateTime newtime = oldtime.toLocalDateTime();
+        if(newtime.plusMinutes(20).isAfter(LocalDateTime.now())){
+
+            System.out.print("date maintenant: " + LocalDateTime.now().atZone(ZoneId.systemDefault()));
+            return true;
+        }
+        return false;
     }
 
 

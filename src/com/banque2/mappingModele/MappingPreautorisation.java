@@ -21,6 +21,7 @@ public class MappingPreautorisation implements RowMapper<PojoPreautorisation> {
 		preautorisation.setMontant(resultSet.getDouble("montant"));
 		preautorisation.setPreauth_id(resultSet.getInt("preauth_id"));
 		preautorisation.setPreauthStatus(resultSet.getString("preauth_status"));
+		preautorisation.setPreauth_date(resultSet.getTimestamp("date").toLocalDateTime());
 		return preautorisation;
 	}
 

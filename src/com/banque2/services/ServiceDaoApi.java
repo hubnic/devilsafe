@@ -6,10 +6,7 @@ import com.banque2.modele.PojoPreautorisation;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 
 public class ServiceDaoApi {
@@ -25,7 +22,8 @@ private JdbcTemplate jdbcTemplate;
 		
 		try{
 			List<PojoPreautorisation> result = jdbcTemplate.query(getPreautorisation,new MappingPreautorisation());
-			
+
+			System.out.print("result: "+result.get(0).toString());
 			if(result.isEmpty()){
 				return null;
 			}
@@ -38,25 +36,37 @@ private JdbcTemplate jdbcTemplate;
 		}
 	}
 
-	public Boolean createPreautorisation(PojoPreautorisation preauth) {
-		String addpreauth = "INSERT INTO preautorisation (preauth_id, credit_id, credit_expiration, credit_nom, credit_prenom, credit_cvs, source_id, montant, preauth_status) VALUES (?,?,?, ?, ?, ?, ?, ?, ?)";
+	public int createPreautorisation(PojoPreautorisation preauth) {
+		String addpreauth = "INSERT INTO preautorisation (credit_id, credit_expiration, credit_nom, credit_prenom, credit_cvs, source_id, montant, preauth_status) VALUES (?,?, ?, ?, ?, ?, ?, ?)";
 
 		try{
-				jdbcTemplate.update(addpreauth,
-						preauth.getPreauth_id(),
-						preauth.getCredit_id(), 
-						preauth.getCredit_expiration(),
-						preauth.getCredit_nom(), 
-						preauth.getCredit_prenom(), 
-						preauth.getCredit_cvs(),
-						preauth.getSource_id(), 
-						preauth.getMontant(),
-						preauth.getPreauthStatus());
-				return true;	
-			}catch(Exception e){
-				e.printStackTrace();
-				return false;
+			Connection connec = jdbcTemplate.getDataSource().getConnection();
+			PreparedStatement st = connec.prepareStatement(addpreauth, Statement.RETURN_GENERATED_KEYS);
+
+			st.setString(1,preauth.getCredit_id());
+			st.setString(2,preauth.getCredit_expiration());
+			st.setString(3,preauth.getCredit_nom());
+			st.setString(4,preauth.getCredit_prenom());
+			st.setInt(5,preauth.getCredit_cvs());
+			st.setString(6,preauth.getSource_id());
+			st.setDouble(7,preauth.getMontant());
+			st.setString(8,preauth.getPreauthStatus());
+			st.executeUpdate();
+			ResultSet result = st.getGeneratedKeys();
+
+			if (result.next()) {
+				System.out.println("L'id de la preautorisation a ete cree : "+ result.getInt(1));
+				int idPreauth = result.getInt(1);
+				connec.close();
+				return idPreauth;
+			}else{
+				connec.close();
+				return -1;
 			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return -1;
+		}
 	}
 
 	public Boolean modifierPreautorizationStatus(PojoPreautorisation preauth){
