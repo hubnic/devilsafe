@@ -47,6 +47,7 @@ public class SpringSecuriteUserConfiguration extends WebSecurityConfigurerAdapte
              .httpStrictTransportSecurity()
              .and()
              .frameOptions();
+    	 
     	   //PROPRIETES DE SPRING PERMETTTANT DE CONFIGURER LE MAX DE SESSION 
 	 	  //http.sessionManagement().maximumSessions(1);
 	      http.sessionManagement().invalidSessionUrl("/portail");
@@ -71,7 +72,7 @@ public class SpringSecuriteUserConfiguration extends WebSecurityConfigurerAdapte
         .antMatchers("/addAccountClient/**").access("hasRole('ADMIN_AUTH')")
         .antMatchers("/delAccount/**").access("hasRole('ADMIN_AUTH')")
         .antMatchers("/updateProfilAdmin/**").access("hasRole('ADMIN_AUTH')")
-        
+      
         .and().formLogin().loginPage("/portail").successHandler(customSuccessHandler)
         .usernameParameter("idt").passwordParameter("pswd")
         .and().csrf()
