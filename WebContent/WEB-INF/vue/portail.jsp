@@ -3,15 +3,18 @@
 <%@ taglib
 	prefix="c"
 	uri="http://java.sun.com/jsp/jstl/core"%>
+<!DOCTYPE html>
 <html lang="fr">
+
 <head>
+	<meta charset="UTF-8">
 <title>Portail</title>
 <link rel="stylesheet" href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.min.css" />">
 <link rel="stylesheet" href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.css" />">
 <script src="<c:url value="/librairie/jquery/jquery-3.1.1.min.js" />"></script>
 <script src="<c:url value="/librairie/bootstrap-3.3.7/js/bootstrap.min.js" />"></script>
 </head>
-<body background="<c:url value="/librairie/images/fond.png" />">
+<body class="background">
 	<div class="container">
 		<div class="row">
 			<div class="col-md-4 col-md-offset-7">

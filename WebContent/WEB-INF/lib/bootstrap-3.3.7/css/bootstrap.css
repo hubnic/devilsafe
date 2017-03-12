@@ -1587,6 +1587,9 @@ pre code {
   margin-right: auto;
   margin-left: auto;
 }
+.background{
+    background-image: url(../../images/fond.png);
+}
 @media (min-width: 768px) {
   .container {
     width: 750px;

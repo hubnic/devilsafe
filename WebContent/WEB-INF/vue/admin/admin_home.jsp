@@ -3,8 +3,11 @@
 <%@ taglib
 	prefix="c"
 	uri="http://java.sun.com/jsp/jstl/core"%>
+<!DOCTYPE html>
 <html lang="fr">
+
 <head>
+	<meta charset="UTF-8">
 <title>ShowLog</title>
 <link
 	rel="stylesheet"

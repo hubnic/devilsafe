@@ -3,8 +3,11 @@
 <%@ taglib
 	prefix="c"
 	uri="http://java.sun.com/jsp/jstl/core"%>
+<!DOCTYPE html>
 <html lang="fr">
+
 <head>
+	<meta charset="UTF-8">
 <title>Liste Membres</title>
 <link rel="stylesheet" href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.min.css" />">
 <link rel="stylesheet" href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.css" />">
@@ -91,7 +94,7 @@
 												<td class="col-xs-1"><c:out value="${clients.nom} ${clients.prenom}" /></td>
 												<td class="col-xs-1"><c:out value="${clients.courriel}" /></td>
 												<td class="col-xs-1">
-												<form method="post" id="id" action="<c:url value="/showAccount" />"role="form">
+												<form method="post" id="listeAccount" action="<c:url value="/showAccount" />" role="form">
 													<input type="hidden" class="form-control" id="id" name="id" value="${clients.identifiant}" readonly>
 													<button type="submit"> 
 													<span class="glyphicon glyphicon-eye-open"></span>

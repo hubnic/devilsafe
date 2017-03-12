@@ -3,8 +3,11 @@
 <%@ taglib
 	prefix="c"
 	uri="http://java.sun.com/jsp/jstl/core"%>
+<!DOCTYPE html>
 <html lang="fr">
+
 <head>
+	<meta charset="UTF-8">
 <title>Profil Administrateur</title>
 <link rel="stylesheet" href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.min.css" />">
 <link rel="stylesheet" href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.css" />">
@@ -79,7 +82,7 @@
 							</div>
 							<div class="form-group row">
 								<label
-									for="example-email-input"
+									for="nom"
 									class="col-2 col-form-label">Nom :</label>
 								<div class="col-10">
 									<input
@@ -92,7 +95,7 @@
 							</div>
 							<div class="form-group row">
 								<label
-									for="example-email-input"
+									for="prenom"
 									class="col-2 col-form-label">Prenom :</label>
 								<div class="col-10">
 									<input

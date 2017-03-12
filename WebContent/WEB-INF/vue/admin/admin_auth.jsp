@@ -3,8 +3,11 @@
 <%@ taglib
 	prefix="c"
 	uri="http://java.sun.com/jsp/jstl/core"%>
+<!DOCTYPE html>
 <html lang="fr">
+
 <head>
+	<meta charset="UTF-8">
 <title>Login Admin</title>
 <link rel="stylesheet" href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.min.css" />">
 <link rel="stylesheet" href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.css" />">
@@ -39,7 +42,7 @@
 			role="form">
 			<div class="form-group row">
 				<label
-					for="inputEmail3"
+					for="idt"
 					class="col-sm-2 col-form-label">Identifiant</label>
 				<div class="col-sm-10">
 					<input
@@ -55,14 +58,14 @@
 			</div>
 			<div class="form-group row">
 				<label
-					for="inputPassword3"
+					for="secureKey"
 					class="col-sm-2 col-form-label">Clé de sécurité</label>
 				<div class="col-sm-10">
 					<input
 						type="password"
 						class="form-control"
 						id="secureKey"
-						type="number"
+						pattern="[0-9]*"
 						name="secureKey"
 						placeholder="Saisir votre clé de sécurité"
 						required>
