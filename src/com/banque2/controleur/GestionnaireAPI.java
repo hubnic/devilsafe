@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.Calendar;
@@ -109,7 +108,7 @@ public class GestionnaireAPI {
                         //ENVOI REPONSE
                         preauthNode.put("preauth_id", preauthId);
                         preauthNode.put("preauth_status", "CREATED");
-                        preauthNode.put("preauth_expiration", new Date(Calendar.getInstance().getTimeInMillis() + (20 * 60000)).toString());
+                        preauthNode.put("preauth_expiration", serviceDaoApi.getPreautorisation(preauthId).getPreauth_date().toString());
                         preauthNode.put("detail_transaction", "Preautorisation creee avec succes");
                         i++;
                         return ResponseEntity.ok().header("salut", "réponse").body(preauthNode.toString());
@@ -165,7 +164,7 @@ public class GestionnaireAPI {
 
         if(preauth_bd!=null){
             if(preauth_bd.getPreauthStatus().equals("CREATED")){
-                if(!isPreauthExpired(preauth_bd)) {
+                if(isPreauthExpired(preauth_bd)==false) {
                     if (preauth_modif.getPreauthStatus().equals("CREATED")) {
                         try {
                             preauth_modif_node.put("preauth_status", "CREATED");
@@ -212,7 +211,7 @@ public class GestionnaireAPI {
                     } catch (Exception e) {
                         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).header("salut", "ERROR").body(preauth_modif_node.toString());
                     }
-                    }
+                }
             }
             else if(serviceDaoApi.getPreautorisation(id).getPreauthStatus().equals("CANCELED")){
 
@@ -294,10 +293,11 @@ public class GestionnaireAPI {
         LocalDateTime newtime = oldtime.toLocalDateTime();
         if(newtime.plusMinutes(20).isAfter(LocalDateTime.now())){
 
-            System.out.print("date maintenant: " + LocalDateTime.now().atZone(ZoneId.systemDefault()));
-            return true;
+            System.out.print("\ndate locale: " + LocalDateTime.now()+"\n");
+            System.out.print("\ndate expiration: " + newtime.plusMinutes(20)+"\n");
+            return false;
         }
-        return false;
+        return true;
     }
 
 

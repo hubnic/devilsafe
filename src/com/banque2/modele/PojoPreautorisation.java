@@ -93,8 +93,16 @@ public class PojoPreautorisation {
         this.preauth_status = status;
     }
 
+    public String getPreauth_status() {
+        return preauth_status;
+    }
+
+    public void setPreauth_status(String preauth_status) {
+        this.preauth_status = preauth_status;
+    }
+
     public LocalDateTime getPreauth_date() {
-        return preauth_date;
+        return preauth_date.minusHours(4);
     }
 
     public void setPreauth_date(LocalDateTime preauth_date) {
