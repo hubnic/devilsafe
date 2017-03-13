@@ -126,7 +126,6 @@ public class GestionnaireAPI {
                     return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).header("status", "pas bon").body(preauthNode.toString());
                 }
 
-
             }
     }
 

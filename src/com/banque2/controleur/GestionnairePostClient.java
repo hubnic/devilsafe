@@ -1,8 +1,20 @@
 package com.banque2.controleur;
 
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.codehaus.jackson.map.util.JSONPObject;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -24,6 +36,8 @@ public class GestionnairePostClient {
 	private ServiceAuthentification serviceSecurite;
 	
 	private final String regex = "[a-zA-Z0-9^.*\\W]{8,}";
+	private final DefaultHttpClient httpClient = new DefaultHttpClient();
+
 	
 	//ADMINISTRATEUR
 	@RequestMapping(value = {"/changePwdClient"}, method = RequestMethod.POST)
@@ -140,7 +154,7 @@ public class GestionnairePostClient {
 	
 	
 	
-	//ADMINISTRATEUR
+		//ADMINISTRATEUR
 		@RequestMapping(value = {"/remboursementCC"}, method = RequestMethod.POST)
 		public ModelAndView postRemboursementCC(	
 				@RequestParam("compteOut") String compteEmetteur,
@@ -187,6 +201,58 @@ public class GestionnairePostClient {
 			
 			return vueModele;
 		}
+		
+		
+		//ADMINISTRATEUR
+				@RequestMapping(value = {"/transfertOut"}, method = RequestMethod.POST)
+				public ModelAndView postTransfertOut(	
+						@RequestParam("compteOut") String compteEmetteur,
+						@RequestParam("idBanque") int idBanque,
+						@RequestParam("idCompteExterne") int idCompteExterne,
+						@RequestParam("commentaire") String commentaire,
+						@RequestParam("montant") float montant){
+					
+					String[] cEmetteur = compteEmetteur.split(" ");
+					System.out.println("Controleur du transfert EXTERNE : ");
+					System.out.println("Compte emetteur : "+cEmetteur[0]  + " " +cEmetteur[1] + " " +cEmetteur[2]+ " " +cEmetteur[3] + " " +cEmetteur[4]);
+					System.out.println("DETAILS DU VIREMENT : " + idBanque +" "+ idCompteExterne +" "+ commentaire +" "+ montant);
+					ModelAndView vueModele = new ModelAndView();
+					vueModele.setViewName("/client/client_transfertOut");
+					try {
+						
+						HttpPost virement = new HttpPost("http://gti525banque2.herokuapp.com/api/virement");
+						virement.setHeader("key", "12345");
+						virement.setHeader("Content-Type", "application/json");
+						
+						List<NameValuePair> paramRequeteVirement = new ArrayList<NameValuePair>(2);
+						//TEST BANQUE 1
+						//paramRequeteVirement.add(new BasicNameValuePair("montant", Float.toHexString(montant)));
+						//paramRequeteVirement.add(new BasicNameValuePair("source", cEmetteur[1] +cEmetteur[2]));
+						//paramRequeteVirement.add(new BasicNameValuePair("destination", Integer.toString(idBanque)+"-"+Integer.toString(idCompteExterne)));
+						//paramRequeteVirement.add(new BasicNameValuePair("date", "date"));
+						//paramRequeteVirement.add(new BasicNameValuePair("commentaire", commentaire));
+					
+						//TEST BANQUE 2
+						paramRequeteVirement.add(new BasicNameValuePair("montant", Float.toHexString(montant)));
+						paramRequeteVirement.add(new BasicNameValuePair("source", cEmetteur[1] +cEmetteur[2]));
+						paramRequeteVirement.add(new BasicNameValuePair("destination", Integer.toString(idBanque)+"-"+Integer.toString(idCompteExterne)));
+						paramRequeteVirement.add(new BasicNameValuePair("date", "date"));
+						paramRequeteVirement.add(new BasicNameValuePair("public_api_key", "12345"));
+						HttpResponse reponseBanque2 = httpClient.execute(virement);
+						
+						int idTransaction = 1000;
+						vueModele.addObject("succes", true);
+						vueModele.addObject("description", "Le virement a ete effectué, ID de transaction : "+idTransaction);
+						
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						vueModele.addObject("succes", false);
+						vueModele.addObject("description", "Le virement n'a  pu etre effectué en raison d'une erreur de communication avec la banque 2 ");
+						vueModele.addObject("comptes", serviceDaoClient.getAllComptesClientForTransfert(Integer.parseInt(SecurityContextHolder.getContext().getAuthentication().getName())));					
+					}
+					return vueModele;
+				}
 		
 		private boolean valideCompteifCredit(String[] cE){
 			if(cE[0].equals("CREDIT")){

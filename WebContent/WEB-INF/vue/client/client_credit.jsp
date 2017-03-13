@@ -119,8 +119,7 @@
 										</div>
 									</c:if>
 									<br>
-										<button
-											class="btn btn-primary">Rembourser Carte Credit</button>
+										<button class="btn btn-primary">Rembourser Carte Credit</button>
 									</form>
 								</div>
 							</div>
