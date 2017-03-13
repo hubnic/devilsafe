@@ -264,24 +264,36 @@ public class GestionnaireAPI {
             compte.setIdCompte(rootNode.path("compte_dest_ID").getIntValue());
             compte.setSolde((float)rootNode.path("montant").getDoubleValue());
 
+            if(serviceDaoCompte.getAccount(compte.getIdCompte())!=null) {
+                if(compte.getSolde()>=0){
+                    serviceDaoCompte.ajoutMontant(
+                            compte.getIdCompte(),
+                            compte.getSolde());
 
-            serviceDaoCompte.ajoutMontant(
-                    compte.getIdCompte(),
-                    compte.getSolde());
+                    //ENVOI REPONSE
 
-            //ENVOI REPONSE
+                    compteNode.put("transaction_status", "SUCCEED");
+                    compteNode.put("timestamp", new Date(Calendar.getInstance().getTimeInMillis()).toString());
+                    compteNode.put("detail_transaction", "virement fait avec succès");
+                    return ResponseEntity.ok().header("salut", "réponse").body(compteNode.toString());
+                }else{
+                    compteNode.put("transaction_status", "FAILED");
+                    compteNode.put("timestamp", new Date(Calendar.getInstance().getTimeInMillis()).toString());
+                    compteNode.put("detail_transaction", "veuillez inscrire un montant positif");
+                    return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).header("salut", "réponse").body(compteNode.toString());
+                }
+            }else{
+                compteNode.put("transaction_status", "FAILED");
+                compteNode.put("detail_transaction", "Client inexistant");
 
-            compteNode.put("transaction_status", "SUCCEED");
-            compteNode.put("timestamp", new Date(Calendar.getInstance().getTimeInMillis()).toString());
-            compteNode.put("detail_transaction", "virement fait avec succès");
-
-            return ResponseEntity.ok().header("salut", "réponse").body(compteNode.toString());
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).header("salut", "réponse").body(compteNode.toString());
+            }
         }
         catch (Exception e){
             // REPONSE EN CAS D'ECHEC
             compteNode.put("transaction_status", "FAILURE");
             compteNode.put("detail_transaction", "Le virement n'a pu etre fait");
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).header("status", "pas bon").body(compteNode.toString());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).header("status", "pas bon").body(compteNode.toString());
         }
 
     }
