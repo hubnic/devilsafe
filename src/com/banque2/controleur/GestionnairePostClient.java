@@ -224,12 +224,11 @@ public class GestionnairePostClient {
 					System.out.println("DETAILS DU VIREMENT : " + idBanque +" "+ idCompteExterne +" "+ commentaire +" "+ montant);
 					ModelAndView vueModele = new ModelAndView();
 					vueModele.setViewName("/client/client_transfertOut");
+					
 					try {
-						
-						
-						     
-						    RestTemplate restTemplate = new RestTemplate();
-						     
+						if(Float.parseFloat(cEmetteur[3])-montant >= 0 && valideCompteifCredit(cEmetteur)){
+							RestTemplate restTemplate = new RestTemplate();
+	
 						    HttpHeaders header = new HttpHeaders();
 						    header.setContentType(MediaType.APPLICATION_JSON);
 						    header.set("key", "1234");
@@ -248,20 +247,23 @@ public class GestionnairePostClient {
 							//virementJson.add("commentaire", commentaire));
 						 
 						    HttpEntity requeteVirementBanque1= new HttpEntity( virementJson.toString(), header );
-						    
 						    String st = restTemplate.postForObject(url, requeteVirementBanque1, String.class);
 						    System.out.println(st);
+						    
 						   
-					
 						int idTransaction = 1000;
 						vueModele.addObject("succes", true);
-						vueModele.addObject("description", "Le virement a ete effectué, ID de transaction : "+idTransaction);
-						
+						vueModele.addObject("description", "Le virement a ete effectué, ID de transaction : "+idTransaction + st);
+						}else{
+							vueModele.addObject("succes", false);
+							vueModele.addObject("description", "Attention : Le compte ["+ cEmetteur[0]  + "  :" +cEmetteur[1] +cEmetteur[2]+"] n'a pas assez de fond pour effectuer le transfert. \n"
+									+ "Ou le compte selectionné est un compte Credit.");
+						}
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 						vueModele.addObject("succes", false);
-						vueModele.addObject("description", "Le virement n'a  pu etre effectué en raison d'une erreur de communication avec la banque 2 ");
+						vueModele.addObject("description", "Le virement n'a  pu etre effectué en raison d'une erreur de communication avec la banque 2. \n Les fonds n'ont pas été débités de votre compte.");
 					}
 					vueModele.addObject("comptes", serviceDaoClient.getAllComptesClientForTransfert(Integer.parseInt(SecurityContextHolder.getContext().getAuthentication().getName())));					
 					return vueModele;
