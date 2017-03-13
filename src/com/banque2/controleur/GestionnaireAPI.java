@@ -263,13 +263,15 @@ public class GestionnaireAPI {
             //ASSIGNATION DES PARAMÈTRES JSON -> POJO
             compte.setIdCompte(rootNode.path("compte_dest_ID").getIntValue());
             compte.setSolde((float)rootNode.path("montant").getDoubleValue());
+            String source = rootNode.path("src_ID").getTextValue();
 
             if(serviceDaoCompte.getAccount(compte.getIdCompte())!=null) {
                 if(compte.getSolde()>=0){
+
                     serviceDaoCompte.ajoutMontant(
                             compte.getIdCompte(),
                             compte.getSolde());
-
+                    int idTransaction = serviceDaoClient.createTransaction(Integer.parseInt(source), compte.getIdCompte(), compte.getSolde(),"Virement du compte: "+ source+ " vers le compte: "+compte.getIdCompte());
                     //ENVOI REPONSE
 
                     compteNode.put("transaction_status", "SUCCEED");

@@ -207,7 +207,7 @@ public int rembourserCC(int idCompteEmetteur, int idCompteReceveur, float montan
 }
 
 
-private int createTransaction(int idCompteOut, int idCompteIn, float montant, String description) {
+public int createTransaction(int idCompteOut, int idCompteIn, float montant, String description) {
 
 	String transaction =
 	"INSERT INTO transaction (idCompteClient, idCompteDestinataire, montant, description)"
