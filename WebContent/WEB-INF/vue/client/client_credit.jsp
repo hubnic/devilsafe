@@ -39,7 +39,7 @@
 							<div class="row">
 								<div class="col-sm-4" style="background-color: red;">
 									<div class="form-group">
-										<label for="usr">Compte :</label> <input
+										<label for="compteName">Compte :</label> <input
 											type="text"
 											class="form-control"
 											id="compteName"
@@ -48,7 +48,7 @@
 											readonly>
 									</div>
 									<div class="form-group">
-										<label for="usr">N° Compte :</label> <input
+										<label for="idCompte">N° Compte :</label> <input
 											type="text"
 											class="form-control"
 											id="idCompte"
@@ -57,7 +57,7 @@
 											readonly>
 									</div>
 									<div class="form-group">
-										<label for="usr">Montant à rembourser ($) :</label> <input
+										<label for="montant">Montant à rembourser ($) :</label> <input
 											type="number" step=0.01
 											class="form-control"
 											id="montant"
@@ -83,7 +83,7 @@
 												id="compteOut"
 												name="compteOut"
 												required>
-												<option>Choisir Compte</option>
+												<option value="">Choisir Compte</option>
 												<c:forEach items="${comptes}" var="comptes">
 												<option>${comptes.type} ${comptes.idBanque} ${comptes.idCompte} ${comptes.solde} $ </option>
 												</c:forEach>
