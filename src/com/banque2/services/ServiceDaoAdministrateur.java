@@ -498,17 +498,18 @@ private PojoCompte templateDebit = new PojoCompte();
 
 		Random random = new Random();
 		
-		int zero = 6666;	
+		int zero = 6666;
 		int un = random.nextInt(9999);	
 		int deux = random.nextInt(9999);	
 		int trois = random.nextInt(9999);
+	
 		
 		String carte = 
 				Integer.toString(zero) +
 				Integer.toString(un) +
 				Integer.toString(deux) +
 				Integer.toString(trois);
-		//System.out.println(carte);
+		System.out.println(carte);
 		int calc=0;
 		int i = carte.length()-1;
 		boolean carteValide = false;
@@ -529,11 +530,13 @@ private PojoCompte templateDebit = new PojoCompte();
 				calc = calc + Character.getNumericValue(carte.charAt(i)); 
 			}
 			if(i==0){
-				//System.out.println("Voici le resultat du calc : " +calc);
+				System.out.println("Voici le resultat du calc : " +calc);
 				
 				if(calc % 10 == 0){
-					carteValide = true;
-					//System.out.println("voici la carte valide : "+carte);
+					if(carte.length()==16){
+						carteValide = true;
+						System.out.println("voici la carte valide : "+carte);
+					}	
 				}else{	
 					calc = 0;
 					un = random.nextInt(9999);	
@@ -546,7 +549,7 @@ private PojoCompte templateDebit = new PojoCompte();
 							Integer.toString(deux) +
 							Integer.toString(trois);
 					
-					i = carte.length();
+					i = carte.length()-1;
 				}
 				
 			}

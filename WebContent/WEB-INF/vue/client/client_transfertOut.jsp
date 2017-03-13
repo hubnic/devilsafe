@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.css" />">
 <script src="<c:url value="/librairie/jquery/jquery-3.1.1.min.js" />"></script>
 <script src="<c:url value="/librairie/bootstrap-3.3.7/js/bootstrap.min.js" />"></script>
+<script src="<c:url value="/librairie/js/confirmClient.js" />"></script>
 </head>
 <body>
 <div class="container-fluid">
@@ -29,13 +30,21 @@
 
     <div class="col-sm-8">
 						<hr>
-						<h3>
-							Tranfert vers un compte externe<span
-								class="glyphicon glyphicon-usd"></span>
-						</h3>
+						<h3>Tranfert vers un compte externe<span class="glyphicon glyphicon-usd"></span></h3>
 						<hr>
+						<c:if test="${succes == true}">
+										<div class="alert alert-success">
+											<p>${description}</p>
+										</div>
+										</c:if>
+										<c:if test="${succes == false}">
+										<div class="alert alert-danger">
+											<p>${description}</p>
+										</div>
+						</c:if>
 						<form
 							method="post"
+							onsubmit="return confirmTransfertOut();"
 							id="formTransfertOut"
 							action="<c:url value="/transfertOut" />"
 							role="form">
@@ -44,10 +53,11 @@
 								<label for="compteOut">Emetteur</label> <select
 									class="form-control"
 									id="compteOut"
-									name="compteOut">
+									name="compteOut"
+									required>
 									<option>Choisir compte</option>
 									<c:forEach items="${comptes}" var="comptes">
-									<option>${comptes.type} ${comptes.idBanque}${comptes.idCompte} ${comptes.solde}$ </option>
+									<option>${comptes.type} ${comptes.idBanque} ${comptes.idCompte} ${comptes.solde} $ </option>
 									</c:forEach>
 								</select>
 							</div>
@@ -55,56 +65,49 @@
 							<h3>2. Informations sur le compte receveur externe</h3>
 							<div class="row">
 								<div class="col-sm-4">
-									<div class="form-group">
-										<label for="nom">Nom :</label> <input
-											type="text"
-											class="form-control"
-											id="nom"
-											name="nom"
-											placeholder="Dup">
-									</div>
-								</div>
-								<div class="col-sm-4">
-									<div class="form-group">
-										<label for="prenom">Prenom :</label> <input
-											type="text"
-											class="form-control"
-											id="prenom"
-											name="prenom"
-											placeholder="Maurice">
-									</div>
-								</div>
-								<div class="col-sm-4">
-									<div class="form-group">
-										<label for="idCompte">Numero de compte :</label> <input
+										<div class="form-group">
+										<label for="idBanque">#Ref Banque :</label> <input
 											type="number"
 											class="form-control"
-											id="idCompte"
-											name="idCompte"
-											placeholder="1234-56788">
+											id="idBanque"
+											name="idBanque"
+											placeholder="888"
+											required>
+									</div>
+								</div>
+								<div class="col-sm-4">
+									<div class="form-group">
+										<label for="idCompteExterne">Numero de compte :</label> <input
+											type="number"
+											class="form-control"
+											id="idCompteExterne"
+											name="idCompteExterne"
+											placeholder="56788">
+									</div>
+								</div>
+								<div class="col-sm-4">
+									<div class="form-group">
+										<label for="commentaire">Commentaire :</label> <input
+											type="text"
+											class="form-control"
+											id="commentaire"
+											name="commentaire"
+											placeholder="Inscrire un commentaire"
+											required>
 									</div>
 								</div>
 							</div>
-							<h3>3. Inscrire le montant désiré</h3>
+							<h3>3. Inscrire le montant désiré en $</h3>
 							<div class="form-group">
 								<input
-									type="number"
+									type=number min=0 max="${compteCredit.solde}" step=0.01
 									class="form-control"
 									id="montant"
 									name="montant"
-									placeholder="256$">
-							</div>
-							<h3>4. Valider le transfert en inscrivant votre mot de passe</h3>
-							<div class="form-group">
-								<label for="pwd">Password:</label> <input
-									type="password"
-									class="form-control"
-									id="pwd"
-									name="pwd"
-									value="1234567">
+									placeholder="0.00$"
+									required>
 							</div>
 							<button
-								type="submit"
 								class="btn btn-primary">Effectuer le transfert</button>
 							<input
 								type="hidden"

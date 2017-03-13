@@ -61,3 +61,18 @@ function checkAccount(){
     
 }
 
+function confirmTransfertOut()
+{
+		var compteOut = document.getElementById("compteOut").value;
+		var idBanque = document.getElementById("idBanque").value;
+		var idCompte= document.getElementById("idCompteExterne").value ;
+		var montant = document.getElementById("montant").value;
+		
+		var retour = confirm("Est-vous certain d'effectuer le transfert vers ce compte externe : \n" 
+				+ "Compte emetteur : "+ compteOut +"\n"
+				+ "Compte receveur : "+ idBanque+"-"+idCompte +"\n"
+				+ "pour un montant de : "+ montant +" $ \n"+"?");
+		
+		return retour;
+}
+
