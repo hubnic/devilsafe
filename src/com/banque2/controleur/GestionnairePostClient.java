@@ -43,6 +43,7 @@ public class GestionnairePostClient {
 	private final String regex = "[a-zA-Z0-9^.*\\W]{8,}";
 	
 	final String url = "http://gti525banque2.herokuapp.com/api/virement";
+	final String banque1 = "https://gti525-h17-banque1-backend.herokuapp.com/api/1.0.0/virement";
 	
 	//ADMINISTRATEUR
 	@RequestMapping(value = {"/changePwdClient"}, method = RequestMethod.POST)
