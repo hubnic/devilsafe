@@ -1,26 +1,31 @@
 package com.banque2.controleur;
 
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.codehaus.jackson.map.util.JSONPObject;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.banque2.services.ServiceAuthentification;
@@ -36,8 +41,8 @@ public class GestionnairePostClient {
 	private ServiceAuthentification serviceSecurite;
 	
 	private final String regex = "[a-zA-Z0-9^.*\\W]{8,}";
-	private final DefaultHttpClient httpClient = new DefaultHttpClient();
-
+	
+	final String url = "http://gti525banque2.herokuapp.com/api/virement";
 	
 	//ADMINISTRATEUR
 	@RequestMapping(value = {"/changePwdClient"}, method = RequestMethod.POST)
@@ -205,7 +210,7 @@ public class GestionnairePostClient {
 		
 		//ADMINISTRATEUR
 				@RequestMapping(value = {"/transfertOut"}, method = RequestMethod.POST)
-				public ModelAndView postTransfertOut(	
+				public @ResponseBody ModelAndView postTransfertOut(	
 						@RequestParam("compteOut") String compteEmetteur,
 						@RequestParam("idBanque") int idBanque,
 						@RequestParam("idCompteExterne") int idCompteExterne,
@@ -220,26 +225,33 @@ public class GestionnairePostClient {
 					vueModele.setViewName("/client/client_transfertOut");
 					try {
 						
-						HttpPost virement = new HttpPost("http://gti525banque2.herokuapp.com/api/virement");
-						virement.setHeader("key", "12345");
-						virement.setHeader("Content-Type", "application/json");
 						
-						List<NameValuePair> paramRequeteVirement = new ArrayList<NameValuePair>(2);
-						//TEST BANQUE 1
-						//paramRequeteVirement.add(new BasicNameValuePair("montant", Float.toHexString(montant)));
-						//paramRequeteVirement.add(new BasicNameValuePair("source", cEmetteur[1] +cEmetteur[2]));
-						//paramRequeteVirement.add(new BasicNameValuePair("destination", Integer.toString(idBanque)+"-"+Integer.toString(idCompteExterne)));
-						//paramRequeteVirement.add(new BasicNameValuePair("date", "date"));
-						//paramRequeteVirement.add(new BasicNameValuePair("commentaire", commentaire));
+						     
+						    RestTemplate restTemplate = new RestTemplate();
+						     
+						    HttpHeaders header = new HttpHeaders();
+						    header.setContentType(MediaType.APPLICATION_JSON);
+						    header.set("key", "1234");
+						    header.set("host", "gti525banque2.herokuapp.com");
+						    
+						    JSONObject virementJson = new JSONObject();
+						    virementJson.put("compte_dst_ID", "6003");
+						    virementJson.put("src_ID", "sada");
+						    virementJson.put("montant", "-50"); 
+						    
+							//TEST BANQUE 1
+							//virementJson.add("montant", Float.toHexString(montant)));
+							//virementJson.add("source", cEmetteur[1] +cEmetteur[2]));
+							//virementJson.add("destination", Integer.toString(idBanque)+"-"+Integer.toString(idCompteExterne)));
+							//virementJson.add("date", "date"));
+							//virementJson.add("commentaire", commentaire));
+						 
+						    HttpEntity requeteVirementBanque1= new HttpEntity( virementJson.toString(), header );
+						    
+						    String st = restTemplate.postForObject(url, requeteVirementBanque1, String.class);
+						    System.out.println(st);
+						   
 					
-						//TEST BANQUE 2
-						paramRequeteVirement.add(new BasicNameValuePair("montant", Float.toHexString(montant)));
-						paramRequeteVirement.add(new BasicNameValuePair("source", cEmetteur[1] +cEmetteur[2]));
-						paramRequeteVirement.add(new BasicNameValuePair("destination", Integer.toString(idBanque)+"-"+Integer.toString(idCompteExterne)));
-						paramRequeteVirement.add(new BasicNameValuePair("date", "date"));
-						paramRequeteVirement.add(new BasicNameValuePair("public_api_key", "12345"));
-						HttpResponse reponseBanque2 = httpClient.execute(virement);
-						
 						int idTransaction = 1000;
 						vueModele.addObject("succes", true);
 						vueModele.addObject("description", "Le virement a ete effectué, ID de transaction : "+idTransaction);
@@ -249,8 +261,8 @@ public class GestionnairePostClient {
 						e.printStackTrace();
 						vueModele.addObject("succes", false);
 						vueModele.addObject("description", "Le virement n'a  pu etre effectué en raison d'une erreur de communication avec la banque 2 ");
-						vueModele.addObject("comptes", serviceDaoClient.getAllComptesClientForTransfert(Integer.parseInt(SecurityContextHolder.getContext().getAuthentication().getName())));					
 					}
+					vueModele.addObject("comptes", serviceDaoClient.getAllComptesClientForTransfert(Integer.parseInt(SecurityContextHolder.getContext().getAuthentication().getName())));					
 					return vueModele;
 				}
 		
