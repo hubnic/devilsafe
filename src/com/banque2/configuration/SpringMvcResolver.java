@@ -26,9 +26,10 @@ public class SpringMvcResolver extends WebMvcConfigurerAdapter {
 	        registry.viewResolver(viewResolver);
 	    }
 	 
+	 
 	    @Bean(name = "dataSource")
 		public DriverManagerDataSource dataSource() {
-		    DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
+		   DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
 		    driverManagerDataSource.setDriverClassName("com.mysql.jdbc.Driver");
 		    driverManagerDataSource.setUrl("jdbc:mysql://us-cdbr-iron-east-03.cleardb.net:3306/heroku_2ea2dde16e81c62");
 		    driverManagerDataSource.setUsername("b3851ccc9becd8");
@@ -36,6 +37,18 @@ public class SpringMvcResolver extends WebMvcConfigurerAdapter {
 		    return driverManagerDataSource;
 		}
 	    
+	 
+	    /*
+	   @Bean(name = "dataSource")
+			public DriverManagerDataSource dataSource() {
+			    DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
+			    driverManagerDataSource.setDriverClassName("com.mysql.jdbc.Driver");
+			    driverManagerDataSource.setUrl("jdbc:mysql://localhost:3306/heroku_2ea2dde16e81c62");
+			    driverManagerDataSource.setUsername("root");
+			    driverManagerDataSource.setPassword("qwerty");
+			    return driverManagerDataSource;
+			}
+			*/
 	    @Bean
 		public ServiceDaoAdministrateur getSServiceDaoAdministrateur() {
 			return new ServiceDaoAdministrateur(dataSource());

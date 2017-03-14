@@ -93,7 +93,6 @@ private ArrayList<PojoCompte> getAllPreautorisation(ArrayList<PojoCompte> l){
     			Connection connec = jdbcTemplate.getDataSource().getConnection();
         		PreparedStatement st = connec.prepareStatement(getIdCarte);
         		st.setInt(1, l.get(i).getIdCompte());
-        		
         		ResultSet result = st.executeQuery();
         		
         		if(result.next()){
@@ -103,12 +102,13 @@ private ArrayList<PojoCompte> getAllPreautorisation(ArrayList<PojoCompte> l){
           			l.get(i).setPreautorisation(preauth);
           			System.out.println(preauth.size());
         		}
+        		   connec.close();
     		}catch(Exception e){
     			e.printStackTrace();
     		}
     	}
 	}
-
+ 
 	return l;
 }
 
@@ -224,14 +224,16 @@ public int createTransaction(int idCompteOut, int idCompteIn, float montant, Str
 		st.executeUpdate();
 		
 		ResultSet result = st.getGeneratedKeys();
+		
 		if (result.next()) {
 		    System.out.println("L'id de la transaction a ete cree : "+ result.getInt(1));
 		    int idtransaction = result.getInt(1);
+		    connec.close();
 			return idtransaction;
 		}else{
+			 connec.close();
 			return -1;
 		}
-		
 	} catch (SQLException e) {
 		e.printStackTrace();
 		return -1;
@@ -250,6 +252,7 @@ private boolean ajouterFondCompte(int idCompte, float montant) {
 		st.setFloat(1, montant);
 		st.setInt(2, idCompte);
 		st.executeUpdate();
+		 connec.close();
 		return true;
 	}catch(Exception e){
 		
@@ -270,6 +273,7 @@ private boolean retraitFondCompte(int idCompte, float montant) {
 				st.setFloat(1, montant);
 				st.setInt(2, idCompte);
 				st.executeUpdate();
+				 connec.close();
 				return true;
 			}catch(Exception e){
 				

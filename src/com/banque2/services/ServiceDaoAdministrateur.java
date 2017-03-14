@@ -83,6 +83,7 @@ private PojoCompte templateDebit = new PojoCompte();
 			st.setString(7, client.getMdp());
 			st.executeUpdate();
 			ResultSet result = st.getGeneratedKeys();
+			
 			if (result.next()) {
 			    System.out.println("Valeur : "+result.getInt(1));
 			    int idClient = result.getInt(1);
@@ -91,8 +92,10 @@ private PojoCompte templateDebit = new PojoCompte();
 			    templateDebit.setIdClient(idClient);
 			    createCompteClient(templateCredit);
 			    createCompteClient(templateDebit);
+			    connec.close();
 			    return true;
 			}else{
+				connec.close();
 				return false;
 			}
 			
@@ -141,8 +144,10 @@ private PojoCompte templateDebit = new PojoCompte();
 			    System.out.println("Id du compte crée : "+result.getInt(1));
 			    int idCompte = result.getInt(1);
 				createCreditCard(compte.getIdClient(), idCompte);
+				connec.close();
 				return true;
 			}else{
+				connec.close();
 				return false;
 			}
 			
@@ -416,8 +421,7 @@ private PojoCompte templateDebit = new PojoCompte();
 	    		
 	    			Connection connec = jdbcTemplate.getDataSource().getConnection();
 	        		PreparedStatement st = connec.prepareStatement(getIdCarte);
-	        		st.setInt(1, l.get(i).getIdCompte());
-	        		
+	        		st.setInt(1, l.get(i).getIdCompte());      		
 	        		ResultSet result = st.executeQuery();
 	        		
 	        		if(result.next()){
@@ -427,6 +431,7 @@ private PojoCompte templateDebit = new PojoCompte();
 	          			l.get(i).setPreautorisation(preauth);
 	          			System.out.println(preauth.size());
 	        		}
+	        		connec.close();
 	    		}catch(Exception e){
 	    			e.printStackTrace();
 	    		}

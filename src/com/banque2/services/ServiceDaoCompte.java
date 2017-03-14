@@ -26,7 +26,7 @@ public class ServiceDaoCompte {
 
 		try{
 			List<PojoCompte> result = jdbcTemplate.query(getAccount ,new MappingCompte());
-
+			
 			if(result.isEmpty()){
 				return null;
 			}
@@ -46,13 +46,6 @@ public class ServiceDaoCompte {
 
 			jdbcTemplate.execute(ajoutMontant);
 			return true;
-/*
-			if(result.isEmpty()){
-				return false;
-			}
-			else{
-				return true;
-			}*/
 		}
 		catch(Exception e){
 			return false;

@@ -48,6 +48,8 @@ public class SpringSecuriteUserConfiguration extends WebSecurityConfigurerAdapte
              .and()
              .frameOptions();
     	 
+    	
+    	 
     	   //PROPRIETES DE SPRING PERMETTTANT DE CONFIGURER LE MAX DE SESSION 
 	 	  //http.sessionManagement().maximumSessions(1);
 	      http.sessionManagement().invalidSessionUrl("/portail");

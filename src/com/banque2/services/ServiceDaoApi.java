@@ -53,7 +53,7 @@ private JdbcTemplate jdbcTemplate;
 			st.setString(8,preauth.getPreauthStatus());
 			st.executeUpdate();
 			ResultSet result = st.getGeneratedKeys();
-
+			 
 			if (result.next()) {
 				System.out.println("L'id de la preautorisation a ete cree : "+ result.getInt(1));
 				int idPreauth = result.getInt(1);
@@ -120,10 +120,12 @@ private JdbcTemplate jdbcTemplate;
 			
 			
 			ResultSet result = st.executeQuery();
-
+			
 			if (result.next()) {
+				 connec.close();
 				return true;
 			}else{
+				 connec.close();
 				return false;
 			}
 			
