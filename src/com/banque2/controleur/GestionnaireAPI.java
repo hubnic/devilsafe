@@ -5,6 +5,7 @@ package com.banque2.controleur;
  */
 
 import com.banque2.modele.PojoCarte;
+import com.banque2.modele.PojoClient;
 import com.banque2.modele.PojoCompte;
 import com.banque2.modele.PojoPreautorisation;
 import com.banque2.services.ServiceDaoApi;
@@ -51,6 +52,48 @@ public class GestionnaireAPI {
     public String listTroopers() {
         return "salut";
     }
+
+    @RequestMapping(value = "/client/{id}", method = RequestMethod.GET, headers={"key=1234"})
+    public ResponseEntity<String> getClient(@PathVariable("id") String id) throws IOException, InterruptedException  {
+        // CREATION MAPPER POUR ACCEDER AUX DONNEES
+        ObjectMapper mapper = new ObjectMapper();
+
+        //CREATION JSON REPONSE
+        ObjectNode compteNode = mapper.createObjectNode();
+
+        // POJO compte et client pour contenir info
+        PojoCompte tempCompte = new PojoCompte();
+        PojoClient tempClient = new PojoClient();
+
+        //split le id
+        String[]idSplitter=id.split("-");
+        String idBanque=idSplitter[0];
+        String idCompte=idSplitter[1];
+        System.out.print(idCompte);
+        try {
+            System.out.print(idCompte);
+            tempCompte=serviceDaoCompte.getAccount(Integer.parseInt(idCompte));
+            tempClient=serviceDaoClient.getProfilClient(tempCompte.getIdClient());
+
+            if(tempCompte != null) {
+                compteNode.put("id", tempCompte.getIdCompte());
+                compteNode.put("nom", tempClient.getNom());
+                compteNode.put("prenom", tempClient.getPrenom());
+                return ResponseEntity.status(HttpStatus.OK).header("salut", "réponse").body(compteNode.toString());
+            }else{
+                compteNode.put("détail", "Compte inexistant");
+
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).header("salut", "réponse").body(compteNode.toString());
+            }
+        }
+        catch (Exception e){
+            // REPONSE EN CAS D'ECHEC
+            compteNode.put("détail", "Compte inexistant");
+
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).header("salut", "réponse").body(compteNode.toString());
+        }
+    }
+
 
 
     @RequestMapping(value = "/preauth", method = RequestMethod.POST, headers={"key=1234"})
@@ -123,6 +166,7 @@ public class GestionnaireAPI {
                     // REPONSE EN CAS D'ECHEC
                     preauthNode.put("preauth_status", "FAILURE");
                     preauthNode.put("detail_transaction", "La preautorisation n'a pu etre creee");
+                    System.out.print(e);
                     return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).header("status", "pas bon").body(preauthNode.toString());
                 }
 
@@ -189,7 +233,6 @@ public class GestionnaireAPI {
                             preauth_modif.setPreauthStatus("EXECUTED");
                             serviceDaoApi.modifierPreautorizationStatus(preauth_modif);
                             preauth_modif_node.put("preauth_status", "EXECUTED");
-                            preauth_modif_node.put("preauth_expiration", serviceDaoApi.getPreautorisation(id).getCredit_expiration());
                             preauth_modif_node.put("detail_transaction", "La preautorisation a ete execute");
                             return ResponseEntity.status(HttpStatus.ACCEPTED).header("salut", "EXECUTED").body(preauth_modif_node.toString());
                         } catch (Exception e) {
