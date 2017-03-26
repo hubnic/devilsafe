@@ -56,7 +56,7 @@ public class GestionnaireAPI {
     public String listTroopers() {
         System.out.print(serviceDaoBanque1.clientExists("133-2222"));
 
-        System.out.print(serviceDaoBanque1.doVirement(1234,"133-2222",50.00));
+        System.out.print(serviceDaoBanque1.doVirement("1234","133-2222",50.00,"virement"));
 
         return "salut";
     }
@@ -326,7 +326,11 @@ public class GestionnaireAPI {
             }
 
             compte.setSolde((float)rootNode.path("montant").getDoubleValue());
-            String source = rootNode.path("src_ID").getTextValue();
+
+            String[] idSourceSplitter = rootNode.path("src_ID").getTextValue().split("-");
+            String idSourceBanque = idSourceSplitter[0];
+            String idSourceCompte = idSourceSplitter[1];
+            String source = idSourceCompte;
 
             if(serviceDaoCompte.getAccount(compte.getIdCompte())!=null) {
                 if(compte.getSolde()>=0){
