@@ -314,7 +314,17 @@ public class GestionnaireAPI {
             PojoCompte compte = new PojoCompte();
 
             //ASSIGNATION DES PARAMÈTRES JSON -> POJO
-            compte.setIdCompte(rootNode.path("compte_dest_ID").getIntValue());
+
+            if(rootNode.path("compte_dest_ID").getTextValue().length()>5) {
+                String[] idSplitter = rootNode.path("compte_dest_ID").getTextValue().split("-");
+                String idBanque = idSplitter[0];
+                String idCompte = idSplitter[1];
+                compte.setIdCompte(Integer.parseInt(idCompte));
+            }
+            else{
+                compte.setIdCompte(rootNode.path("compte_dest_ID").getIntValue());
+            }
+
             compte.setSolde((float)rootNode.path("montant").getDoubleValue());
             String source = rootNode.path("src_ID").getTextValue();
 
