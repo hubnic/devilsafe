@@ -26,7 +26,6 @@ public class ServiceDaoCompte {
 
 		try{
 			List<PojoCompte> result = jdbcTemplate.query(getAccount ,new MappingCompte());
-			
 			if(result.isEmpty()){
 				return null;
 			}

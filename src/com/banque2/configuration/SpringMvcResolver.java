@@ -74,6 +74,11 @@ public class SpringMvcResolver extends WebMvcConfigurerAdapter {
 		return new ServiceDaoCompte(dataSource());
 	}
 
+		@Bean
+		public ServiceDaoBanque1 getServiceDaoBanque1() {
+		return new ServiceDaoBanque1(dataSource());
+	}
+
 
 	@Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

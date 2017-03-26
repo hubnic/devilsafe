@@ -9,6 +9,7 @@ import com.banque2.modele.PojoClient;
 import com.banque2.modele.PojoCompte;
 import com.banque2.modele.PojoPreautorisation;
 import com.banque2.services.ServiceDaoApi;
+import com.banque2.services.ServiceDaoBanque1;
 import com.banque2.services.ServiceDaoClient;
 import com.banque2.services.ServiceDaoCompte;
 import org.codehaus.jackson.JsonNode;
@@ -48,8 +49,15 @@ public class GestionnaireAPI {
     @Autowired
     private ServiceDaoClient serviceDaoClient;
 
+    @Autowired
+    private ServiceDaoBanque1 serviceDaoBanque1;
+
     @RequestMapping(method = RequestMethod.GET)
     public String listTroopers() {
+        System.out.print(serviceDaoBanque1.clientExists("133-2222"));
+
+        System.out.print(serviceDaoBanque1.doVirement(1234,"133-2222",50.00));
+
         return "salut";
     }
 
@@ -74,11 +82,13 @@ public class GestionnaireAPI {
             System.out.print(idCompte);
             tempCompte=serviceDaoCompte.getAccount(Integer.parseInt(idCompte));
             tempClient=serviceDaoClient.getProfilClient(tempCompte.getIdClient());
+            System.out.print(tempClient.toString());
 
             if(tempCompte != null) {
                 compteNode.put("id", tempCompte.getIdCompte());
                 compteNode.put("nom", tempClient.getNom());
                 compteNode.put("prenom", tempClient.getPrenom());
+//                System.out.print(ResponseEntity.status(HttpStatus.OK).header("salut", "réponse").body(compteNode.toString()));
                 return ResponseEntity.status(HttpStatus.OK).header("salut", "réponse").body(compteNode.toString());
             }else{
                 compteNode.put("détail", "Compte inexistant");
