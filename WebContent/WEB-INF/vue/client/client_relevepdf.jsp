@@ -33,6 +33,14 @@
 			<td>${transactions.montant}</td>
 		</tr>
 	</c:forEach>
+	<c:forEach items="${comptes.preautorisation}" var="preautorisation">
+		<tr>
+			<td>${preautorisation.preauth_id}</td>
+			<td>Date</td>
+			<td>PREAUTH : ${preautorisation.source_id}</td>
+			<td>${preautorisation.montant}</td>
+		</tr>
+	</c:forEach>
     </tbody>
 </table>
 <h2>Le solde du compte est de : ${compte.solde} $</h2>

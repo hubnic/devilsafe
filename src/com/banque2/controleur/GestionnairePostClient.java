@@ -29,6 +29,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.banque2.services.ServiceAuthentification;
+import com.banque2.services.ServiceDaoBanque1;
 import com.banque2.services.ServiceDaoClient;
 
 @Controller
@@ -36,6 +37,9 @@ public class GestionnairePostClient {
 
 	@Autowired
 	private ServiceDaoClient serviceDaoClient;
+	
+	@Autowired
+	private ServiceDaoBanque1 serviceDaoBanque1;
 	
 	@Autowired
 	private ServiceAuthentification serviceSecurite;
@@ -209,65 +213,59 @@ public class GestionnairePostClient {
 		}
 		
 		
-		//ADMINISTRATEUR
-				@RequestMapping(value = {"/transfertOut"}, method = RequestMethod.POST)
-				public @ResponseBody ModelAndView postTransfertOut(	
+	@RequestMapping(value = {"/transfertOut"}, method = RequestMethod.POST)
+	public @ResponseBody ModelAndView postTransfertOut(	
 						@RequestParam("compteOut") String compteEmetteur,
 						@RequestParam("idBanque") int idBanque,
 						@RequestParam("idCompteExterne") int idCompteExterne,
 						@RequestParam("commentaire") String commentaire,
 						@RequestParam("montant") float montant){
-					
+		ModelAndView vueModele = new ModelAndView();
+		vueModele.setViewName("/client/client_transfertOut");
+		
+		if(!compteEmetteur.equals("Choisir compte")){
 					String[] cEmetteur = compteEmetteur.split(" ");
 					System.out.println("Controleur du transfert EXTERNE : ");
 					System.out.println("Compte emetteur : "+cEmetteur[0]  + " " +cEmetteur[1] + " " +cEmetteur[2]+ " " +cEmetteur[3] + " " +cEmetteur[4]);
 					System.out.println("DETAILS DU VIREMENT : " + idBanque +" "+ idCompteExterne +" "+ commentaire +" "+ montant);
-					ModelAndView vueModele = new ModelAndView();
-					vueModele.setViewName("/client/client_transfertOut");
 					
-					try {
-						if(Float.parseFloat(cEmetteur[3])-montant >= 0 && valideCompteifCredit(cEmetteur)){
-							RestTemplate restTemplate = new RestTemplate();
-	
-						    HttpHeaders header = new HttpHeaders();
-						    header.setContentType(MediaType.APPLICATION_JSON);
-						    header.set("key", "1234");
-						    header.set("host", "gti525banque2.herokuapp.com");
-						    
-						    JSONObject virementJson = new JSONObject();
-						    virementJson.put("compte_dst_ID", "6003");
-						    virementJson.put("src_ID", "sada");
-						    virementJson.put("montant", "-50"); 
-						    
-							//TEST BANQUE 1
-							//virementJson.add("montant", Float.toHexString(montant)));
-							//virementJson.add("source", cEmetteur[1] +cEmetteur[2]));
-							//virementJson.add("destination", Integer.toString(idBanque)+"-"+Integer.toString(idCompteExterne)));
-							//virementJson.add("date", "date"));
-							//virementJson.add("commentaire", commentaire));
-						 
-						    HttpEntity requeteVirementBanque1= new HttpEntity( virementJson.toString(), header );
-						    String st = restTemplate.postForObject(url, requeteVirementBanque1, String.class);
-						    System.out.println(st);
-						    
-						   
-						int idTransaction = 1000;
-						vueModele.addObject("succes", true);
-						vueModele.addObject("description", "Le virement a ete effectué, ID de transaction : "+idTransaction + st);
-						}else{
+								
+					if(Float.parseFloat(cEmetteur[3])-montant >= 0 && valideCompteifCredit(cEmetteur))
+					{
+						int idTransaction = serviceDaoBanque1.doVirement(
+								cEmetteur[1] +cEmetteur[2],  
+								Integer.toString(idBanque)+"-"+Integer.toString(idCompteExterne), 
+								montant, 
+								commentaire);
+						if(idTransaction > 0){
+							vueModele.addObject("succes", true);
+							vueModele.addObject("description", "Le virement a ete effectué, ID de transaction : "+idTransaction);
+						}else if(idTransaction == -1){
 							vueModele.addObject("succes", false);
-							vueModele.addObject("description", "Attention : Le compte ["+ cEmetteur[0]  + "  :" +cEmetteur[1] +cEmetteur[2]+"] n'a pas assez de fond pour effectuer le transfert. \n"
-									+ "Ou le compte selectionné est un compte Credit.");
+							vueModele.addObject("description", "Une erreur s'est produite durant le virement externe auprès de la BANQUE 1. \n La transaction a été annulée");
+						}else if(idTransaction == -2){
+							vueModele.addObject("succes", false);
+							vueModele.addObject("description", "Le virement n'a pas ete effectué,  Le compte destinataire n'existe pas");
+						}else if(idTransaction == -3){
+							vueModele.addObject("succes", false);
+							vueModele.addObject("description", "Une erreur s'est produite durant la validation du compte destination auprès de la BANQUE 1. \n La transaction a été annulée");
 						}
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+					
+					}else
+					{
 						vueModele.addObject("succes", false);
-						vueModele.addObject("description", "Le virement n'a  pu etre effectué en raison d'une erreur de communication avec la banque 2. \n Les fonds n'ont pas été débités de votre compte.");
+						vueModele.addObject("description", "Le virement n'a  pu etre effectué car vous n'avez pas assez de fond dans votre compte.");
 					}
-					vueModele.addObject("comptes", serviceDaoClient.getAllComptesClientForTransfert(Integer.parseInt(SecurityContextHolder.getContext().getAuthentication().getName())));					
-					return vueModele;
-				}
+		}else{
+			vueModele.addObject("succes", false);
+			vueModele.addObject("description", "Il faut choisir un compte emetteur pour effectuer un virement.");
+		}		
+					
+					
+			vueModele.addObject("comptes", serviceDaoClient.getAllComptesClientForTransfert(Integer.parseInt(SecurityContextHolder.getContext().getAuthentication().getName())));					
+			return vueModele;
+		}
+	
 		
 		private boolean valideCompteifCredit(String[] cE){
 			if(cE[0].equals("CREDIT")){
