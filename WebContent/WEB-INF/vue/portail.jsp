@@ -13,6 +13,7 @@
 <link rel="stylesheet" href="<c:url value="/librairie/bootstrap-3.3.7/css/bootstrap.css" />">
 <script src="<c:url value="/librairie/jquery/jquery-3.1.1.min.js" />"></script>
 <script src="<c:url value="/librairie/bootstrap-3.3.7/js/bootstrap.min.js" />"></script>
+<script type="text/javascript" data-campain="38" data-APPID="37" src="https://gti525.vboiteau.com/js/analytique.min.js"></script>
 </head>
 <body class="background">
 	<div class="container">
@@ -78,13 +79,14 @@
 	<div class="container text-center">
 		<div class="row">
 			<div class="col-sm-3">
-				<p>ADS</p>
+			<div class="gti525Ad ad-preset-banner"></div>
+			<!-- Colonne (1 x 3) -->
 			</div>
 			<div class="col-sm-6">
-				<p>ADS</p>
 			</div>
 			<div class="col-sm-3">
-				<p>ADS</p>
+			<div class="gti525Ad ad-preset-banner"></div>
+			<!-- Colonne (1 x 3) -->
 			</div>
 		</div>
 	</div>
