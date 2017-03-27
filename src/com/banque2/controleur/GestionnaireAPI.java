@@ -152,19 +152,29 @@ public class GestionnaireAPI {
                     preauth.setPreauth_id(i);
                     preauth.setPreauthStatus("CREATED");
 
+                    String[]idSourceSplitter=preauth.getSource_id().split("-");
+                    String idBanque=idSourceSplitter[0];
+                    String idCompte=idSourceSplitter[1];
+                    System.out.print(idCompte);
 
                     if (serviceDaoApi.checkIfCCexit(carte)){
-                        //on créée la préautorisation
-                        int preauthId=serviceDaoApi.createPreautorisation(preauth);
-                        //ICI ON AJOUTE LE MONTANT AU CREDIT
-                        serviceDaoClient.creerPreauth(preauth, carte);
-                        //ENVOI REPONSE
-                        preauthNode.put("preauth_id", preauthId);
-                        preauthNode.put("preauth_status", "CREATED");
-                        preauthNode.put("preauth_expiration", serviceDaoApi.getPreautorisation(preauthId).getPreauth_date().toString());
-                        preauthNode.put("detail_transaction", "Preautorisation creee avec succes");
-                        i++;
-                        return ResponseEntity.ok().header("salut", "réponse").body(preauthNode.toString());
+                        if(idBanque.matches("666") || (idBanque.matches("133") && serviceDaoBanque1.clientExists(idBanque+"-"+idCompte)) ){
+                            //on créée la préautorisation
+                            int preauthId = serviceDaoApi.createPreautorisation(preauth);
+                            //ICI ON AJOUTE LE MONTANT AU CREDIT
+                            serviceDaoClient.creerPreauth(preauth, carte);
+                            //ENVOI REPONSE
+                            preauthNode.put("preauth_id", preauthId);
+                            preauthNode.put("preauth_status", "CREATED");
+                            preauthNode.put("preauth_expiration", serviceDaoApi.getPreautorisation(preauthId).getPreauth_date().toString());
+                            preauthNode.put("detail_transaction", "Preautorisation creee avec succes");
+                            i++;
+                            return ResponseEntity.ok().header("salut", "réponse").body(preauthNode.toString());
+                        }else {
+                            preauthNode.put("preauth_status", "FAILURE");
+                            preauthNode.put("detail_transaction", "Compte invalide");
+                            return ResponseEntity.status(HttpStatus.NOT_FOUND).header("status", "pas bon").body(preauthNode.toString());
+                        }
                     }
                     else{
                         preauthNode.put("preauth_status", "FAILURE");
@@ -193,6 +203,8 @@ public class GestionnaireAPI {
 
         System.out.print("je suis sorti du get1");
         System.out.print(preauth_bd.getPreauth_id());
+
+        System.out.print(preauth_bd.getPreauthStatus());
         System.out.print("je suis sorti du get2");
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootNode = mapper.readTree(body2);
@@ -214,6 +226,10 @@ public class GestionnaireAPI {
         preauth_modif.setPreauth_id(id);
         preauth_modif.setPreauthStatus(rootNode.path("preauth_status").getTextValue());
 
+        String[]idSourceSplitter=preauth_bd.getSource_id().split("-");
+        String idBanque=idSourceSplitter[0];
+        String idCompte=idSourceSplitter[1];
+        System.out.print(idCompte);
 
         if(preauth_bd!=null){
             if(preauth_bd.getPreauthStatus().equals("CREATED")){
@@ -229,8 +245,8 @@ public class GestionnaireAPI {
                         }
                     } else if (preauth_modif.getPreauthStatus().equals("CANCELED")) {
                         try {
-                            preauth_modif.setPreauthStatus("CANCELED");
-                            serviceDaoApi.modifierPreautorizationStatus(preauth_modif);
+                            preauth_bd.setPreauthStatus("CANCELED");
+                            serviceDaoApi.modifierPreautorizationStatus(preauth_bd);
                             preauth_modif_node.put("preauth_status", "CANCELED");
                             preauth_modif_node.put("preauth_expiration", serviceDaoApi.getPreautorisation(id).getCredit_expiration());
                             preauth_modif_node.put("detail_transaction", "La preautorisation a ete cancelee");
@@ -240,8 +256,31 @@ public class GestionnaireAPI {
                         }
                     } else if (preauth_modif.getPreauthStatus().equals("EXECUTED")) {
                         try {
-                            preauth_modif.setPreauthStatus("EXECUTED");
-                            serviceDaoApi.modifierPreautorizationStatus(preauth_modif);
+                            if(idBanque.matches("133")){
+                                try {
+                                    int virementExterne = serviceDaoBanque1.doVirement(preauth_bd.getCredit_id(), preauth_bd.getSource_id(), preauth_bd.getMontant(), "Virement suite a l'execution de la preautorisation" + preauth_modif.getPreauth_id());
+                                    if(virementExterne == -1){
+                                        preauth_modif_node.put("preauth_status", "FAILURE");
+                                        preauth_modif_node.put("detail_transaction", "erreur avec banque 1, pas de ok");
+                                        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).header("salut", "ERROR").body(preauth_modif_node.toString());
+                                    }
+                                    else if (virementExterne == -2){
+                                        preauth_modif_node.put("preauth_status", "FAILURE");
+                                        preauth_modif_node.put("detail_transaction", "Compte inexistant cote banque 1");
+                                        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).header("salut", "ERROR").body(preauth_modif_node.toString());
+                                    }
+
+                                }
+                                catch (Exception e) {
+                                    preauth_modif_node.put("preauth_status", "FAILURE");
+                                    preauth_modif_node.put("detail_transaction", "Le virement n'a pas fonctionne");
+                                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).header("salut", "ERROR").body(preauth_modif_node.toString());
+                                }
+                            }else{
+                                serviceDaoCompte.ajoutMontant(Integer.parseInt(idCompte),preauth_bd.getMontant());
+                            }
+                            preauth_bd.setPreauthStatus("EXECUTED");
+                            serviceDaoApi.modifierPreautorizationStatus(preauth_bd);
                             preauth_modif_node.put("preauth_status", "EXECUTED");
                             preauth_modif_node.put("detail_transaction", "La preautorisation a ete execute");
                             return ResponseEntity.status(HttpStatus.ACCEPTED).header("salut", "EXECUTED").body(preauth_modif_node.toString());
@@ -254,8 +293,8 @@ public class GestionnaireAPI {
                 }
                 else{
                     try {
-                        preauth_modif.setPreauthStatus("CANCELED");
-                        serviceDaoApi.modifierPreautorizationStatus(preauth_modif);
+                        preauth_bd.setPreauthStatus("CANCELED");
+                        serviceDaoApi.modifierPreautorizationStatus(preauth_bd);
                         preauth_modif_node.put("preauth_status", "CANCELED");
                         preauth_modif_node.put("preauth_expiration", serviceDaoApi.getPreautorisation(id).getPreauth_date().plusMinutes(20).toString());
                         preauth_modif_node.put("detail_transaction", "La preautorisation est expirée");
