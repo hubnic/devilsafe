@@ -27,7 +27,7 @@
       <p>&nbsp;</p>
 <h2><strong>Cr&eacute;er une pr&eacute;autorisation</strong></h2>
 <p><span style="font-weight: 400;">Cet appel peut &ecirc;tre utilis&eacute; pour cr&eacute;er une pr&eacute;autorisation de paiement sur le compte du client pass&eacute; en param&egrave;tre. Retourne les informations relatives &agrave; cette pr&eacute;autorisation.</span></p>
-<p><span style="font-weight: 400;">POST /api/:clientID/preauth</span><span style="font-weight: 400;"><br /><br /></span></p>
+<p><span style="font-weight: 400;">POST /api/preauth</span><span style="font-weight: 400;"><br /><br /></span></p>
 <h3><strong>Param&egrave;tres</strong></h3>
 <table>
 <tbody>
@@ -108,7 +108,7 @@
 <p><span style="font-weight: 400;">credit_cvs</span></p>
 </td>
 <td style="height: 35px;">
-<p><span style="font-weight: 400;">string &nbsp;</span></p>
+<p><span style="font-weight: 400;">int &nbsp;</span></p>
 </td>
 <td style="height: 35px;">
 <p><span style="font-weight: 400;">CVS de la carte de s&eacute;curit&eacute;</span></p>
@@ -262,17 +262,7 @@
 <p><span style="font-weight: 400;">Identifiant de la pr&eacute;autorisation</span></p>
 </td>
 </tr>
-<tr style="height: 35px;">
-<td style="height: 35px;">
-<p><span style="font-weight: 400;">public_api_key</span></p>
-</td>
-<td style="height: 35px;">
-<p><span style="font-weight: 400;">string</span></p>
-</td>
-<td style="height: 35px;">
-<p><span style="font-weight: 400;">La cl&eacute; d&rsquo;API qui permet d&rsquo;autoriser son utilisateur</span></p>
-</td>
-</tr>
+
 <tr style="height: 37.625px;">
 <td style="height: 37.625px;">
 <p><span style="font-weight: 400;">preauth_status</span></p>
@@ -382,17 +372,6 @@
 </td>
 <td>
 <p><strong>Description</strong></p>
-</td>
-</tr>
-<tr>
-<td>
-<p><span style="font-weight: 400;">public_api_key</span></p>
-</td>
-<td>
-<p><span style="font-weight: 400;">string</span></p>
-</td>
-<td>
-<p><span style="font-weight: 400;">La cl&eacute; d&rsquo;API qui permet d&rsquo;autoriser son utilisation</span></p>
 </td>
 </tr>
 <tr>
@@ -559,17 +538,6 @@
 </td>
 <td>
 <p><span style="font-weight: 400;">Description textuelle&nbsp;</span></p>
-</td>
-</tr>
-<tr>
-<td>
-<p><span style="font-weight: 400;">public_api_key</span></p>
-</td>
-<td>
-<p><span style="font-weight: 400;">string</span></p>
-</td>
-<td>
-<p><span style="font-weight: 400;">La cl&eacute; d&rsquo;API qui permet d&rsquo;autoriser son utilisateur</span></p>
 </td>
 </tr>
 </tbody>

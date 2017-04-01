@@ -179,7 +179,7 @@ public class GestionnaireAPI {
                     else{
                         preauthNode.put("preauth_status", "FAILURE");
                         preauthNode.put("detail_transaction", "La carte de credit n'existe pas");
-                        return ResponseEntity.ok().header("salut", "réponse").body(preauthNode.toString());
+                        return ResponseEntity.status(HttpStatus.NOT_FOUND).header("salut", "réponse").body(preauthNode.toString());
                     }
                 }
                  catch(Exception e){
@@ -410,10 +410,12 @@ public class GestionnaireAPI {
 
         ZonedDateTime oldtime = preauth.getPreauth_date().atZone(ZoneOffset.UTC);
         LocalDateTime newtime = oldtime.toLocalDateTime();
-        if(newtime.plusMinutes(20).isAfter(LocalDateTime.now())){
+        System.out.print("\ndate locale avant if: " + LocalDateTime.now()+"\n");
+        System.out.print("\ndate expiration avant if: " + newtime.plusHours(4).plusMinutes(20)+"\n");
+        if(newtime.plusHours(4).plusMinutes(20).isAfter(LocalDateTime.now())){
 
             System.out.print("\ndate locale: " + LocalDateTime.now()+"\n");
-            System.out.print("\ndate expiration: " + newtime.plusMinutes(20)+"\n");
+            System.out.print("\ndate expiration: " + newtime.plusHours(4).plusMinutes(20)+"\n");
             return false;
         }
         return true;
