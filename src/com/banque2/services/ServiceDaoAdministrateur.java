@@ -468,7 +468,7 @@ private PojoCompte templateDebit = new PojoCompte();
 		
 		try{
 			jdbcTemplate.update(insertCC, 
-					creerCarteLuhn(), 
+					creerCarteLuhn2(), 
 					"2021/04",
 					new Random().nextInt(999), 
 					client.getNom(),
@@ -514,6 +514,7 @@ private PojoCompte templateDebit = new PojoCompte();
 				Integer.toString(un) +
 				Integer.toString(deux) +
 				Integer.toString(trois);
+		
 		System.out.println(carte);
 		int calc=0;
 		int i = carte.length()-1;
@@ -562,4 +563,49 @@ private PojoCompte templateDebit = new PojoCompte();
 		}
 		return carte;
 	}
+	
+	// ALGO BASÉ SUR : http://www.dcode.fr/algorithme-luhn
+	private String creerCarteLuhn2(){
+
+		Random random = new Random();
+		
+		boolean carteValide = false;
+		String carte = null;
+		while(!carteValide){
+			
+		
+		boolean sizeOK = false;
+		while(!sizeOK){
+			int zero = 6666;
+			int un = random.nextInt(9999);	
+			int deux = random.nextInt(9999);	
+			int trois = random.nextInt(9999);
+			carte = Integer.toString(zero) + Integer.toString(un) +	Integer.toString(deux) + Integer.toString(trois);
+			if(carte.length()==16){
+				sizeOK=true;
+			}
+		}
+	    int somme = 0;
+
+	    boolean inversion = false;
+
+	    for (int i = 16 - 1; i >= 0; i--){
+
+	    int n = Integer.parseInt(carte.substring(i, i + 1));
+        if (inversion){
+             n = n * 2;
+             if (n > 9){
+                n = (n % 10) + 1;
+             }
+       }
+        	 somme += n;
+        	 inversion = !inversion;
+     }
+
+		if(somme % 10 == 0){
+			carteValide = true;
+		}
+	}
+		return carte;
+}
 }
