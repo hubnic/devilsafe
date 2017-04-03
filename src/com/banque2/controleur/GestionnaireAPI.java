@@ -297,7 +297,7 @@ public class GestionnaireAPI {
                         serviceDaoApi.modifierPreautorizationStatus(preauth_bd);
                         preauth_modif_node.put("preauth_status", "CANCELED");
                         preauth_modif_node.put("preauth_expiration", serviceDaoApi.getPreautorisation(id).getPreauth_date().plusMinutes(20).toString());
-                        preauth_modif_node.put("detail_transaction", "La preautorisation est expirée");
+                        preauth_modif_node.put("detail_transaction", "La preautorisation est expiree");
                         return ResponseEntity.status(HttpStatus.OK).header("salut", "CANCELED").body(preauth_modif_node.toString());
                     } catch (Exception e) {
                         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).header("salut", "ERROR").body(preauth_modif_node.toString());
@@ -377,24 +377,24 @@ public class GestionnaireAPI {
                     serviceDaoCompte.ajoutMontant(
                             compte.getIdCompte(),
                             compte.getSolde());
-                    int idTransaction = serviceDaoClient.createTransaction(Integer.parseInt(source), compte.getIdCompte(), compte.getSolde(),"Virement du compte: "+ source+ " vers le compte: "+compte.getIdCompte());
+                    int idTransaction = serviceDaoClient.createTransaction(compte.getIdCompte(),Integer.parseInt(source),  compte.getSolde(),"Virement du compte: "+ source+ " vers le compte: "+compte.getIdCompte());
                     //ENVOI REPONSE
 
                     compteNode.put("transaction_status", "SUCCEED");
                     compteNode.put("timestamp", new Date(Calendar.getInstance().getTimeInMillis()).toString());
-                    compteNode.put("detail_transaction", "virement fait avec succès");
+                    compteNode.put("detail_transaction", "virement fait avec succes");
                     return ResponseEntity.ok().header("salut", "réponse").body(compteNode.toString());
                 }else{
                     compteNode.put("transaction_status", "FAILED");
                     compteNode.put("timestamp", new Date(Calendar.getInstance().getTimeInMillis()).toString());
                     compteNode.put("detail_transaction", "veuillez inscrire un montant positif");
-                    return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).header("salut", "réponse").body(compteNode.toString());
+                    return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).header("salut", "reponse").body(compteNode.toString());
                 }
             }else{
                 compteNode.put("transaction_status", "FAILED");
                 compteNode.put("detail_transaction", "Client inexistant");
 
-                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).header("salut", "réponse").body(compteNode.toString());
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).header("salut", "reponse").body(compteNode.toString());
             }
         }
         catch (Exception e){
