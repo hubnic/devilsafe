@@ -123,7 +123,7 @@ public class GestionnairePostClient {
 						transaction = serviceDaoClient.rembourserCC(Integer.parseInt(cEmetteur[2]), Integer.parseInt(cReveveur[2]), Float.parseFloat(montant));
 					}
 					else{
-						transaction = serviceDaoClient.createTransfertCompteIn(Integer.parseInt(cEmetteur[2]), Integer.parseInt(cReveveur[2]), Float.parseFloat(montant));
+						transaction = serviceDaoClient.createTransfertCompteIn(Integer.parseInt(cEmetteur[2]), Integer.parseInt(cReveveur[2]), Float.parseFloat(montant),"");
 					}
 					
 					vueModele.addObject("succes", true);
@@ -232,6 +232,8 @@ public class GestionnairePostClient {
 								
 					if(Float.parseFloat(cEmetteur[3])-montant >= 0 && valideCompteifCredit(cEmetteur))
 					{
+						if(idBanque != 666){
+							//Virement Vers Banque externe
 						int idTransaction = serviceDaoBanque1.doVirement(
 								cEmetteur[1] +cEmetteur[2],  
 								Integer.toString(idBanque)+"-"+Integer.toString(idCompteExterne), 
@@ -249,6 +251,20 @@ public class GestionnairePostClient {
 						}else if(idTransaction == -3){
 							vueModele.addObject("succes", false);
 							vueModele.addObject("description", "Une erreur s'est produite durant la validation du compte destination auprès de la BANQUE 1. \n La transaction a été annulée");
+						}
+						}
+						else{
+							//Virement Entre compte de la mm banque
+							System.out.println("VIREMENT ENTRE MEMBRES");
+							if(Integer.parseInt(cEmetteur[2]) != idCompteExterne && serviceDaoClient.checkIfCompteExiste(idCompteExterne) ){
+								int transaction = serviceDaoClient.createTransfertCompteIn(Integer.parseInt(cEmetteur[2]),idCompteExterne,montant,commentaire);
+								vueModele.addObject("succes", true);
+								vueModele.addObject("description", "Le virement a ete effecture avec succes est le numéro de transation est : ["+transaction+"]");
+							}else{
+								vueModele.addObject("succes", false);
+								vueModele.addObject("description", "Le virement n'a  pu etre effectué car soit vous avez indiqué le même compte, ou le compte recepteur n'existe pas.");
+			
+							}
 						}
 					
 					}else

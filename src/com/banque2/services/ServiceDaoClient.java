@@ -136,7 +136,7 @@ public List<PojoCompte> getAllComptesClientForTransfert(int idClient){
 
 
 
-public int createTransfertCompteIn(int idCompteEmetteur, int idCompteReceveur, float montant) {
+public int createTransfertCompteIn(int idCompteEmetteur, int idCompteReceveur, float montant ,String commentaire) {
 
 		// retrait fond en 1
 		// ajout fond en 2
@@ -145,7 +145,7 @@ public int createTransfertCompteIn(int idCompteEmetteur, int idCompteReceveur, f
 		retraitFondCompte(idCompteEmetteur, montant);
 		ajouterFondCompte(idCompteReceveur, montant);
 		int idTransaction = createTransaction(idCompteEmetteur, idCompteReceveur, -montant,"Virement vers compte "+ idCompteReceveur);
-		createTransaction(idCompteReceveur, idCompteEmetteur, montant,"Virement en provenace du compte "+ idCompteEmetteur);
+		createTransaction(idCompteReceveur, idCompteEmetteur, montant,"Virement en provenace du compte "+ idCompteEmetteur + " "+commentaire);
 		if(idTransaction != -1){
 			return idTransaction;
 		}
@@ -332,6 +332,23 @@ private PojoCompte getAllTransactionPDF(PojoCompte compte){
 
 	return compte;
 	
+}
+
+public boolean checkIfCompteExiste(int idCompte){
+	String checkCompte = "SELECT * FROM compte where idCompte="+idCompte;
+	try{
+		ArrayList<PojoCompte> result = (ArrayList<PojoCompte>) jdbcTemplate.query(checkCompte,new MappingCompte());
+
+		if(result.isEmpty()){
+			return false;
+		}
+		else{
+			return true;
+		}
+	}
+	catch(Exception e){
+		return false;
+	}
 }
 
 }
